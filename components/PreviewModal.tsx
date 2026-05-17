@@ -46,9 +46,6 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                   <h2 className="text-3xl font-black leading-none">
                     {item.site_name ?? "Untitled"}
                   </h2>
-                  <p className="mt-2 text-sm text-black/55">
-                    {[item.industry, item.color].filter(Boolean).join(" / ") ||
-                      "UI detail"}
                   </p>
                 </div>
                 <button
