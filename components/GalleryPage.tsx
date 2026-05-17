@@ -31,7 +31,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const fontOptions = useMemo(() => {
     const set = new Set<string>();
     initialItems.forEach((item) => {
-      if (item.font) set.add(item.font);
+      if (item.font) { item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); }); }
     });
     return ["All", ...Array.from(set).sort()];
   }, [initialItems]);
@@ -186,13 +186,13 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               onChange={setActiveTaste}
             />
             <FilterPill
-              label="フォント名"
+              label="フォント種別"
               options={fontOptions}
               activeOption={activeFont}
               onChange={setActiveFont}
             />
             <FilterPill
-              label="フォント種別"
+              label="フォント名"
               options={["All", ...fontTypes]}
               activeOption={activeFontType}
               onChange={setActiveFontType}
