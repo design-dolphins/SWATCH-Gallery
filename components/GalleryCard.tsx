@@ -2,23 +2,27 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
+
 type GalleryCardProps = {
   item: GalleryItem;
   onOpen: (item: GalleryItem) => void;
   partsCount?: number;
 };
+
 export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
+
   return (
     <motion.article
       className="group overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow hover:shadow-soft"
       whileHover={{ y: -4 }}
     >
+      {/* 画像 → 詳細モーダル or サイト展開 */}
       <button
         className="block w-full text-left"
         type="button"
         onClick={() => onOpen(item)}
-        aria-label={`${item.site_name ?? item.title}を開く`}
+        aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
         <div className="relative overflow-hidden bg-ink">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -33,12 +37,25 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
             </span>
           </div>
         </div>
-        <div className="p-3">
+      </button>
+
+      {/* タイトル → サイトへ飛ぶ */}
+      <div className="p-3">
+        {item.site_url ? (
+          <a
+            href={item.site_url}
+            target="_blank"
+            rel="noreferrer"
+            className="block truncate text-sm font-black hover:underline"
+          >
+            {item.site_name ?? "Untitled"}
+          </a>
+        ) : (
           <p className="truncate text-sm font-black">
             {item.site_name ?? "Untitled"}
           </p>
-        </div>
-      </button>
+        )}
+      </div>
     </motion.article>
   );
 }
