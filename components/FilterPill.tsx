@@ -50,7 +50,7 @@ export default function FilterPill({
       </button>
 
       {open && (
-      <div className="absolute left-0 top-full z-50 mt-1 max-h-72 w-52 overflow-y-auto border border-black/10 bg-white shadow-sm">
+      <div className="absolute left-0 top-full z-50 mt-1 max-h-96 w-52 overflow-y-auto border border-black/10 bg-white shadow-sm">
           {options.map((option) => (
             <button
               key={option}
