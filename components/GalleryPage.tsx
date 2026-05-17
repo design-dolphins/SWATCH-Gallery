@@ -28,12 +28,14 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   // フォントの選択肢をデータから動的に生成
   const fontOptions = useMemo(() => {
-    const set = new Set<string>();
-    initialItems.forEach((item) => {
-      if (item.font) set.add(item.font);
-    });
-    return ["All", ...Array.from(set).sort()];
-  }, [initialItems]);
+  const set = new Set<string>();
+  initialItems.forEach((item) => {
+    if (item.font) {
+      item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); });
+    }
+  });
+  return ["All", ...Array.from(set).sort()];
+}, [initialItems]);
 
   // サイト別カード（Allビュー用）
   const siteCards = useMemo(() => {
@@ -63,7 +65,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         activeIndustry === "All" || item.industry === activeIndustry;
       const colorMatch = activeColor === "All" || item.color === activeColor;
       const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-      const fontMatch = activeFont === "All" || item.font === activeFont;
+      const fontMatch = activeFont === "All" || 
+  (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
       const searchable = [
         item.title,
         item.site_name,
