@@ -1,0 +1,82 @@
+import type { GalleryItem } from "./types";
+
+export const sampleGalleries: GalleryItem[] = [
+  {
+    id: "sample-1",
+    title: "AI Analytics Hero",
+    site_name: "Northstar AI",
+    site_url: "https://example.com",
+    image_url: "/mockups/northstar.svg",
+    category: "KV",
+    industry: "IT・テクノロジー",
+    color: "黒",
+    memo: "暗めの余白と大きなタイポグラフィ。SaaS系KVの参照に使いやすい。",
+    featured: true,
+    created_at: "2026-05-17T00:00:00.000Z"
+  },
+  {
+    id: "sample-2",
+    title: "Beauty Bento CTA",
+    site_name: "Luma Skin",
+    site_url: "https://example.com",
+    image_url: "/mockups/luma.svg",
+    category: "CTA",
+    industry: "ファッション・コスメ・雑貨",
+    color: "ピンク",
+    memo: "やわらかい面構成と商品訴求CTA。余白の取り方がきれい。",
+    featured: true,
+    created_at: "2026-05-16T00:00:00.000Z"
+  },
+  {
+    id: "sample-3",
+    title: "Finance Dashboard",
+    site_name: "Ledger Flow",
+    site_url: "https://example.com",
+    image_url: "/mockups/ledger.svg",
+    category: "ホーム",
+    industry: "人材・教育・金融",
+    color: "黒",
+    memo: "密度が高いのに読みやすいダッシュボード。カード間隔の参考。",
+    featured: false,
+    created_at: "2026-05-15T00:00:00.000Z"
+  },
+  {
+    id: "sample-4",
+    title: "Architecture About",
+    site_name: "Atelier K",
+    site_url: "https://example.com",
+    image_url: "/mockups/atelier.svg",
+    category: "concept/About",
+    industry: "建築・不動産・ものづくり",
+    color: "ベージュ",
+    memo: "写真とテキストの緊張感。建築・不動産系のAboutに合う。",
+    featured: false,
+    created_at: "2026-05-14T00:00:00.000Z"
+  },
+  {
+    id: "sample-5",
+    title: "Mobile Login Flow",
+    site_name: "Pulse Pay",
+    site_url: "https://example.com",
+    image_url: "/mockups/pulse.svg",
+    category: "ログイン",
+    industry: "人材・教育・金融",
+    color: "緑",
+    memo: "モバイルのログイン導線。フォーム周りの視認性が高い。",
+    featured: false,
+    created_at: "2026-05-13T00:00:00.000Z"
+  },
+  {
+    id: "sample-6",
+    title: "Brutalist Navigation",
+    site_name: "Raw Studio",
+    site_url: "https://example.com",
+    image_url: "/mockups/raw.svg",
+    category: "ドロワー・メガメニュー",
+    industry: "クリエイティブ・制作",
+    color: "赤",
+    memo: "強い罫線と大胆なナビゲーション。ファッション系の方向性出しに。",
+    featured: true,
+    created_at: "2026-05-12T00:00:00.000Z"
+  }
+];

@@ -1,0 +1,360 @@
+"use client";
+
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { ArrowLeft, CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
+import { categoryGroups, colors, industries } from "@/lib/constants";
+import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+
+const bucketName = "gallery-images";
+const lastGalleryInputKey = "ui-vault-last-gallery-input";
+
+type Status = {
+  type: "idle" | "success" | "error";
+  message: string;
+};
+
+export default function AdminGalleryForm() {
+  const [siteName, setSiteName] = useState("");
+  const [siteUrl, setSiteUrl] = useState("");
+  const [category, setCategory] = useState("KV");
+  const [industry, setIndustry] = useState(industries[0]);
+  const [color, setColor] = useState(colors[0]);
+  const [memo, setMemo] = useState("");
+  const [featured, setFeatured] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [status, setStatus] = useState<Status>({
+    type: "idle",
+    message: ""
+  });
+
+  const previewUrl = useMemo(() => {
+    if (!file) {
+      return "";
+    }
+
+    return URL.createObjectURL(file);
+  }, [file]);
+
+  useEffect(() => {
+    const savedInput = window.localStorage.getItem(lastGalleryInputKey);
+
+    if (!savedInput) {
+      return;
+    }
+
+    try {
+      const parsedInput = JSON.parse(savedInput) as {
+        siteName?: string;
+        siteUrl?: string;
+        industry?: string;
+        color?: string;
+      };
+
+      setSiteName(parsedInput.siteName ?? "");
+      setSiteUrl(parsedInput.siteUrl ?? "");
+      setIndustry(parsedInput.industry ?? industries[0]);
+      setColor(parsedInput.color ?? colors[0]);
+    } catch {
+      window.localStorage.removeItem(lastGalleryInputKey);
+    }
+  }, []);
+
+  const saveGallery = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!isSupabaseConfigured || !supabase) {
+      setStatus({
+        type: "error",
+        message: ".env.local のSupabase設定がまだ読み込まれていません。"
+      });
+      return;
+    }
+
+    if (!file) {
+      setStatus({ type: "error", message: "画像ファイルを選んでください。" });
+      return;
+    }
+
+    setIsSaving(true);
+    setStatus({ type: "idle", message: "" });
+
+    const extension = file.name.split(".").pop()?.toLowerCase() || "png";
+    const safeBase = slugify(siteName || category || "gallery");
+    const storagePath = `${Date.now()}-${safeBase}.${extension}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(bucketName)
+      .upload(storagePath, file, {
+        cacheControl: "3600",
+        upsert: false
+      });
+
+    if (uploadError) {
+      setIsSaving(false);
+      setStatus({
+        type: "error",
+        message: `画像アップロードに失敗しました: ${uploadError.message}`
+      });
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(storagePath);
+
+    const { error: insertError } = await supabase.from("galleries").insert({
+      title: null,
+      site_name: siteName,
+      site_url: siteUrl,
+      image_url: publicUrlData.publicUrl,
+      category,
+      industry,
+      color,
+      memo,
+      featured
+    });
+
+    setIsSaving(false);
+
+    if (insertError) {
+      setStatus({
+        type: "error",
+        message: `DB登録に失敗しました: ${insertError.message}`
+      });
+      return;
+    }
+
+    window.localStorage.setItem(
+      lastGalleryInputKey,
+      JSON.stringify({ siteName, siteUrl, industry, color })
+    );
+    setStatus({
+      type: "success",
+      message:
+        "追加できました。サイト名・サイトURL・業界・カラーは次の登録にも引き継ぎます。"
+    });
+    setCategory("KV");
+    setMemo("");
+    setFeatured(false);
+    setFile(null);
+  };
+
+  return (
+    <main className="min-h-screen bg-bone px-4 py-6 text-ink sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <a
+            className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
+            href="/"
+          >
+            <ArrowLeft size={16} />
+            Gallery
+          </a>
+          <p className="text-sm font-bold text-black/45">Admin Upload</p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+          <form
+            className="border border-black/10 bg-white p-5 shadow-sm sm:p-6"
+            onSubmit={saveGallery}
+          >
+            <div className="mb-6">
+              <p className="text-sm font-black uppercase text-black/42">
+                New Reference
+              </p>
+              <h1 className="mt-2 text-4xl font-black leading-none">
+                Upload once. No URL copy.
+              </h1>
+            </div>
+
+            <div className="grid gap-4">
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">画像</span>
+                <input
+                  className="rounded-[6px] border border-black/10 bg-bone p-3 text-sm"
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+                />
+              </label>
+
+              <TextInput
+                label="サイト名"
+                value={siteName}
+                onChange={setSiteName}
+              />
+
+              <TextInput
+                label="サイトURL"
+                value={siteUrl}
+                onChange={setSiteUrl}
+                placeholder="https://example.com"
+              />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="grid gap-2">
+                  <span className="text-sm font-bold">カテゴリ</span>
+                  <select
+                    className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm font-semibold outline-none focus:border-black/30"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                  >
+                    {categoryGroups.map((group) => (
+                      <optgroup key={group.label} label={group.label}>
+                        {group.items.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+                </label>
+
+                <SelectInput
+                  label="業界"
+                  value={industry}
+                  onChange={setIndustry}
+                  options={industries}
+                />
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <SelectInput
+                  label="カラー"
+                  value={color}
+                  onChange={setColor}
+                  options={colors}
+                />
+
+                <label className="flex items-center gap-3 self-end rounded-[6px] border border-black/10 bg-bone px-3 py-3">
+                  <input
+                    checked={featured}
+                    type="checkbox"
+                    onChange={(event) => setFeatured(event.target.checked)}
+                  />
+                  <span className="text-sm font-bold">おすすめにする</span>
+                </label>
+              </div>
+
+              <label className="grid gap-2">
+                <span className="text-sm font-bold">メモ</span>
+                <textarea
+                  className="min-h-28 rounded-[6px] border border-black/10 bg-bone p-3 text-sm leading-6 outline-none focus:border-black/30"
+                  value={memo}
+                  onChange={(event) => setMemo(event.target.value)}
+                  placeholder="どこが参考になるかメモ"
+                />
+              </label>
+            </div>
+
+            {status.message ? (
+              <div
+                className={`mt-5 rounded-[6px] border p-4 text-sm font-semibold ${
+                  status.type === "success"
+                    ? "border-green-500/30 bg-green-50 text-green-700"
+                    : "border-red-500/30 bg-red-50 text-red-700"
+                }`}
+              >
+                {status.message}
+              </div>
+            ) : null}
+
+            <button
+              className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-bone transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={isSaving}
+            >
+              {isSaving ? <Loader2 className="animate-spin" size={17} /> : null}
+              {isSaving ? "Saving..." : "Upload and add"}
+            </button>
+          </form>
+
+          <aside className="border border-black/10 bg-white p-4 shadow-sm">
+            <div className="grid min-h-[360px] place-items-center overflow-hidden bg-bone">
+              {previewUrl ? (
+                <img
+                  className="h-full max-h-[620px] w-full object-contain"
+                  src={previewUrl}
+                  alt="Preview"
+                />
+              ) : (
+                <div className="text-center text-black/38">
+                  <ImagePlus className="mx-auto mb-3" size={38} />
+                  <p className="text-sm font-bold">画像プレビュー</p>
+                </div>
+              )}
+            </div>
+            <div className="mt-4 rounded-[6px] border border-black/10 bg-bone p-4 text-sm leading-6 text-black/58">
+              <CheckCircle2 className="mb-2 text-green-600" size={18} />
+              この画面では画像URLをコピーしません。ファイル選択だけで
+              StorageアップロードとDB登録をまとめて行います。
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function TextInput({
+  label,
+  value,
+  onChange,
+  placeholder = ""
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-bold">{label}</span>
+      <input
+        className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm outline-none focus:border-black/30"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+      />
+    </label>
+  );
+}
+
+function SelectInput({
+  label,
+  value,
+  onChange,
+  options
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-bold">{label}</span>
+      <select
+        className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm font-semibold outline-none focus:border-black/30"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+    .slice(0, 60);
+}
