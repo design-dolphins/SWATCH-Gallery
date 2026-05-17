@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Layers } from "lucide-react";
+import { Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryCardProps = {
@@ -14,7 +14,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
 
   return (
     <motion.article
-      className="group overflow-hidden border border-black/10 shadow-sm transition-shadow hover:shadow-soft"
+      className="group overflow-hidden"
       whileHover={{ y: -4 }}
     >
       {/* 画像 → 詳細モーダル or サイト展開 */}
@@ -31,22 +31,24 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />
-          <div className="absolute inset-0 flex items-end justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
-              {isSiteMode ? <Layers size={16} /> : <ArrowUpRight size={18} />}
-            </span>
-          </div>
+          {isSiteMode && (
+            <div className="absolute inset-0 flex items-end justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
+                <Layers size={16} />
+              </span>
+            </div>
+          )}
         </div>
       </button>
 
-      {/* タイトル → サイトへ飛ぶ（背景なし） */}
-      <div className="px-3 py-2">
+      {/* タイトル → サイトへ飛ぶ */}
+      <div className="px-0 py-2">
         {item.site_url ? (
           <a
             href={item.site_url}
             target="_blank"
             rel="noreferrer"
-            className="block truncate text-sm font-black hover:underline"
+            className="block truncate text-sm font-black decoration-[#d7ff5f] decoration-2 underline-offset-2 hover:underline"
           >
             {item.site_name ?? "Untitled"}
           </a>
