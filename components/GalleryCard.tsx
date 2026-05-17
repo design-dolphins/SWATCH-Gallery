@@ -32,61 +32,22 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />
-          <div className="absolute inset-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/76 via-black/12 to-transparent p-4 opacity-0 transition duration-300 group-hover:opacity-100">
-            <div className="flex flex-wrap gap-2">
-              {isSiteMode ? (
-                <span className="rounded-full bg-white/88 px-2.5 py-1 text-xs font-bold text-ink">
-                  {partsCount} parts
-                </span>
-              ) : (
-                badges.map((badge) => (
-                  <span
-                    className="rounded-full bg-white/88 px-2.5 py-1 text-xs font-bold text-ink"
-                    key={badge}
-                  >
-                    {badge}
-                  </span>
-                ))
-              )}
-            </div>
+          <div className="absolute inset-0 flex items-end justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
+              {isSiteMode ? <Layers size={16} /> : <ArrowUpRight size={18} />}
+            </span>
+          </div>
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
               {isSiteMode ? <Layers size={16} /> : <ArrowUpRight size={18} />}
             </span>
           </div>
         </div>
 
-        <div className="space-y-3 p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-lg font-black leading-tight">
-                {item.site_name ?? "Untitled"}
-              </p>
-              <p className="mt-1 text-sm text-black/52">
-                {isSiteMode
-                  ? [item.industry, item.color].filter(Boolean).join(" / ") || "UI reference"
-                  : [item.taste, item.font].filter(Boolean).join(" · ") ||
-                    [item.industry, item.color].filter(Boolean).join(" / ") ||
-                    "UI reference"}
-              </p>
-            </div>
-            {item.featured ? (
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-acid text-ink">
-                <Star size={15} fill="currentColor" />
-              </span>
-            ) : null}
-          </div>
-
-          <div className="flex items-center justify-between gap-3 border-t border-black/10 pt-3">
-            <span className="rounded-full border border-black/10 px-3 py-1 text-xs font-bold text-black/62">
-              {isSiteMode ? `${partsCount} parts →` : (item.category ?? "Other")}
-            </span>
-            {!isSiteMode && (
-              <span className="text-xs font-semibold text-black/38">
-                {formatDate(item.created_at)}
-              </span>
-            )}
-          </div>
-        </div>
+        <div className="p-3">
+        <p className="truncate text-sm font-black">
+          {item.site_name ?? "Untitled"}
+        </p>
+      </div>
       </button>
     </motion.article>
   );
