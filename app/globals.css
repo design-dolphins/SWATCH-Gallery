@@ -51,11 +51,7 @@ input {
   }
 }
 
-@media (min-width: 1540px) {
-  .masonry-grid {
-    column-count: 4;
-  }
-}
+
 
 .masonry-item {
   break-inside: avoid;

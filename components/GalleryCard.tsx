@@ -14,12 +14,12 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
 
   return (
     <motion.article
-      className="group overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow hover:shadow-soft"
+      className="group overflow-hidden border border-black/10 shadow-sm transition-shadow hover:shadow-soft"
       whileHover={{ y: -4 }}
     >
       {/* 画像 → 詳細モーダル or サイト展開 */}
       <button
-        className="block w-full text-left"
+        className="relative block w-full text-left"
         type="button"
         onClick={() => onOpen(item)}
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
@@ -39,8 +39,8 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         </div>
       </button>
 
-      {/* タイトル → サイトへ飛ぶ */}
-      <div className="p-3">
+      {/* タイトル → サイトへ飛ぶ（背景なし） */}
+      <div className="px-3 py-2">
         {item.site_url ? (
           <a
             href={item.site_url}
