@@ -251,10 +251,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                         ? (item.site_name ?? item.id)
                         : item.id
                     }
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.26, ease: "easeOut" }}
+                    
+                    
+                    
+                    
                   >
                     <GalleryCard
                       item={item}
