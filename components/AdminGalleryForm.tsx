@@ -26,7 +26,7 @@ export default function AdminGalleryForm() {
   const [color, setColor] = useState(colors[0]);
   const [taste, setTaste] = useState(tastes[0]);
   const [font, setFont] = useState("");
-  const [fontType, setFontType] = useState(fontTypes[0]);
+  const [fontTypes_, setFontTypes_] = useState<string[]>([]);
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -58,7 +58,7 @@ export default function AdminGalleryForm() {
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
       setTaste(parsedInput.taste ?? tastes[0]);
-      setFont(parsedInput.font ?? "");
+      setFont(parsedInput.font ?? fonts[0]);
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
@@ -114,7 +114,7 @@ export default function AdminGalleryForm() {
       color,
       taste,
       font,
-      font_type: fontType,
+      font_type: fontTypes_.join(","),
       memo,
       featured
     });
@@ -131,7 +131,7 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color, taste, font, fontType })
+      JSON.stringify({ siteName, siteUrl, industry, color, taste, font, fontTypes_: fontTypes_.join(",") })
     );
     setStatus({
       type: "success",
@@ -249,12 +249,27 @@ export default function AdminGalleryForm() {
                   onChange={setFont}
                   placeholder="使用フォントを入力"
                 />
-                <SelectInput
-                  label="フォント種別"
-                  value={fontType}
-                  onChange={setFontType}
-                  options={fontTypes}
-                />
+                <div className="grid gap-2">
+                  <span className="text-sm font-bold">フォント種別（複数選択可）</span>
+                  <div className="flex flex-wrap gap-2">
+                    {fontTypes.map((ft) => (
+                      <label key={ft} className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={fontTypes_.includes(ft)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFontTypes_([...fontTypes_, ft]);
+                            } else {
+                              setFontTypes_(fontTypes_.filter(f => f !== ft));
+                            }
+                          }}
+                        />
+                        <span className="text-sm">{ft}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
                 <label className="flex items-center gap-3 self-end rounded-[6px] border border-black/10 bg-bone px-3 py-3">
                   <input
                     checked={featured}

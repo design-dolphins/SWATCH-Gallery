@@ -64,7 +64,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         activeIndustry === "All" || item.industry === activeIndustry;
       const colorMatch = activeColor === "All" || item.color === activeColor;
       const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-      const fontMatch = activeFont === "All" || item.font === activeFont;
+      const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+      const fontTypeMatch = activeFontType === "All" || (item.font_type?.split(",").map(f => f.trim()).some(f => f === activeFontType) ?? false);
       const searchable = [
         item.title,
         item.site_name,
