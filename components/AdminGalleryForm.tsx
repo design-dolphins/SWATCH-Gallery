@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
-import { categoryGroups, colors, fonts, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, industries, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 const bucketName = "gallery-images";
@@ -21,7 +21,7 @@ export default function AdminGalleryForm() {
   const [industry, setIndustry] = useState(industries[0]);
   const [color, setColor] = useState(colors[0]);
   const [taste, setTaste] = useState(tastes[0]);
-  const [font, setFont] = useState(fonts[0]);
+  const [font, setFont] = useState("");
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -227,11 +227,11 @@ export default function AdminGalleryForm() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <SelectInput
-                  label="フォント"
+                <TextInput
+                  label="フォント名（例：Noto Sans JP）"
                   value={font}
                   onChange={setFont}
-                  options={fonts}
+                  placeholder="使用フォントを入力"
                 />
                 <label className="flex items-center gap-3 self-end rounded-[6px] border border-black/10 bg-bone px-3 py-3">
                   <input

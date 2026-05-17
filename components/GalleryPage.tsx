@@ -4,12 +4,12 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, SlidersHorizontal, Sparkles } from "lucide-react";
+import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import TagRail from "@/components/TagRail";
-import { categoryGroups, colors, fonts, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, industries, tastes } from "@/lib/constants";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryPageProps = {
@@ -26,7 +26,16 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [selectedSite, setSelectedSite] = useState<string | null>(null);
 
-  // One card per site for "All" view (KV preferred, otherwise first)
+  // フォントの選択肢をデータから動的に生成
+  const fontOptions = useMemo(() => {
+    const set = new Set<string>();
+    initialItems.forEach((item) => {
+      if (item.font) set.add(item.font);
+    });
+    return ["All", ...Array.from(set).sort()];
+  }, [initialItems]);
+
+  // サイト別カード（Allビュー用）
   const siteCards = useMemo(() => {
     const map = new Map<string, GalleryItem>();
     const partsCounts = new Map<string, number>();
@@ -75,13 +84,11 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     });
   }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, initialItems, query]);
 
-  // Items shown in the grid
   const displayItems = useMemo(() => {
     if (activeCategory === "All") {
       if (selectedSite) {
         return initialItems.filter((item) => item.site_name === selectedSite);
       }
-      // Filter site cards by other active filters
       const normalizedQuery = query.trim().toLowerCase();
       return siteCards.cards.filter((item) => {
         const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
@@ -120,6 +127,12 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     setQuery("");
   };
 
+  const hasActiveFilters =
+    activeIndustry !== "All" ||
+    activeColor !== "All" ||
+    activeTaste !== "All" ||
+    activeFont !== "All";
+
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
@@ -146,45 +159,45 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             </Link>
             <div className="flex flex-1 items-center gap-3 lg:max-w-3xl">
               <SearchBar value={query} onChange={setQuery} />
-              <button
-                className="hidden h-12 shrink-0 items-center gap-2 rounded-full border border-black/10 bg-white/60 px-4 text-sm font-bold text-ink shadow-sm transition hover:border-black/30 hover:bg-white md:flex"
-                type="button"
-                onClick={clearFilters}
-              >
-                <SlidersHorizontal size={17} />
-                Reset
-              </button>
             </div>
           </div>
-          <div className="grid gap-2 xl:grid-cols-2">
-            <TagRail
+
+          {/* フィルターバー */}
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterPill
               label="業界"
               options={["All", ...industries]}
               activeOption={activeIndustry}
               onChange={setActiveIndustry}
-              defaultVisible={5}
             />
-            <TagRail
+            <FilterPill
               label="カラー"
               options={["All", ...colors]}
               activeOption={activeColor}
               onChange={setActiveColor}
-              defaultVisible={5}
             />
-            <TagRail
+            <FilterPill
               label="テイスト"
               options={["All", ...tastes]}
               activeOption={activeTaste}
               onChange={setActiveTaste}
-              defaultVisible={5}
             />
-            <TagRail
+            <FilterPill
               label="フォント"
-              options={["All", ...fonts]}
+              options={fontOptions}
               activeOption={activeFont}
               onChange={setActiveFont}
-              defaultVisible={5}
             />
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-4 py-2 text-sm font-bold text-black/50 transition hover:border-black/30 hover:bg-white hover:text-ink"
+              >
+                <SlidersHorizontal size={13} />
+                Reset
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -207,7 +220,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   : `${displayItems.length} references`}
               </div>
               <h1 className="max-w-3xl text-4xl font-black leading-[0.96] text-ink sm:text-5xl lg:text-7xl">
-                {selectedSite ? selectedSite : "Find UI patterns by mood, part, and intent."}
+                {selectedSite
+                  ? selectedSite
+                  : "Find UI patterns by mood, part, and intent."}
               </h1>
             </div>
             {selectedSite ? (
@@ -233,7 +248,11 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   <motion.div
                     layout
                     className="masonry-item"
-                    key={activeCategory === "All" && !selectedSite ? (item.site_name ?? item.id) : item.id}
+                    key={
+                      activeCategory === "All" && !selectedSite
+                        ? (item.site_name ?? item.id)
+                        : item.id
+                    }
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.96 }}
