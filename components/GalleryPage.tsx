@@ -243,7 +243,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             {displayItems.length > 0 ? (
               <div className="masonry-grid">
                 {displayItems.map((item) => (
-                  <motion.div
+                  <div
                     layout
                     className="masonry-item"
                     key={
@@ -269,7 +269,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 ))}
               </div>
             ) : (
-              <motion.div
+              <div
                 className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
