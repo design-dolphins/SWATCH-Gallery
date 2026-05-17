@@ -46,7 +46,6 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                   <h2 className="text-3xl font-black leading-none">
                     {item.site_name ?? "Untitled"}
                   </h2>
-                  </p>
                 </div>
                 <button
                   className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-black/10 bg-white/70 transition hover:bg-white"
