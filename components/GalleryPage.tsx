@@ -97,7 +97,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
         const colorMatch = activeColor === "All" || item.color === activeColor;
         const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-        const fontMatch = activeFont === "All" || item.font === activeFont;
+        const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
         const searchable = [item.title, item.site_name, item.industry, item.color, item.taste, item.font, item.memo]
           .filter(Boolean).join(" ").toLowerCase();
         const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
