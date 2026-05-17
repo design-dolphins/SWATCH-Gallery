@@ -1,19 +1,14 @@
 "use client";
-
 import { motion } from "framer-motion";
-import { ArrowUpRight, Layers, Star } from "lucide-react";
+import { ArrowUpRight, Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
-
 type GalleryCardProps = {
   item: GalleryItem;
   onOpen: (item: GalleryItem) => void;
   partsCount?: number;
 };
-
 export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
-  const badges = [item.industry, item.color].filter(Boolean);
-
   return (
     <motion.article
       className="group overflow-hidden border border-black/10 bg-white shadow-sm transition-shadow hover:shadow-soft"
@@ -37,26 +32,13 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
               {isSiteMode ? <Layers size={16} /> : <ArrowUpRight size={18} />}
             </span>
           </div>
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
-              {isSiteMode ? <Layers size={16} /> : <ArrowUpRight size={18} />}
-            </span>
-          </div>
         </div>
-
         <div className="p-3">
-        <p className="truncate text-sm font-black">
-          {item.site_name ?? "Untitled"}
-        </p>
-      </div>
+          <p className="truncate text-sm font-black">
+            {item.site_name ?? "Untitled"}
+          </p>
+        </div>
       </button>
     </motion.article>
   );
-}
-
-function formatDate(value: string | null) {
-  if (!value) return "New";
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric"
-  }).format(new Date(value));
 }
