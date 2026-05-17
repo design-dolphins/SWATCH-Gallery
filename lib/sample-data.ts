@@ -1,5 +1,4 @@
 import type { GalleryItem } from "./types";
-
 export const sampleGalleries: GalleryItem[] = [
   {
     id: "sample-1",
@@ -10,6 +9,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "KV",
     industry: "IT・テクノロジー",
     color: "黒",
+    taste: "future",
+    font: "欧文サンセリフ",
     memo: "暗めの余白と大きなタイポグラフィ。SaaS系KVの参照に使いやすい。",
     featured: true,
     created_at: "2026-05-17T00:00:00.000Z"
@@ -23,6 +24,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "CTA",
     industry: "ファッション・コスメ・雑貨",
     color: "ピンク",
+    taste: "cute",
+    font: "ゴシック体",
     memo: "やわらかい面構成と商品訴求CTA。余白の取り方がきれい。",
     featured: true,
     created_at: "2026-05-16T00:00:00.000Z"
@@ -36,6 +39,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "ホーム",
     industry: "人材・教育・金融",
     color: "黒",
+    taste: "simple",
+    font: "欧文サンセリフ",
     memo: "密度が高いのに読みやすいダッシュボード。カード間隔の参考。",
     featured: false,
     created_at: "2026-05-15T00:00:00.000Z"
@@ -49,6 +54,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "concept/About",
     industry: "建築・不動産・ものづくり",
     color: "ベージュ",
+    taste: "stylish",
+    font: "明朝体",
     memo: "写真とテキストの緊張感。建築・不動産系のAboutに合う。",
     featured: false,
     created_at: "2026-05-14T00:00:00.000Z"
@@ -62,6 +69,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "ログイン",
     industry: "人材・教育・金融",
     color: "緑",
+    taste: "simple",
+    font: "ゴシック体",
     memo: "モバイルのログイン導線。フォーム周りの視認性が高い。",
     featured: false,
     created_at: "2026-05-13T00:00:00.000Z"
@@ -75,6 +84,8 @@ export const sampleGalleries: GalleryItem[] = [
     category: "ドロワー・メガメニュー",
     industry: "クリエイティブ・制作",
     color: "赤",
+    taste: "monotone",
+    font: "欧文セリフ",
     memo: "強い罫線と大胆なナビゲーション。ファッション系の方向性出しに。",
     featured: true,
     created_at: "2026-05-12T00:00:00.000Z"
