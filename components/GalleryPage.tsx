@@ -9,7 +9,7 @@ import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import { categoryGroups, colors, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryPageProps = {
@@ -23,6 +23,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeColor, setActiveColor] = useState("All");
   const [activeTaste, setActiveTaste] = useState("All");
   const [activeFont, setActiveFont] = useState("All");
+  const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [selectedSite, setSelectedSite] = useState<string | null>(null);
 
@@ -30,7 +31,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const fontOptions = useMemo(() => {
     const set = new Set<string>();
     initialItems.forEach((item) => {
-      if (item.font) { item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); }); }
+      if (item.font) set.add(item.font);
     });
     return ["All", ...Array.from(set).sort()];
   }, [initialItems]);
@@ -63,7 +64,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         activeIndustry === "All" || item.industry === activeIndustry;
       const colorMatch = activeColor === "All" || item.color === activeColor;
       const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-      const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+      const fontMatch = activeFont === "All" || item.font === activeFont;
       const searchable = [
         item.title,
         item.site_name,
@@ -80,9 +81,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       const queryMatch =
         normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
 
-      return categoryMatch && industryMatch && colorMatch && tasteMatch && fontMatch && queryMatch;
+      return categoryMatch && industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
     });
-  }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, initialItems, query]);
+  }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, activeFontType, initialItems, query]);
 
   const displayItems = useMemo(() => {
     if (activeCategory === "All") {
@@ -94,15 +95,15 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
         const colorMatch = activeColor === "All" || item.color === activeColor;
         const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-        const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+        const fontMatch = activeFont === "All" || item.font === activeFont;
         const searchable = [item.title, item.site_name, item.industry, item.color, item.taste, item.font, item.memo]
           .filter(Boolean).join(" ").toLowerCase();
         const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
-        return industryMatch && colorMatch && tasteMatch && fontMatch && queryMatch;
+        return industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
       });
     }
     return filteredItems;
-  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont]);
+  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont, activeFontType]);
 
   const handleCardOpen = (item: GalleryItem) => {
     if (activeCategory === "All" && !selectedSite) {
@@ -123,6 +124,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     setActiveColor("All");
     setActiveTaste("All");
     setActiveFont("All");
+    setActiveFontType("All");
     setSelectedSite(null);
     setQuery("");
   };
@@ -131,7 +133,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     activeIndustry !== "All" ||
     activeColor !== "All" ||
     activeTaste !== "All" ||
-    activeFont !== "All";
+    activeFont !== "All" ||
+    activeFontType !== "All";
 
   return (
     <main className="min-h-screen">
@@ -181,10 +184,16 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               onChange={setActiveTaste}
             />
             <FilterPill
-              label="フォント"
+              label="フォント名"
               options={fontOptions}
               activeOption={activeFont}
               onChange={setActiveFont}
+            />
+            <FilterPill
+              label="フォント種別"
+              options={["All", ...fontTypes]}
+              activeOption={activeFontType}
+              onChange={setActiveFontType}
             />
             {hasActiveFilters && (
               <button
@@ -241,19 +250,20 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
           <AnimatePresence mode="popLayout">
             {displayItems.length > 0 ? (
-              <div className="masonry-grid">
+              <motion.div layout className="masonry-grid">
                 {displayItems.map((item) => (
-                  <div
+                  <motion.div
+                    layout
                     className="masonry-item"
                     key={
                       activeCategory === "All" && !selectedSite
                         ? (item.site_name ?? item.id)
                         : item.id
                     }
-                    
-                    
-                    
-                    
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.26, ease: "easeOut" }}
                   >
                     <GalleryCard
                       item={item}
@@ -264,14 +274,14 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                           : undefined
                       }
                     />
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
-              <div
+              <motion.div
                 className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center"
-                
-                
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
               >
                 <div>
                   <p className="text-2xl font-black">No matches</p>
@@ -286,7 +296,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                     Clear filters
                   </button>
                 </div>
-              </div>
+              </motion.div>
             )}
           </AnimatePresence>
         </section>

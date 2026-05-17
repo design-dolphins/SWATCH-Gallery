@@ -131,3 +131,12 @@ export const tastes = [
   "future"
 ];
 
+
+export const fontTypes = [
+  "日本語ゴシック",
+  "日本語明朝",
+  "欧文セリフ",
+  "欧文サンセリフ",
+  "手書き",
+  "ディスプレイ"
+];

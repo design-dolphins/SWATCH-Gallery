@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -26,6 +26,7 @@ export default function AdminGalleryForm() {
   const [color, setColor] = useState(colors[0]);
   const [taste, setTaste] = useState(tastes[0]);
   const [font, setFont] = useState("");
+  const [fontType, setFontType] = useState(fontTypes[0]);
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -57,7 +58,7 @@ export default function AdminGalleryForm() {
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
       setTaste(parsedInput.taste ?? tastes[0]);
-      setFont(parsedInput.font ?? "");
+      setFont(parsedInput.font ?? fonts[0]);
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
@@ -113,6 +114,7 @@ export default function AdminGalleryForm() {
       color,
       taste,
       font,
+      font_type: fontType,
       memo,
       featured
     });
@@ -129,7 +131,7 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color, taste, font })
+      JSON.stringify({ siteName, siteUrl, industry, color, taste, font, fontType })
     );
     setStatus({
       type: "success",
@@ -246,6 +248,12 @@ export default function AdminGalleryForm() {
                   value={font}
                   onChange={setFont}
                   placeholder="使用フォントを入力"
+                />
+                <SelectInput
+                  label="フォント種別"
+                  value={fontType}
+                  onChange={setFontType}
+                  options={fontTypes}
                 />
                 <label className="flex items-center gap-3 self-end rounded-[6px] border border-black/10 bg-bone px-3 py-3">
                   <input

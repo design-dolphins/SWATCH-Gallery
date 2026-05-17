@@ -9,6 +9,7 @@ export type GalleryItem = {
   color: string | null;
   taste: string | null;
   font: string | null;
+  font_type: string | null;
   memo: string | null;
   created_at: string | null;
   featured: boolean | null;
