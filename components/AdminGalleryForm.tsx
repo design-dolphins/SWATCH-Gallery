@@ -1,13 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
 import { categoryGroups, colors, industries } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 const bucketName = "gallery-images";
 const lastGalleryInputKey = "ui-vault-last-gallery-input";
-
 type Status = {
   type: "idle" | "success" | "error";
   message: string;
@@ -140,17 +140,17 @@ export default function AdminGalleryForm() {
     setFile(null);
   };
 
-  return (
+ return (
     <main className="min-h-screen bg-bone px-4 py-6 text-ink sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between gap-4">
-          <a
+          <Link
             className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
             href="/"
           >
             <ArrowLeft size={16} />
             Gallery
-          </a>
+          </Link>
           <p className="text-sm font-bold text-black/45">Admin Upload</p>
         </div>
 
