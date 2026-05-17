@@ -28,14 +28,12 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   // フォントの選択肢をデータから動的に生成
   const fontOptions = useMemo(() => {
-  const set = new Set<string>();
-  initialItems.forEach((item) => {
-    if (item.font) {
-      item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); });
-    }
-  });
-  return ["All", ...Array.from(set).sort()];
-}, [initialItems]);
+    const set = new Set<string>();
+    initialItems.forEach((item) => {
+      if (item.font) set.add(item.font);
+    });
+    return ["All", ...Array.from(set).sort()];
+  }, [initialItems]);
 
   // サイト別カード（Allビュー用）
   const siteCards = useMemo(() => {
@@ -65,8 +63,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         activeIndustry === "All" || item.industry === activeIndustry;
       const colorMatch = activeColor === "All" || item.color === activeColor;
       const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-      const fontMatch = activeFont === "All" || 
-  (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+      const fontMatch = activeFont === "All" || item.font === activeFont;
       const searchable = [
         item.title,
         item.site_name,
@@ -97,7 +94,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
         const colorMatch = activeColor === "All" || item.color === activeColor;
         const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-        const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+        const fontMatch = activeFont === "All" || item.font === activeFont;
         const searchable = [item.title, item.site_name, item.industry, item.color, item.taste, item.font, item.memo]
           .filter(Boolean).join(" ").toLowerCase();
         const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
@@ -142,7 +139,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <Link className="group flex items-center gap-3" href="/">
-              <img src="/favicon.svg" alt="SWATCH Gallery" className="h-11 w-11 transition-transform group-hover:rotate-6" />
+
               <span>
                 <span className="block text-xl font-black uppercase">
                   SWATCH Gallery
