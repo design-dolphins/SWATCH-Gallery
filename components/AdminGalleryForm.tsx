@@ -53,7 +53,7 @@ export default function AdminGalleryForm() {
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
       setTaste(parsedInput.taste ?? tastes[0]);
-      setFont(parsedInput.font ?? fonts[0]);
+      setFont(parsedInput.font ?? "");
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
