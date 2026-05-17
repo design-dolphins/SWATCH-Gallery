@@ -241,7 +241,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
           <AnimatePresence mode="popLayout">
             {displayItems.length > 0 ? (
-              <motion.div layout className="masonry-grid">
+              <div className="masonry-grid">
                 {displayItems.map((item) => (
                   <motion.div
                     layout
@@ -265,9 +265,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                           : undefined
                       }
                     />
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             ) : (
               <motion.div
                 className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center"
@@ -287,7 +287,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                     Clear filters
                   </button>
                 </div>
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
         </section>
