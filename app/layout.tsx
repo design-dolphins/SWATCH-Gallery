@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SWATCH Gallery",
-  description: "Awwwards style UI reference gallery MVP"
+  description: "パーツ別・業界別・カラー別で絞れるUIギャラリーサイト",
+  icons: {
+    icon: "/favicon.svg",
+  }
 };
 
 export default function RootLayout({

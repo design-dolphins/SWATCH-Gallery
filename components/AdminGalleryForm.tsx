@@ -2,9 +2,13 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
 import { categoryGroups, colors, industries, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
+
+async function handleLogout() {
+  if (supabase) await supabase.auth.signOut();
+}
 
 const bucketName = "gallery-images";
 const lastGalleryInputKey = "ui-vault-last-gallery-input";
@@ -53,7 +57,7 @@ export default function AdminGalleryForm() {
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
       setTaste(parsedInput.taste ?? tastes[0]);
-      setFont(parsedInput.font ?? "");
+      setFont(parsedInput.font ?? fonts[0]);
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
@@ -148,7 +152,17 @@ export default function AdminGalleryForm() {
             <ArrowLeft size={16} />
             Gallery
           </Link>
-          <p className="text-sm font-bold text-black/45">Admin Upload</p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-bold text-black/45">Admin Upload</p>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs font-bold text-black/50 transition hover:border-black/30 hover:text-ink"
+            >
+              <LogOut size={13} />
+              ログアウト
+            </button>
+          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_380px]">

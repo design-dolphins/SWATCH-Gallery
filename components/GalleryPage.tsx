@@ -139,9 +139,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <Link className="group flex items-center gap-3" href="/">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-ink text-sm font-black text-bone transition-transform group-hover:rotate-6">
-                SG
-              </span>
+              <img src="/favicon.svg" alt="SWATCH Gallery" className="h-11 w-11 transition-transform group-hover:rotate-6" />
               <span>
                 <span className="block text-xl font-black uppercase">
                   SWATCH Gallery
