@@ -50,7 +50,7 @@ export default function FilterPill({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-50 mt-1.5 max-h-72 w-52 overflow-y-auto rounded-xl border border-black/10 bg-white shadow-xl">
+      <div className="absolute left-0 top-full z-50 mt-1 max-h-72 w-52 overflow-y-auto border border-black/10 bg-white shadow-sm">
           {options.map((option) => (
             <button
               key={option}
@@ -62,7 +62,7 @@ export default function FilterPill({
               className={`block w-full px-4 py-2.5 text-left text-sm font-bold transition ${
                 activeOption === option
                   ? "bg-ink text-bone"
-                  : "text-black/70 hover:bg-bone"
+                  : "text-black/60 hover:bg-bone hover:text-ink"
               }`}
             >
               {option === "All" ? `すべて` : option}
