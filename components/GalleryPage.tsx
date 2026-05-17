@@ -270,8 +270,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             ) : (
               <div
                 className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                
+                
               >
                 <div>
                   <p className="text-2xl font-black">No matches</p>
