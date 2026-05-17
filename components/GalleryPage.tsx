@@ -244,7 +244,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               <div className="masonry-grid">
                 {displayItems.map((item) => (
                   <div
-                    layout
+        
                     className="masonry-item"
                     key={
                       activeCategory === "All" && !selectedSite
