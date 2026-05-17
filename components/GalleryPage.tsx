@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { SlidersHorizontal, Sparkles } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal, Sparkles } from "lucide-react";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
 import TagRail from "@/components/TagRail";
-import { categoryGroups, colors, industries } from "@/lib/constants";
+import { categoryGroups, colors, fonts, industries, tastes } from "@/lib/constants";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryPageProps = {
@@ -20,7 +21,28 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [query, setQuery] = useState("");
   const [activeIndustry, setActiveIndustry] = useState("All");
   const [activeColor, setActiveColor] = useState("All");
+  const [activeTaste, setActiveTaste] = useState("All");
+  const [activeFont, setActiveFont] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [selectedSite, setSelectedSite] = useState<string | null>(null);
+
+  // One card per site for "All" view (KV preferred, otherwise first)
+  const siteCards = useMemo(() => {
+    const map = new Map<string, GalleryItem>();
+    const partsCounts = new Map<string, number>();
+
+    initialItems.forEach((item) => {
+      const key = item.site_name ?? "";
+      partsCounts.set(key, (partsCounts.get(key) ?? 0) + 1);
+      if (!map.has(key)) {
+        map.set(key, item);
+      } else if (item.category === "KV") {
+        map.set(key, item);
+      }
+    });
+
+    return { cards: Array.from(map.values()), counts: partsCounts };
+  }, [initialItems]);
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -31,12 +53,16 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       const industryMatch =
         activeIndustry === "All" || item.industry === activeIndustry;
       const colorMatch = activeColor === "All" || item.color === activeColor;
+      const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
+      const fontMatch = activeFont === "All" || item.font === activeFont;
       const searchable = [
         item.title,
         item.site_name,
         item.category,
         item.industry,
         item.color,
+        item.taste,
+        item.font,
         item.memo
       ]
         .filter(Boolean)
@@ -45,23 +71,61 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       const queryMatch =
         normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
 
-      return categoryMatch && industryMatch && colorMatch && queryMatch;
+      return categoryMatch && industryMatch && colorMatch && tasteMatch && fontMatch && queryMatch;
     });
-  }, [activeCategory, activeColor, activeIndustry, initialItems, query]);
+  }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, initialItems, query]);
+
+  // Items shown in the grid
+  const displayItems = useMemo(() => {
+    if (activeCategory === "All") {
+      if (selectedSite) {
+        return initialItems.filter((item) => item.site_name === selectedSite);
+      }
+      // Filter site cards by other active filters
+      const normalizedQuery = query.trim().toLowerCase();
+      return siteCards.cards.filter((item) => {
+        const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
+        const colorMatch = activeColor === "All" || item.color === activeColor;
+        const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
+        const fontMatch = activeFont === "All" || item.font === activeFont;
+        const searchable = [item.title, item.site_name, item.industry, item.color, item.taste, item.font, item.memo]
+          .filter(Boolean).join(" ").toLowerCase();
+        const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
+        return industryMatch && colorMatch && tasteMatch && fontMatch && queryMatch;
+      });
+    }
+    return filteredItems;
+  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont]);
+
+  const handleCardOpen = (item: GalleryItem) => {
+    if (activeCategory === "All" && !selectedSite) {
+      setSelectedSite(item.site_name);
+    } else {
+      setSelectedItem(item);
+    }
+  };
+
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+    setSelectedSite(null);
+  };
 
   const clearFilters = () => {
     setActiveCategory("All");
     setActiveIndustry("All");
     setActiveColor("All");
+    setActiveTaste("All");
+    setActiveFont("All");
+    setSelectedSite(null);
     setQuery("");
   };
 
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1780px] flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <a className="group flex items-center gap-3" href="/">
+            <Link className="group flex items-center gap-3" href="/">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-ink text-sm font-black text-bone transition-transform group-hover:rotate-6">
                 SG
               </span>
@@ -73,13 +137,13 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   Visual Reference Gallery
                 </span>
               </span>
-            </a>
-            <a
+            </Link>
+            <Link
               className="ml-auto hidden shrink-0 items-center gap-2 rounded-full border border-black/10 bg-white/60 px-4 py-2 text-sm font-bold text-ink shadow-sm transition hover:border-black/30 hover:bg-white md:flex"
               href="/admin"
             >
               ＋ 追加
-            </a>
+            </Link>
             <div className="flex flex-1 items-center gap-3 lg:max-w-3xl">
               <SearchBar value={query} onChange={setQuery} />
               <button
@@ -92,18 +156,34 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               </button>
             </div>
           </div>
-          <div className="grid gap-2 xl:grid-cols-[1fr_1fr]">
+          <div className="grid gap-2 xl:grid-cols-2">
             <TagRail
               label="業界"
               options={["All", ...industries]}
               activeOption={activeIndustry}
               onChange={setActiveIndustry}
+              defaultVisible={5}
             />
             <TagRail
               label="カラー"
               options={["All", ...colors]}
               activeOption={activeColor}
               onChange={setActiveColor}
+              defaultVisible={5}
+            />
+            <TagRail
+              label="テイスト"
+              options={["All", ...tastes]}
+              activeOption={activeTaste}
+              onChange={setActiveTaste}
+              defaultVisible={5}
+            />
+            <TagRail
+              label="フォント"
+              options={["All", ...fonts]}
+              activeOption={activeFont}
+              onChange={setActiveFont}
+              defaultVisible={5}
             />
           </div>
         </div>
@@ -114,7 +194,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           categoryGroups={categoryGroups}
           activeCategory={activeCategory}
           items={initialItems}
-          onChange={setActiveCategory}
+          onChange={handleCategoryChange}
         />
 
         <section className="min-w-0">
@@ -122,31 +202,52 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             <div>
               <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
                 <Sparkles size={13} />
-                {filteredItems.length} references
+                {activeCategory === "All" && !selectedSite
+                  ? `${displayItems.length} sites`
+                  : `${displayItems.length} references`}
               </div>
               <h1 className="max-w-3xl text-4xl font-black leading-[0.96] text-ink sm:text-5xl lg:text-7xl">
-                Find UI patterns by mood, part, and intent.
+                {selectedSite ? selectedSite : "Find UI patterns by mood, part, and intent."}
               </h1>
             </div>
-            <p className="max-w-md text-sm leading-6 text-black/58 md:text-right">
-              パーツ別・業界別・カラー別で絞れるUIギャラリーサイト。
-            </p>
+            {selectedSite ? (
+              <button
+                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
+                type="button"
+                onClick={() => setSelectedSite(null)}
+              >
+                <ArrowLeft size={15} />
+                サイト一覧に戻る
+              </button>
+            ) : (
+              <p className="max-w-md text-sm leading-6 text-black/58 md:text-right">
+                パーツ別・業界別・カラー別で絞れるUIギャラリーサイト。
+              </p>
+            )}
           </div>
 
           <AnimatePresence mode="popLayout">
-            {filteredItems.length > 0 ? (
+            {displayItems.length > 0 ? (
               <motion.div layout className="masonry-grid">
-                {filteredItems.map((item) => (
+                {displayItems.map((item) => (
                   <motion.div
                     layout
                     className="masonry-item"
-                    key={item.id}
+                    key={activeCategory === "All" && !selectedSite ? (item.site_name ?? item.id) : item.id}
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.26, ease: "easeOut" }}
                   >
-                    <GalleryCard item={item} onOpen={setSelectedItem} />
+                    <GalleryCard
+                      item={item}
+                      onOpen={handleCardOpen}
+                      partsCount={
+                        activeCategory === "All" && !selectedSite
+                          ? siteCards.counts.get(item.site_name ?? "") ?? 1
+                          : undefined
+                      }
+                    />
                   </motion.div>
                 ))}
               </motion.div>

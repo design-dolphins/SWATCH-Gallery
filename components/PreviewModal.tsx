@@ -29,6 +29,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
             onClick={(event) => event.stopPropagation()}
           >
             <div className="min-h-0 overflow-auto bg-ink">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="w-full object-contain"
                 src={item.image_url ?? "/mockups/northstar.svg"}
@@ -61,14 +62,16 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {[item.industry, item.color].filter(Boolean).map((badge) => (
-                  <span
-                    className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
-                    key={badge}
-                  >
-                    {badge}
-                  </span>
-                ))}
+                {[item.industry, item.color, item.taste, item.font]
+                  .filter(Boolean)
+                  .map((badge) => (
+                    <span
+                      className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
+                      key={badge}
+                    >
+                      {badge}
+                    </span>
+                  ))}
               </div>
 
               {item.memo ? (

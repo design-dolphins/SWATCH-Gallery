@@ -7,6 +7,8 @@ export type GalleryItem = {
   category: string | null;
   industry: string | null;
   color: string | null;
+  taste: string | null;
+  font: string | null;
   memo: string | null;
   created_at: string | null;
   featured: boolean | null;

@@ -3,11 +3,12 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2 } from "lucide-react";
-import { categoryGroups, colors, industries } from "@/lib/constants";
+import { categoryGroups, colors, fonts, industries, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 const bucketName = "gallery-images";
 const lastGalleryInputKey = "ui-vault-last-gallery-input";
+
 type Status = {
   type: "idle" | "success" | "error";
   message: string;
@@ -19,6 +20,8 @@ export default function AdminGalleryForm() {
   const [category, setCategory] = useState("KV");
   const [industry, setIndustry] = useState(industries[0]);
   const [color, setColor] = useState(colors[0]);
+  const [taste, setTaste] = useState(tastes[0]);
+  const [font, setFont] = useState(fonts[0]);
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -29,32 +32,28 @@ export default function AdminGalleryForm() {
   });
 
   const previewUrl = useMemo(() => {
-    if (!file) {
-      return "";
-    }
-
+    if (!file) return "";
     return URL.createObjectURL(file);
   }, [file]);
 
   useEffect(() => {
     const savedInput = window.localStorage.getItem(lastGalleryInputKey);
-
-    if (!savedInput) {
-      return;
-    }
-
+    if (!savedInput) return;
     try {
       const parsedInput = JSON.parse(savedInput) as {
         siteName?: string;
         siteUrl?: string;
         industry?: string;
         color?: string;
+        taste?: string;
+        font?: string;
       };
-
       setSiteName(parsedInput.siteName ?? "");
       setSiteUrl(parsedInput.siteUrl ?? "");
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
+      setTaste(parsedInput.taste ?? tastes[0]);
+      setFont(parsedInput.font ?? fonts[0]);
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
@@ -85,10 +84,7 @@ export default function AdminGalleryForm() {
 
     const { error: uploadError } = await supabase.storage
       .from(bucketName)
-      .upload(storagePath, file, {
-        cacheControl: "3600",
-        upsert: false
-      });
+      .upload(storagePath, file, { cacheControl: "3600", upsert: false });
 
     if (uploadError) {
       setIsSaving(false);
@@ -111,6 +107,8 @@ export default function AdminGalleryForm() {
       category,
       industry,
       color,
+      taste,
+      font,
       memo,
       featured
     });
@@ -127,12 +125,11 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color })
+      JSON.stringify({ siteName, siteUrl, industry, color, taste, font })
     );
     setStatus({
       type: "success",
-      message:
-        "追加できました。サイト名・サイトURL・業界・カラーは次の登録にも引き継ぎます。"
+      message: "追加できました。サイト名・URL・業界・カラー・テイスト・フォントは次の登録にも引き継ぎます。"
     });
     setCategory("KV");
     setMemo("");
@@ -140,7 +137,7 @@ export default function AdminGalleryForm() {
     setFile(null);
   };
 
- return (
+  return (
     <main className="min-h-screen bg-bone px-4 py-6 text-ink sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between gap-4">
@@ -179,12 +176,7 @@ export default function AdminGalleryForm() {
                 />
               </label>
 
-              <TextInput
-                label="サイト名"
-                value={siteName}
-                onChange={setSiteName}
-              />
-
+              <TextInput label="サイト名" value={siteName} onChange={setSiteName} />
               <TextInput
                 label="サイトURL"
                 value={siteUrl}
@@ -211,7 +203,6 @@ export default function AdminGalleryForm() {
                     ))}
                   </select>
                 </label>
-
                 <SelectInput
                   label="業界"
                   value={industry}
@@ -227,7 +218,21 @@ export default function AdminGalleryForm() {
                   onChange={setColor}
                   options={colors}
                 />
+                <SelectInput
+                  label="テイスト"
+                  value={taste}
+                  onChange={setTaste}
+                  options={tastes}
+                />
+              </div>
 
+              <div className="grid gap-4 sm:grid-cols-2">
+                <SelectInput
+                  label="フォント"
+                  value={font}
+                  onChange={setFont}
+                  options={fonts}
+                />
                 <label className="flex items-center gap-3 self-end rounded-[6px] border border-black/10 bg-bone px-3 py-3">
                   <input
                     checked={featured}
@@ -274,6 +279,7 @@ export default function AdminGalleryForm() {
           <aside className="border border-black/10 bg-white p-4 shadow-sm">
             <div className="grid min-h-[360px] place-items-center overflow-hidden bg-bone">
               {previewUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   className="h-full max-h-[620px] w-full object-contain"
                   src={previewUrl}

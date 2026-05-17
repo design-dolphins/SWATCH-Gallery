@@ -47,7 +47,7 @@ export const categoryGroups = [
       "インフォグラフィック/図解",
       "CTA",
       "数字で見る",
-      "資料・PDF",
+      "資料・PDF"
     ]
   },
   {
@@ -118,4 +118,25 @@ export const colors = [
   "グレー",
   "白",
   "カラフル"
+];
+
+export const tastes = [
+  "simple",
+  "monotone",
+  "pop",
+  "cute",
+  "stylish",
+  "young",
+  "rétro",
+  "future"
+];
+
+export const fonts = [
+  "ゴシック体",
+  "明朝体",
+  "手書き風",
+  "欧文セリフ",
+  "欧文サンセリフ",
+  "ディスプレイ",
+  "モノスペース"
 ];
