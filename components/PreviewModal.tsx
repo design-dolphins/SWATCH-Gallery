@@ -69,17 +69,17 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                     {badge as string}
                   </span>
                 ))}
-                {item.font ? (
-                  <>
-                    <p className="mt-3 text-[10px] font-black uppercase text-black/35">Fonts</p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.font.split(",").map(f => f.trim()).filter(Boolean).map((f) => (
-                        <span className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink" key={f}>{f}</span>
-                      ))}
-                    </div>
-                  </>
-                ) : null}
               </div>
+              {item.font ? (
+                <div className="mt-3">
+                  <p className="mb-2 text-[10px] font-black uppercase text-black/35">Fonts</p>
+                  <div className="flex flex-wrap gap-2">
+                    {item.font.split(",").map(f => f.trim()).filter(Boolean).map((f) => (
+                      <span className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink" key={f}>{f}</span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               {item.memo ? (
                 <p className="mt-6 border-y border-black/10 py-5 text-sm leading-7 text-black/68">
