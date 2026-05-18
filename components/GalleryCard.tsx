@@ -16,6 +16,8 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
   const [isCut, setIsCut] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
 
+  const isSmartphone = ["モバイルファースト", "スマホメニュー", "スマホKV"].includes(item.category ?? "");
+
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
@@ -23,6 +25,8 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
     // 縦長（スマホ）はカットしない・横長で65%超えるものだけカット
     setIsCut(ratio > 0.65 && ratio <= 1);
   };
+
+  const showFrame = isSmartphone && isPortrait;
 
   return (
     <motion.article
@@ -36,9 +40,9 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
         {/* スマホモック用の外枠 */}
-        <div className={isPortrait ? "p-2 bg-transparent" : ""}>
+        <div className={showFrame ? "p-2 bg-transparent" : ""}>
           <div
-            className={`relative w-full overflow-hidden bg-transparent ${isPortrait ? "rounded-[32px] border-4 border-ink" : ""}`}
+            className={`relative w-full overflow-hidden bg-transparent ${showFrame ? "rounded-[32px] border-4 border-ink" : ""}`}
             style={isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
