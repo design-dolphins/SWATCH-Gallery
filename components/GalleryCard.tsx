@@ -32,9 +32,9 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
             alt={item.site_name ?? "Gallery image"}
           />
           {isSiteMode && (
-            <div className="absolute inset-0 flex items-end justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
-              <span className="grid h-[20px] w-[20px] shrink-0 place-items-center rounded-full bg-acid text-white">
-                <Layers size={11} />
+            <div className="absolute inset-0 flex items-start justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
+              <span className="grid h-[36px] w-[36px] shrink-0 place-items-center rounded-full bg-acid text-white">
+                <Layers size={18} />
               </span>
             </div>
           )}

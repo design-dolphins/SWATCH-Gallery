@@ -259,7 +259,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       {/* FAB */}
       <Link
         href="/admin"
-        className="fixed bottom-6 right-6 z-40 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-ink text-bone shadow-md transition hover:bg-black text-lg leading-none"
+        className="fixed bottom-6 right-6 z-40 flex h-[36px] w-[36px] items-center justify-center rounded-full bg-ink text-bone shadow-md transition hover:bg-black text-xl leading-none"
         aria-label="追加"
       >
         ＋
