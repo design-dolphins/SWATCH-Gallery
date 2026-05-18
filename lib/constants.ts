@@ -64,7 +64,7 @@ export const categoryGroups = [
   },
   {
     label: "スマホ",
-    items: ["モバイルファースト", "スマホメニュー"]
+    items: ["モバイルファースト", "スマホメニュー", "スマホKV"]
   },
   {
     label: "ポートフォリオ",
