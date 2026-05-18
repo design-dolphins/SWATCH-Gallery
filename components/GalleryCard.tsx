@@ -19,13 +19,14 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
-    setIsCut(ratio > 0.65);
     setIsPortrait(ratio > 1);
+    // 縦長（スマホ）はカットしない・横長で65%超えるものだけカット
+    setIsCut(ratio > 0.65 && ratio <= 1);
   };
 
   return (
     <motion.article
-      className="group overflow-hidden"
+      className="group"
       whileHover={{ y: -4 }}
     >
       <button
@@ -37,7 +38,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         {/* スマホモック用の外枠 */}
         <div className={isPortrait ? "p-2 bg-transparent" : ""}>
           <div
-            className={`relative w-full overflow-hidden bg-transparent ${isPortrait ? "rounded-[20px] border-2 border-ink" : ""}`}
+            className={`relative w-full overflow-hidden bg-transparent ${isPortrait ? "rounded-[20px] border-4 border-ink" : ""}`}
             style={isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
