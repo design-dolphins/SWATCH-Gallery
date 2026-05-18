@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, SlidersHorizontal, Sparkles } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
@@ -27,84 +26,65 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [selectedSite, setSelectedSite] = useState<string | null>(null);
 
-  // フォントの選択肢をデータから動的に生成
+  // フォント名の選択肢をデータから動的生成（カンマ区切りを分割）
   const fontOptions = useMemo(() => {
     const set = new Set<string>();
     initialItems.forEach((item) => {
-      if (item.font) { item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); }); }
+      if (item.font) {
+        item.font.split(",").map(f => f.trim()).forEach(f => { if (f) set.add(f); });
+      }
     });
     return ["All", ...Array.from(set).sort()];
   }, [initialItems]);
 
-  // サイト別カード（Allビュー用）
+  // サイト別カード（Allビュー用・KVを優先）
   const siteCards = useMemo(() => {
     const map = new Map<string, GalleryItem>();
-    const partsCounts = new Map<string, number>();
-
+    const counts = new Map<string, number>();
     initialItems.forEach((item) => {
       const key = item.site_name ?? "";
-      partsCounts.set(key, (partsCounts.get(key) ?? 0) + 1);
+      counts.set(key, (counts.get(key) ?? 0) + 1);
       if (!map.has(key)) {
         map.set(key, item);
       } else if (item.category === "KV") {
         map.set(key, item);
       }
     });
-
-    return { cards: Array.from(map.values()), counts: partsCounts };
+    return { cards: Array.from(map.values()), counts };
   }, [initialItems]);
 
+  // フィルター関数（共通）
+  const applyFilters = (item: GalleryItem, normalizedQuery: string) => {
+    const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
+    const colorMatch = activeColor === "All" || item.color === activeColor;
+    const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
+    const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
+    const fontTypeMatch = activeFontType === "All" || (item.font_type?.split(",").map(f => f.trim()).includes(activeFontType) ?? false);
+    const searchable = [item.title, item.site_name, item.category, item.industry, item.color, item.taste, item.font, item.memo]
+      .filter(Boolean).join(" ").toLowerCase();
+    const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
+    return industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
+  };
+
   const filteredItems = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
+    const q = query.trim().toLowerCase();
     return initialItems.filter((item) => {
-      const categoryMatch =
-        activeCategory === "All" || item.category === activeCategory;
-      const industryMatch =
-        activeIndustry === "All" || item.industry === activeIndustry;
-      const colorMatch = activeColor === "All" || item.color === activeColor;
-      const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-      const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
-      const fontTypeMatch = activeFontType === "All" || (item.font_type?.split(",").map(f => f.trim()).some(f => f === activeFontType) ?? false);
-      const searchable = [
-        item.title,
-        item.site_name,
-        item.category,
-        item.industry,
-        item.color,
-        item.taste,
-        item.font,
-        item.memo
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      const queryMatch =
-        normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
-
-      return categoryMatch && industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
+      const categoryMatch = activeCategory === "All" || item.category === activeCategory;
+      return categoryMatch && applyFilters(item, q);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, activeFontType, initialItems, query]);
 
   const displayItems = useMemo(() => {
+    const q = query.trim().toLowerCase();
     if (activeCategory === "All") {
       if (selectedSite) {
         return initialItems.filter((item) => item.site_name === selectedSite);
       }
-      const normalizedQuery = query.trim().toLowerCase();
-      return siteCards.cards.filter((item) => {
-        const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
-        const colorMatch = activeColor === "All" || item.color === activeColor;
-        const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
-        const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
-        const fontTypeMatch = activeFontType === "All" || (item.font_type?.split(",").map(f => f.trim()).some(f => f === activeFontType) ?? false);
-        const searchable = [item.title, item.site_name, item.industry, item.color, item.taste, item.font, item.memo]
-          .filter(Boolean).join(" ").toLowerCase();
-        const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
-        return industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
-      });
+      return siteCards.cards.filter((item) => applyFilters(item, q));
     }
     return filteredItems;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont, activeFontType]);
 
   const handleCardOpen = (item: GalleryItem) => {
@@ -144,7 +124,6 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <Link className="group flex items-center gap-3" href="/">
-
               <span>
                 <span className="block text-xl font-black uppercase">
                   SWATCH Gallery
@@ -250,57 +229,46 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             )}
           </div>
 
-          <AnimatePresence mode="popLayout">
-            {displayItems.length > 0 ? (
-              <motion.div layout className="masonry-grid">
-                {displayItems.map((item) => (
-                  <motion.div
-                    layout
-                    className="masonry-item"
-                    key={
+          {displayItems.length > 0 ? (
+            <div className="masonry-grid">
+              {displayItems.map((item) => (
+                <div
+                  className="masonry-item"
+                  key={
+                    activeCategory === "All" && !selectedSite
+                      ? (item.site_name ?? item.id)
+                      : item.id
+                  }
+                >
+                  <GalleryCard
+                    item={item}
+                    onOpen={handleCardOpen}
+                    partsCount={
                       activeCategory === "All" && !selectedSite
-                        ? (item.site_name ?? item.id)
-                        : item.id
+                        ? siteCards.counts.get(item.site_name ?? "") ?? 1
+                        : undefined
                     }
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.26, ease: "easeOut" }}
-                  >
-                    <GalleryCard
-                      item={item}
-                      onOpen={handleCardOpen}
-                      partsCount={
-                        activeCategory === "All" && !selectedSite
-                          ? siteCards.counts.get(item.site_name ?? "") ?? 1
-                          : undefined
-                      }
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <div>
-                  <p className="text-2xl font-black">No matches</p>
-                  <p className="mt-2 text-sm text-black/55">
-                    検索語・カテゴリ・業界・カラーを少しゆるめると見つかります。
-                  </p>
-                  <button
-                    className="mt-5 rounded-full bg-ink px-5 py-3 text-sm font-bold text-bone transition hover:bg-black"
-                    type="button"
-                    onClick={clearFilters}
-                  >
-                    Clear filters
-                  </button>
+                  />
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              ))}
+            </div>
+          ) : (
+            <div className="grid min-h-[380px] place-items-center border border-dashed border-black/20 bg-white/35 p-10 text-center">
+              <div>
+                <p className="text-2xl font-black">No matches</p>
+                <p className="mt-2 text-sm text-black/55">
+                  検索語・カテゴリ・業界・カラーを少しゆるめると見つかります。
+                </p>
+                <button
+                  className="mt-5 rounded-full bg-ink px-5 py-3 text-sm font-bold text-bone transition hover:bg-black"
+                  type="button"
+                  onClick={clearFilters}
+                >
+                  Clear filters
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       </div>
 
