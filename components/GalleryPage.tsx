@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, SlidersHorizontal, Sparkles } from "lucide-react";
+import { ArrowLeft, LayoutGrid, LayoutList, SlidersHorizontal, Sparkles } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -25,6 +25,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [selectedSite, setSelectedSite] = useState<string | null>(null);
+  const [columns, setColumns] = useState<1 | 3>(3);
 
   // フォント名の選択肢をデータから動的生成（カンマ区切りを分割）
   const fontOptions = useMemo(() => {
@@ -202,20 +203,38 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 ? `${displayItems.length} sites`
                 : `${displayItems.length} references`}
             </div>
-            {selectedSite && (
-              <button
-                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
-                type="button"
-                onClick={() => setSelectedSite(null)}
-              >
-                <ArrowLeft size={15} />
-                サイト一覧に戻る
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {selectedSite && (
+                <button
+                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
+                  type="button"
+                  onClick={() => setSelectedSite(null)}
+                >
+                  <ArrowLeft size={15} />
+                  サイト一覧に戻る
+                </button>
+              )}
+              <div className="flex overflow-hidden rounded-full border border-black/10">
+                <button
+                  type="button"
+                  onClick={() => setColumns(3)}
+                  className={`flex items-center px-3 py-2 transition ${columns === 3 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
+                >
+                  <LayoutGrid size={14} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setColumns(1)}
+                  className={`flex items-center px-3 py-2 transition ${columns === 1 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
+                >
+                  <LayoutList size={14} />
+                </button>
+              </div>
+            </div>
           </div>
 
           {displayItems.length > 0 ? (
-            <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`grid gap-x-4 gap-y-8 ${columns === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
               {displayItems.map((item) => (
                 <div
                   key={
