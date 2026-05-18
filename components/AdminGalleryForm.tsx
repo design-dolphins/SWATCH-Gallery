@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, tasteLabels, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -238,6 +238,7 @@ export default function AdminGalleryForm() {
                   value={taste}
                   onChange={setTaste}
                   options={tastes}
+                  labels={tasteLabels}
                 />
               </div>
 
@@ -368,12 +369,14 @@ function SelectInput({
   label,
   value,
   onChange,
-  options
+  options,
+  labels
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: string[];
+  labels?: Record<string, string>;
 }) {
   return (
     <label className="grid gap-2">
@@ -385,7 +388,7 @@ function SelectInput({
       >
         {options.map((option) => (
           <option key={option} value={option}>
-            {option}
+            {labels ? `${labels[option] ?? option} — ${option}` : option}
           </option>
         ))}
       </select>

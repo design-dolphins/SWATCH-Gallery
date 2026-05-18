@@ -128,7 +128,12 @@ export const tastes = [
   "stylish",
   "young",
   "rétro",
-  "future"
+  "future",
+  "luxury",
+  "natural",
+  "bold",
+  "elegant",
+  "traditional"
 ];
 
 export const fontTypes = [
@@ -138,3 +143,19 @@ export const fontTypes = [
   "欧文サンセリフ",
   "手書き"
 ];
+
+export const tasteLabels: Record<string, string> = {
+  simple: "シンプル",
+  monotone: "モノトーン",
+  pop: "ポップ",
+  cute: "かわいい",
+  stylish: "スタイリッシュ",
+  young: "若い",
+  "rétro": "レトロ",
+  future: "未来的",
+  luxury: "高級感",
+  natural: "ナチュラル",
+  bold: "力強い",
+  elegant: "上品",
+  traditional: "和・伝統",
+};
