@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, LayoutGrid, LayoutList, SlidersHorizontal, Sparkles } from "lucide-react";
+import { ArrowLeft, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -16,6 +17,8 @@ type GalleryPageProps = {
 };
 
 export default function GalleryPage({ initialItems }: GalleryPageProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [activeIndustry, setActiveIndustry] = useState("All");
@@ -24,8 +27,19 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFont, setActiveFont] = useState("All");
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-  const [selectedSite, setSelectedSite] = useState<string | null>(null);
   const [columns, setColumns] = useState<1 | 3>(3);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // URLのsiteパラメータをselectedSiteとして使用
+  const selectedSite = searchParams.get("site");
+
+  const setSelectedSite = (site: string | null) => {
+    if (site) {
+      router.push(`?site=${encodeURIComponent(site)}`);
+    } else {
+      router.back();
+    }
+  };
 
   // フォント名の選択肢をデータから動的生成（カンマ区切りを分割）
   const fontOptions = useMemo(() => {
@@ -98,7 +112,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   const handleCategoryChange = (cat: string) => {
     setActiveCategory(cat);
-    setSelectedSite(null);
+    if (selectedSite) router.push("/");
   };
 
   const clearFilters = () => {
@@ -108,7 +122,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     setActiveTaste("All");
     setActiveFont("All");
     setActiveFontType("All");
-    setSelectedSite(null);
+    if (selectedSite) router.push("/");
     setQuery("");
   };
 
@@ -134,10 +148,18 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </span>
               </span>
             </Link>
+            {/* モバイル: ハンバーガーボタン */}
+            <button
+              type="button"
+              className="ml-auto flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
+              onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
+            >
+              {mobileFilterOpen ? <X size={15} /> : <Menu size={15} />}
+            </button>
           </div>
 
-          {/* フィルターバー */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* フィルターバー：PCは常時表示、SPはトグル */}
+          <div className={`flex flex-wrap items-center gap-2 ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
@@ -208,13 +230,13 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 <button
                   className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
                   type="button"
-                  onClick={() => setSelectedSite(null)}
+                  onClick={() => router.back()}
                 >
                   <ArrowLeft size={15} />
                   サイト一覧に戻る
                 </button>
               )}
-              <div className="flex overflow-hidden rounded-full border border-black/10">
+              <div className="hidden overflow-hidden rounded-full border border-black/10 sm:flex">
                 <button
                   type="button"
                   onClick={() => setColumns(3)}
