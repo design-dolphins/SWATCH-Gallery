@@ -99,6 +99,7 @@ export default function Sidebar({
                 {group.items.map((category) => {
                   const isActive = category === activeCategory;
                   const count = counts.get(category) ?? 0;
+                  if (count === 0) return null;
                   return (
                     <button
                       key={category}
@@ -141,15 +142,19 @@ export default function Sidebar({
                 {group.label}
               </p>
               <div className="grid gap-1">
-                {group.items.map((category) => (
-                  <CategoryButton
-                    category={category}
-                    count={counts.get(category) ?? 0}
-                    isActive={category === activeCategory}
-                    key={category}
-                    onChange={onChange}
-                  />
-                ))}
+                {group.items.map((category) => {
+                  const count = counts.get(category) ?? 0;
+                  if (count === 0) return null;
+                  return (
+                    <CategoryButton
+                      category={category}
+                      count={count}
+                      isActive={category === activeCategory}
+                      key={category}
+                      onChange={onChange}
+                    />
+                  );
+                })}
               </div>
             </div>
           ))}
