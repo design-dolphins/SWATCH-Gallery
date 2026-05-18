@@ -7,9 +7,10 @@ type GalleryCardProps = {
   item: GalleryItem;
   onOpen: (item: GalleryItem) => void;
   partsCount?: number;
+  singleColumn?: boolean;
 };
 
-export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardProps) {
+export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
 
   return (
@@ -24,10 +25,10 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         onClick={() => onOpen(item)}
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-transparent">
+        <div className={`relative overflow-hidden bg-transparent ${singleColumn ? "" : "aspect-[16/10]"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="absolute inset-0 h-full w-full object-contain object-top transition duration-500 group-hover:scale-[1.02]"
+            className={`w-full transition duration-500 group-hover:scale-[1.02] ${singleColumn ? "h-auto object-contain" : "absolute inset-0 h-full object-contain object-top"}`}
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />

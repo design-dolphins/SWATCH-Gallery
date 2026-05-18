@@ -246,6 +246,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   <GalleryCard
                     item={item}
                     onOpen={handleCardOpen}
+                    singleColumn={columns === 1}
                     partsCount={
                       activeCategory === "All" && !selectedSite
                         ? siteCards.counts.get(item.site_name ?? "") ?? 1
