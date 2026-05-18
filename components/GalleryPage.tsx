@@ -177,7 +177,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 Reset
               </button>
             )}
-            <div className="ml-auto w-40 shrink-0">
+            <div className="ml-auto w-60 shrink-0">
               <SearchBar value={query} onChange={setQuery} />
             </div>
           </div>

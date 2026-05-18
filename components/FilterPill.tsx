@@ -38,8 +38,8 @@ export default function FilterPill({
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition whitespace-nowrap ${
           isActive
-            ? "border-ink bg-ink text-bone"
-            : "border-black/10 bg-white/60 text-ink hover:border-black/30 hover:bg-white"
+            ? "border-acid bg-acid text-white"
+            : "border-black/10 bg-white/60 text-ink hover:border-acid/40 hover:bg-acid/10 hover:text-ink"
         }`}
       >
         {isActive ? `${label}: ${activeOption}` : label}
@@ -61,8 +61,8 @@ export default function FilterPill({
               }}
               className={`block w-full px-4 py-2.5 text-left text-sm font-bold transition ${
                 activeOption === option
-                  ? "bg-ink text-bone"
-                  : "text-black/60 hover:bg-bone hover:text-ink"
+                  ? "bg-acid text-white"
+                  : "text-black/60 hover:bg-acid/10 hover:text-ink"
               }`}
             >
               {option === "All" ? `すべて` : option}

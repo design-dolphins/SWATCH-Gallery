@@ -78,15 +78,15 @@ function CategoryButton({
     <button
       className={`flex min-w-max items-center justify-between gap-3 rounded-full px-4 py-2.5 text-sm font-bold transition lg:w-full lg:rounded-[6px] lg:px-3 lg:py-2 lg:text-left ${
         isActive
-          ? "bg-ink text-bone"
-          : "bg-white/44 text-black/56 hover:bg-white hover:text-ink"
+          ? "bg-acid text-white"
+          : "bg-white/44 text-black/56 hover:bg-acid/10 hover:text-ink"
       }`}
       type="button"
       onClick={() => onChange(category)}
     >
       <span className="max-w-[180px] truncate">{category}</span>
       <span
-        className={`text-xs ${isActive ? "text-bone/62" : "text-black/32"}`}
+        className={`text-xs ${isActive ? "text-white/62" : "text-black/32"}`}
       >
         {count}
       </span>
