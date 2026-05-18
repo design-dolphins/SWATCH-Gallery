@@ -42,7 +42,7 @@ export default function Sidebar({
         />
         {categoryGroups.map((group) => (
           <div className="contents lg:block" key={group.label}>
-            <p className="hidden px-2 pb-2 text-[11px] font-black uppercase text-black/34 lg:block">
+            <p className="hidden px-2 pb-2 text-[11px] font-black uppercase text-acid lg:block">
               {group.label}
             </p>
             <div className="contents lg:grid lg:gap-1">
@@ -78,7 +78,7 @@ function CategoryButton({
     <button
       className={`flex min-w-max items-center justify-between gap-3 rounded-full px-4 py-2.5 text-sm font-bold transition lg:w-full lg:rounded-[6px] lg:px-3 lg:py-2 lg:text-left ${
         isActive
-          ? "bg-acid text-white"
+          ? "bg-ink text-bone"
           : "bg-white/44 text-black/56 hover:bg-acid/10 hover:text-ink"
       }`}
       type="button"
@@ -86,7 +86,7 @@ function CategoryButton({
     >
       <span className="max-w-[180px] truncate">{category}</span>
       <span
-        className={`text-xs ${isActive ? "text-white/62" : "text-black/32"}`}
+        className={`text-xs ${isActive ? "text-bone/62" : "text-black/32"}`}
       >
         {count}
       </span>

@@ -24,17 +24,17 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         onClick={() => onOpen(item)}
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
-        <div className="relative overflow-hidden bg-ink">
+        <div className="relative aspect-[16/10] overflow-hidden bg-ink">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.035]"
+            className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.035]"
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />
           {isSiteMode && (
             <div className="absolute inset-0 flex items-end justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-acid text-ink">
-                <Layers size={16} />
+              <span className="grid h-[20px] w-[20px] shrink-0 place-items-center rounded-full bg-acid text-white">
+                <Layers size={11} />
               </span>
             </div>
           )}
@@ -48,7 +48,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
             href={item.site_url}
             target="_blank"
             rel="noreferrer"
-            className="block truncate text-sm font-black decoration-[#d7ff5f] decoration-2 underline-offset-2 hover:underline"
+            className="block truncate text-sm font-black decoration-acid decoration-2 underline-offset-2 hover:underline"
           >
             {item.site_name ?? "Untitled"}
           </a>

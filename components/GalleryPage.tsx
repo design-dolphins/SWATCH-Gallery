@@ -193,21 +193,16 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         />
 
         <section className="min-w-0">
-          <div className="mb-5 flex flex-col gap-3 border-b border-black/10 pb-5 md:flex-row md:items-end md:justify-between">
-            <div>
-              <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
-                <Sparkles size={13} />
-                {activeCategory === "All" && !selectedSite
-                  ? `${displayItems.length} sites`
-                  : `${displayItems.length} references`}
-              </div>
-              <h1 className="max-w-3xl text-4xl font-black leading-[0.96] text-ink sm:text-5xl lg:text-7xl">
-                {selectedSite
-                  ? selectedSite
-                  : "Find UI patterns by mood, part, and intent."}
-              </h1>
+          <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
+            <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
+              <Sparkles size={13} />
+              {selectedSite
+                ? selectedSite
+                : activeCategory === "All"
+                ? `${displayItems.length} sites`
+                : `${displayItems.length} references`}
             </div>
-            {selectedSite ? (
+            {selectedSite && (
               <button
                 className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
                 type="button"
@@ -216,18 +211,13 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 <ArrowLeft size={15} />
                 サイト一覧に戻る
               </button>
-            ) : (
-              <p className="max-w-md text-sm leading-6 text-black/58 md:text-right">
-                パーツ別・業界別・カラー別で絞れるUIギャラリーサイト。
-              </p>
             )}
           </div>
 
           {displayItems.length > 0 ? (
-            <div className="masonry-grid">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {displayItems.map((item) => (
                 <div
-                  className="masonry-item"
                   key={
                     activeCategory === "All" && !selectedSite
                       ? (item.site_name ?? item.id)
