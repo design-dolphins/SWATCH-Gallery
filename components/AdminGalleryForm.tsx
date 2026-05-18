@@ -105,7 +105,6 @@ export default function AdminGalleryForm() {
       .getPublicUrl(storagePath);
 
     const { error: insertError } = await supabase.from("galleries").insert({
-      title: null,
       site_name: siteName,
       site_url: siteUrl,
       image_url: publicUrlData.publicUrl,
