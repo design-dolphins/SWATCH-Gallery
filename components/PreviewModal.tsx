@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
@@ -10,6 +11,13 @@ type PreviewModalProps = {
 };
 
 export default function PreviewModal({ item, onClose }: PreviewModalProps) {
+  const [isPortrait, setIsPortrait] = useState(false);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    setIsPortrait(img.naturalHeight / img.naturalWidth > 1);
+  };
+
   return (
     <AnimatePresence>
       {item ? (
@@ -28,12 +36,13 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
             transition={{ duration: 0.22 }}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="max-h-[92vh] overflow-y-auto bg-bone">
+            <div className={`overflow-y-auto bg-bone ${isPortrait ? "flex items-center justify-center" : ""}`} style={{ maxHeight: "92vh" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                className="block h-auto w-full"
+                className={isPortrait ? "h-full w-auto max-h-[92vh]" : "block h-auto w-full"}
                 src={item.image_url ?? "/mockups/northstar.svg"}
                 alt={item.site_name ?? "Preview image"}
+                onLoad={handleImageLoad}
               />
             </div>
 
