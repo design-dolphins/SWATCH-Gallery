@@ -30,7 +30,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
 
   return (
     <motion.article
-      className="group"
+      className={`group ${showFrame ? "mx-auto w-full max-w-[260px]" : ""}`}
       whileHover={{ y: -4 }}
     >
       <button
