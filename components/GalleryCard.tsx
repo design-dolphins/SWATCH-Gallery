@@ -38,7 +38,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         {/* スマホモック用の外枠 */}
         <div className={isPortrait ? "p-2 bg-transparent" : ""}>
           <div
-            className={`relative w-full overflow-hidden bg-transparent ${isPortrait ? "rounded-[32px] border-8 border-ink" : ""}`}
+            className={`relative w-full overflow-hidden bg-transparent ${isPortrait ? "rounded-[32px] border-4 border-ink" : ""}`}
             style={isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
