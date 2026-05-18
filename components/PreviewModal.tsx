@@ -43,7 +43,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                   <p className="mb-2 text-xs font-black uppercase text-black/42">
                     {item.category ?? "Reference"}
                   </p>
-                  <h2 className="text-[28px] font-black leading-[1.3]">
+                  <h2 className="text-[24px] font-black leading-[1.25]">
                     {item.site_name ?? "Untitled"}
                   </h2>
                 </div>
@@ -57,19 +57,21 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                 </button>
               </div>
 
+              {item.industry && (
+                <p className="mt-2 mb-3 text-xs font-bold text-black/50">{item.industry}</p>
+              )}
               <div className="flex flex-wrap gap-2">
-                {[
-                  ...[item.industry, item.color, item.taste].filter(Boolean) as string[],
-                  ...(item.font_type ? item.font_type.split(",").map(f => f.trim()).filter(Boolean) : []),
-                  ...(item.font ? item.font.split(",").map(f => f.trim()).filter(Boolean) : [])
-                ].map((badge) => (
+                {[item.color, item.taste].filter(Boolean).map((badge) => (
                   <span
                     className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
                     key={badge}
                   >
-                    {badge}
+                    {badge as string}
                   </span>
                 ))}
+                {item.font ? item.font.split(",").map(f => f.trim()).filter(Boolean).map((f) => (
+                  <span className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink" key={f}>{f}</span>
+                )) : null}
               </div>
 
               {item.memo ? (
@@ -90,14 +92,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                     <ExternalLink size={16} />
                   </a>
                 ) : null}
-                <div className="rounded-[6px] border border-black/10 bg-white/55 p-4">
-                  <p className="text-xs font-black uppercase text-black/38">
-                    Related UI
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-black/62">
-                    同じカテゴリ・業界・カラーで絞り込むと、関連UIをすぐ比較できます。
-                  </p>
-                </div>
+
               </div>
             </aside>
           </motion.div>
