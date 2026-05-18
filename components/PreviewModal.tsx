@@ -38,7 +38,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
             </div>
 
             <aside className="flex max-h-[92vh] flex-col overflow-auto border-l border-black/10 p-5 sm:p-6">
-              <div className="mb-6 flex items-start justify-between gap-4">
+              <div className="mb-3 flex items-start justify-between gap-4">
                 <div>
                   <p className="mb-2 text-xs font-black uppercase text-black/42">
                     {item.category ?? "Reference"}
@@ -58,9 +58,11 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
               </div>
 
               {item.industry && (
-                <p className="mt-2 mb-3 text-xs font-bold text-black/50">{item.industry}</p>
+                <p className="mb-3 text-xs font-bold text-black/50">{item.industry}</p>
               )}
-              <div className="flex flex-wrap gap-2">
+              <div>
+                <p className="mb-2 text-[10px] font-black uppercase text-black/35">Taste</p>
+                <div className="flex flex-wrap gap-2">
                 {[item.color, item.taste].filter(Boolean).map((badge) => (
                   <span
                     className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
@@ -69,6 +71,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                     {badge as string}
                   </span>
                 ))}
+              </div>
               </div>
               {item.font ? (
                 <div className="mt-3">
