@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -27,7 +27,6 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFont, setActiveFont] = useState("All");
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-  const [columns, setColumns] = useState<1 | 3>(3);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   // URLのsiteパラメータをselectedSiteとして使用
@@ -236,27 +235,11 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   サイト一覧に戻る
                 </button>
               )}
-              <div className="hidden overflow-hidden rounded-full border border-black/10 sm:flex">
-                <button
-                  type="button"
-                  onClick={() => setColumns(3)}
-                  className={`flex items-center px-3 py-2 transition ${columns === 3 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
-                >
-                  <LayoutGrid size={14} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setColumns(1)}
-                  className={`flex items-center px-3 py-2 transition ${columns === 1 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
-                >
-                  <LayoutList size={14} />
-                </button>
-              </div>
             </div>
           </div>
 
           {displayItems.length > 0 ? (
-            <div className={`grid gap-x-4 gap-y-8 ${columns === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"}`}>
+            <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
               {displayItems.map((item) => (
                 <div
                   key={
@@ -268,7 +251,6 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   <GalleryCard
                     item={item}
                     onOpen={handleCardOpen}
-                    singleColumn={columns === 1}
                     partsCount={
                       activeCategory === "All" && !selectedSite
                         ? siteCards.counts.get(item.site_name ?? "") ?? 1
