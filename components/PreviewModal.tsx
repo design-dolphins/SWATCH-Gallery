@@ -58,7 +58,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
               </div>
 
               {item.industry && (
-                <p className="mb-3 text-xs font-bold text-black/50">{item.industry}</p>
+                <p className="mb-6 text-xs font-bold text-black/50">{item.industry}</p>
               )}
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase text-black/35">Taste</p>
