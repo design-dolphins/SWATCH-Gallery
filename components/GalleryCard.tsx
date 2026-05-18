@@ -24,10 +24,10 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         onClick={() => onOpen(item)}
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-white">
+        <div className="relative aspect-[16/10] overflow-hidden bg-transparent">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="absolute inset-0 h-full w-full object-contain transition duration-500 group-hover:scale-[1.02]"
+            className="absolute inset-0 h-full w-full object-contain object-top transition duration-500 group-hover:scale-[1.02]"
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />
