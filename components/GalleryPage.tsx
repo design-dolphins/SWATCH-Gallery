@@ -215,27 +215,35 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         />
 
         <section className="min-w-0">
-          <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
-            <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
-              <Sparkles size={13} />
-              {selectedSite
-                ? selectedSite
-                : activeCategory === "All"
-                ? `${displayItems.length} sites`
-                : `${displayItems.length} references`}
-            </div>
-            <div className="flex items-center gap-2">
-              {selectedSite && (
+          <div className="mb-5 flex flex-col gap-3 border-b border-black/10 pb-5">
+            {selectedSite ? (
+              <>
+                <a
+                  href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
+                >
+                  <Sparkles size={13} />
+                  {selectedSite}
+                </a>
                 <button
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
+                  className="inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
                   type="button"
                   onClick={() => router.back()}
                 >
                   <ArrowLeft size={15} />
                   サイト一覧に戻る
                 </button>
-              )}
-            </div>
+              </>
+            ) : (
+              <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
+                <Sparkles size={13} />
+                {activeCategory === "All"
+                  ? `${displayItems.length} sites`
+                  : `${displayItems.length} references`}
+              </div>
+            )}
           </div>
 
           {displayItems.length > 0 ? (
