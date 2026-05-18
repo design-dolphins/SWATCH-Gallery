@@ -122,7 +122,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center">
             <Link className="group flex items-center gap-3" href="/">
               <span>
                 <span className="block text-xl font-black uppercase">
@@ -133,15 +133,6 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </span>
               </span>
             </Link>
-            <Link
-              className="ml-auto hidden shrink-0 items-center gap-2 rounded-full border border-black/10 bg-white/60 px-4 py-2 text-sm font-bold text-ink shadow-sm transition hover:border-black/30 hover:bg-white md:flex"
-              href="/admin"
-            >
-              ＋ 追加
-            </Link>
-            <div className="flex flex-1 items-center gap-3 lg:max-w-3xl">
-              <SearchBar value={query} onChange={setQuery} />
-            </div>
           </div>
 
           {/* フィルターバー */}
@@ -186,6 +177,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 Reset
               </button>
             )}
+            <div className="ml-auto w-40 shrink-0">
+              <SearchBar value={query} onChange={setQuery} />
+            </div>
           </div>
         </div>
       </header>
@@ -271,6 +265,15 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           )}
         </section>
       </div>
+
+      {/* FAB */}
+      <Link
+        href="/admin"
+        className="fixed bottom-6 right-6 z-40 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-ink text-bone shadow-md transition hover:bg-black text-lg leading-none"
+        aria-label="追加"
+      >
+        ＋
+      </Link>
 
       <PreviewModal item={selectedItem} onClose={() => setSelectedItem(null)} />
     </main>

@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         ink: "#101010",
-        bone: "#f7f3ec",
+        bone: "#F7F4F3",
         mist: "#e8ecef",
-        acid: "#d7ff5f",
+        acid: "#FF7E21",
         coral: "#ff6b57"
       },
       boxShadow: {

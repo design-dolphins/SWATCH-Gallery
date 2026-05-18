@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: #f7f3ec;
+  --background: #F7F4F3;
   --foreground: #101010;
 }
 
@@ -18,8 +18,8 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 20% 0%, rgba(215, 255, 95, 0.18), transparent 32rem),
-    linear-gradient(180deg, #f7f3ec 0%, #edf0ec 50%, #f7f3ec 100%);
+    radial-gradient(circle at 20% 0%, rgba(255, 126, 33, 0.15), transparent 32rem),
+    linear-gradient(180deg, #F7F4F3 0%, #ede9e8 50%, #F7F4F3 100%);
   color: var(--foreground);
 }
 
@@ -29,8 +29,8 @@ input {
 }
 
 ::selection {
-  background: #d7ff5f;
-  color: #101010;
+  background: #FF7E21;
+  color: #ffffff;
 }
 
 .masonry-grid {
