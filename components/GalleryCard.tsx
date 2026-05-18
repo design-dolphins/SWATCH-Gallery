@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
@@ -14,14 +14,11 @@ type GalleryCardProps = {
 export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
   const [isCut, setIsCut] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
-    const containerWidth = containerRef.current?.offsetWidth ?? 0;
-    if (containerWidth === 0) return;
-    const displayedHeight = (img.naturalHeight / img.naturalWidth) * containerWidth;
-    setIsCut(displayedHeight > containerWidth * 0.65);
+    // 縦横比が0.65を超える場合は切る
+    setIsCut(img.naturalHeight / img.naturalWidth > 0.65);
   };
 
   return (
@@ -36,13 +33,12 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
         <div
-          ref={containerRef}
           className="relative w-full overflow-hidden bg-transparent"
-          style={{ maxHeight: isCut ? "65cqw" : undefined, containerType: "inline-size" }}
+          style={isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="block h-auto w-full transition duration-500 group-hover:scale-[1.02]"
+            className={`block w-full transition duration-500 group-hover:scale-[1.02] ${isCut ? "absolute inset-0 h-auto" : "h-auto"}`}
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
             onLoad={handleImageLoad}
