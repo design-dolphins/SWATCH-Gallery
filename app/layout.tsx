@@ -29,6 +29,9 @@ export default function RootLayout({
     <html lang="ja" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <footer className="border-t border-black/08 px-6 py-5 text-center text-xs text-black/35">
+          本サイトは参考目的のUIギャラリーです。掲載している画像・デザインの著作権は各サイトの運営者に帰属します。
+        </footer>
       </body>
     </html>
   );
