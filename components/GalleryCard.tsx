@@ -25,10 +25,10 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: 
         onClick={() => onOpen(item)}
         aria-label={`${item.site_name ?? item.title}の詳細を見る`}
       >
-        <div className={`relative overflow-hidden bg-transparent ${singleColumn ? "" : "aspect-[16/10]"}`}>
+        <div className={`relative overflow-hidden bg-transparent ${singleColumn ? "flex justify-center" : "aspect-[16/10]"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className={`w-full transition duration-500 group-hover:scale-[1.02] ${singleColumn ? "h-auto object-contain" : "absolute inset-0 h-full object-contain object-top"}`}
+            className={`transition duration-500 group-hover:scale-[1.02] ${singleColumn ? "h-auto max-w-full" : "absolute inset-0 h-full w-full object-contain object-top"}`}
             src={item.image_url ?? "/mockups/northstar.svg"}
             alt={item.site_name ?? "Gallery image"}
           />
