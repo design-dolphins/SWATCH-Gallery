@@ -22,8 +22,8 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
     setIsPortrait(ratio > 1);
-    // 縦長（スマホ）はカットしない・横長で65%超えるものだけカット
-    setIsCut(ratio > 0.65 && ratio <= 1);
+    // スマホカテゴリはカットしない・それ以外は65%超えたらカット
+    setIsCut(!isSmartphone && ratio > 0.65);
   };
 
   const showFrame = isSmartphone && isPortrait;
