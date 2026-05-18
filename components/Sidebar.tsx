@@ -42,7 +42,8 @@ export default function Sidebar({
         />
         {categoryGroups.map((group) => (
           <div className="contents lg:block" key={group.label}>
-            <p className="hidden px-2 pb-2 text-[11px] font-black uppercase text-acid lg:block">
+            <p className="hidden items-center gap-1.5 px-2 pb-2 text-[11px] font-black uppercase text-black/60 lg:flex">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-acid"></span>
               {group.label}
             </p>
             <div className="contents lg:grid lg:gap-1">
