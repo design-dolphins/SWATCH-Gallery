@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#101010",
+        ink: "#282828",
         bone: "#F7F4F3",
         mist: "#e8ecef",
         acid: "#FF7E21",
         coral: "#ff6b57"
       },
       boxShadow: {
-        soft: "0 20px 70px rgba(16, 16, 16, 0.12)"
+        soft: "0 20px 70px rgba(40, 40, 40, 0.12)"
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"]
