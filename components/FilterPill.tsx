@@ -61,7 +61,7 @@ export default function FilterPill({
               }}
               className={`block w-full px-4 py-2.5 text-left text-sm font-bold transition ${
                 activeOption === option
-                  ? "bg-acid text-white"
+                  ? "bg-ink text-bone"
                   : "text-black/60 hover:bg-acid/10 hover:text-ink"
               }`}
             >
