@@ -21,7 +21,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
     const containerWidth = containerRef.current?.offsetWidth ?? 0;
     if (containerWidth === 0) return;
     const displayedHeight = (img.naturalHeight / img.naturalWidth) * containerWidth;
-    setIsCut(displayedHeight > containerWidth * 0.8);
+    setIsCut(displayedHeight > containerWidth * 0.65);
   };
 
   return (
@@ -38,7 +38,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
         <div
           ref={containerRef}
           className="relative w-full overflow-hidden bg-transparent"
-          style={{ maxHeight: isCut ? "80cqw" : undefined, containerType: "inline-size" }}
+          style={{ maxHeight: isCut ? "65cqw" : undefined, containerType: "inline-size" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

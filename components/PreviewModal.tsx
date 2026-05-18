@@ -28,10 +28,10 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
             transition={{ duration: 0.22 }}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="min-h-0 overflow-auto bg-ink">
+            <div className="min-h-0 overflow-y-auto bg-bone">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                className="w-full object-contain"
+                className="block h-auto w-full"
                 src={item.image_url ?? "/mockups/northstar.svg"}
                 alt={item.site_name ?? "Preview image"}
               />
