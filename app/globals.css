@@ -63,3 +63,13 @@ input {
     margin-bottom: 1.25rem;
   }
 }
+
+input::-webkit-calendar-picker-indicator {
+  display: none !important;
+  opacity: 0;
+  width: 0;
+}
+
+input::-webkit-list-button {
+  display: none !important;
+}
