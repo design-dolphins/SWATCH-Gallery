@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, fontTypes, industries, tasteLabels, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -197,6 +197,15 @@ export default function AdminGalleryForm() {
                 value={siteUrl}
                 onChange={setSiteUrl}
                 placeholder="https://example.com"
+                onBlur={async () => {
+                  const url = siteUrl.trim();
+                  if (!url || siteName) return;
+                  try {
+                    const res = await fetch(`/api/meta?url=${encodeURIComponent(url)}`);
+                    const data = await res.json();
+                    if (data.siteName) setSiteName(data.siteName);
+                  } catch {}
+                }}
               />
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -238,7 +247,6 @@ export default function AdminGalleryForm() {
                   value={taste}
                   onChange={setTaste}
                   options={tastes}
-                  labels={tasteLabels}
                 />
               </div>
 
@@ -345,11 +353,13 @@ function TextInput({
   label,
   value,
   onChange,
+  onBlur,
   placeholder = ""
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   placeholder?: string;
 }) {
   return (
@@ -359,6 +369,7 @@ function TextInput({
         className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm outline-none focus:border-black/30"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         placeholder={placeholder}
       />
     </label>
@@ -369,14 +380,12 @@ function SelectInput({
   label,
   value,
   onChange,
-  options,
-  labels
+  options
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: string[];
-  labels?: Record<string, string>;
 }) {
   return (
     <label className="grid gap-2">
@@ -388,7 +397,7 @@ function SelectInput({
       >
         {options.map((option) => (
           <option key={option} value={option}>
-            {labels ? `${labels[option] ?? option} — ${option}` : option}
+            {option}
           </option>
         ))}
       </select>
