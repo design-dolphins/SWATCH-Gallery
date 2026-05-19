@@ -406,7 +406,6 @@ function FontInput({
   value,
   onChange,
   placeholder = "",
-  suggestions = []
 }: {
   label: string;
   value: string;
@@ -414,25 +413,15 @@ function FontInput({
   placeholder?: string;
   suggestions?: string[];
 }) {
-  const listId = `font-datalist-${label.replace(/\s/g, "")}`;
   return (
     <label className="grid gap-2">
       <span className="text-sm font-bold">{label}</span>
-      <div className="relative">
-        <input
-          className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-list-button]:hidden"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          list={listId}
-        />
-        <ChevronDown size={16} className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40" />
-        {suggestions.length > 0 && (
-          <datalist id={listId}>
-            {suggestions.map((s) => <option key={s} value={s} />)}
-          </datalist>
-        )}
-      </div>
+      <input
+        className="h-12 w-full rounded-[6px] border border-black/10 bg-bone px-3 text-sm font-semibold outline-none focus:border-black/30"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
     </label>
   );
 }
