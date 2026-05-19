@@ -68,7 +68,36 @@ export default function AdminGalleryForm() {
     }
   }, []);
 
-  const saveGallery = async (event: FormEvent<HTMLFormElement>) => {
+  // フォント入力からフォント種別を自動検出
+  useEffect(() => {
+    const detected: string[] = [];
+
+    if (fontJp) {
+      const fonts = fontJp.split(",").map(f => f.trim()).filter(Boolean);
+      const hasMingho = fonts.some(f =>
+        /明朝|mincho|serif|old|antique|syuku|boku|mai|hina|kaisei|shippori|alegreya|crimson|spectral/i.test(f)
+      );
+      if (hasMingho) detected.push("日本語明朝");
+      const hasGothic = fonts.some(f => japaneseFonts.includes(f) && !/明朝|mincho/i.test(f));
+      if (hasGothic || (fonts.length > 0 && !hasMingho)) detected.push("日本語ゴシック");
+    }
+
+    if (fontEn) {
+      const fonts = fontEn.split(",").map(f => f.trim()).filter(Boolean);
+      const serifKeywords = /serif|garamond|baskerville|times|georgia|playfair|merriweather|lora|crimson|cormorant|spectral|alegreya|libre baskerville|pt serif|eb garamond/i;
+      const hasSerif = fonts.some(f => serifKeywords.test(f));
+      if (hasSerif) detected.push("欧文セリフ");
+      const hasSans = fonts.some(f => !serifKeywords.test(f));
+      if (hasSans) detected.push("欧文サンセリフ");
+    }
+
+    if (detected.length > 0) {
+      setFontTypes_(prev => {
+        const merged = Array.from(new Set([...prev, ...detected]));
+        return merged;
+      });
+    }
+  }, [fontJp, fontEn]);
     event.preventDefault();
 
     if (!isSupabaseConfigured || !supabase) {
