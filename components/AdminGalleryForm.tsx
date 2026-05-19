@@ -247,10 +247,16 @@ export default function AdminGalleryForm() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <TextInput
-                  label="フォント名（例：Noto Sans JP）"
-                  value={font}
-                  onChange={setFont}
-                  placeholder="使用フォントを入力"
+                  label="日本語フォント名"
+                  value={fontJp}
+                  onChange={setFontJp}
+                  placeholder="Noto Sans JP, Zen Old Mincho"
+                />
+                <TextInput
+                  label="英語フォント名"
+                  value={fontEn}
+                  onChange={setFontEn}
+                  placeholder="Poppins, Lato"
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
