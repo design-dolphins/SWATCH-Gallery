@@ -148,5 +148,5 @@ export const japaneseFonts = [
   'Rocknroll One', 'Yomogi', 'Yuji Syuku', 'Yuji Boku', 'Yuji Mai', 'Hina Mincho',
   'Kaisei Decol', 'Kaisei HarunoUmi', 'Kaisei Opti', 'Kaisei Tokumin', 'Murecho',
   'Albert Sans', 'Zen Antique', 'Shippori Antique', 'Palette Mosaic',
-  'Mochiy Pop One', 'Mochiy Pop P One', 'Potta One',
+  'Mochiy Pop One', 'Mochiy Pop P One', 'Potta One', '游ゴシック', '游ゴシック体', '游明朝',
 ];
