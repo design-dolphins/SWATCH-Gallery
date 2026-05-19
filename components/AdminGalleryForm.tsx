@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ChevronDown, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -252,21 +252,24 @@ export default function AdminGalleryForm() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="grid gap-2">
                   <span className="text-sm font-bold">カテゴリ</span>
-                  <select
-                    className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm font-semibold outline-none focus:border-black/30"
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value)}
-                  >
-                    {categoryGroups.map((group) => (
-                      <optgroup key={group.label} label={group.label}>
-                        {group.items.map((item) => (
-                          <option key={item} value={item}>
-                            {item}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30"
+                      value={category}
+                      onChange={(event) => setCategory(event.target.value)}
+                    >
+                      {categoryGroups.map((group) => (
+                        <optgroup key={group.label} label={group.label}>
+                          {group.items.map((item) => (
+                            <option key={item} value={item}>
+                              {item}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40" />
+                  </div>
                 </label>
                 <SelectInput
                   label="業界"
@@ -297,14 +300,14 @@ export default function AdminGalleryForm() {
                   value={fontJp}
                   onChange={setFontJp}
                   placeholder="Noto Sans JP"
-                  suggestions={registeredFonts.jp.length ? registeredFonts.jp : japaneseFonts}
+                  suggestions={registeredFonts.jp}
                 />
                 <FontInput
                   label="英語フォント名"
                   value={fontEn}
                   onChange={setFontEn}
                   placeholder="Poppins"
-                  suggestions={registeredFonts.en.length ? registeredFonts.en : englishFonts}
+                  suggestions={registeredFonts.en}
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
@@ -417,7 +420,7 @@ function FontInput({
       <span className="text-sm font-bold">{label}</span>
       <div className="relative">
         <input
-          className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30"
+          className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30 [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-list-button]:hidden"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
