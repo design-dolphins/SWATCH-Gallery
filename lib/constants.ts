@@ -64,7 +64,7 @@ export const categoryGroups = [
   },
   {
     label: "スマホ",
-    items: ["モバイルファースト", "スマホKV", "スマホメニュー"]
+    items: ["モバイルファースト", "スマホメニュー"]
   },
   {
     label: "ポートフォリオ",
@@ -128,12 +128,7 @@ export const tastes = [
   "stylish",
   "young",
   "rétro",
-  "future",
-  "luxury",
-  "natural",
-  "bold",
-  "elegant",
-  "traditional"
+  "future"
 ];
 
 export const fontTypes = [
@@ -144,18 +139,14 @@ export const fontTypes = [
   "手書き"
 ];
 
-export const tasteLabels: Record<string, string> = {
-  simple: "シンプル",
-  monotone: "モノトーン",
-  pop: "ポップ",
-  cute: "かわいい",
-  stylish: "スタイリッシュ",
-  young: "若い",
-  "rétro": "レトロ",
-  future: "未来的",
-  luxury: "高級感",
-  natural: "ナチュラル",
-  bold: "力強い",
-  elegant: "上品",
-  traditional: "和・伝統",
-};
+export const japaneseFonts = [
+  'Noto Sans JP', 'Noto Serif JP', 'Zen Kaku Gothic Antique', 'Zen Old Mincho',
+  'Zen Maru Gothic', 'Zen Kurenaido', 'M PLUS Rounded 1c', 'M PLUS 1p', 'M PLUS 1',
+  'Sawarabi Gothic', 'Sawarabi Mincho', 'Kosugi Maru', 'Kosugi', 'Shippori Mincho',
+  'BIZ UDPGothic', 'BIZ UDGothic', 'BIZ UDMincho', 'Klee One', 'Dela Gothic One',
+  'Hachi Maru Pop', 'Rampart One', 'Stick', 'Train One', 'DotGothic16', 'Reggae One',
+  'Rocknroll One', 'Yomogi', 'Yuji Syuku', 'Yuji Boku', 'Yuji Mai', 'Hina Mincho',
+  'Kaisei Decol', 'Kaisei HarunoUmi', 'Kaisei Opti', 'Kaisei Tokumin', 'Murecho',
+  'Albert Sans', 'Zen Antique', 'Shippori Antique', 'Palette Mosaic',
+  'Mochiy Pop One', 'Mochiy Pop P One', 'Potta One',
+];

@@ -9,7 +9,7 @@ import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryPageProps = {
@@ -50,6 +50,17 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     });
     return ["All", ...Array.from(set).sort()];
   }, [initialItems]);
+
+  // フォントをJP/ENに分類
+  const fontOptionGroups = useMemo(() => {
+    const all = fontOptions.filter(f => f !== "All");
+    const jp = all.filter(f => japaneseFonts.includes(f));
+    const en = all.filter(f => !japaneseFonts.includes(f));
+    const groups = [];
+    if (jp.length) groups.push({ label: "日本語フォント", options: jp });
+    if (en.length) groups.push({ label: "英語フォント", options: en });
+    return groups;
+  }, [fontOptions]);
 
   // サイト別カード（Allビュー用・KVを優先）
   const siteCards = useMemo(() => {
@@ -192,6 +203,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             <FilterPill
               label="フォント名"
               options={fontOptions}
+              optionGroups={fontOptionGroups.length ? fontOptionGroups : undefined}
               activeOption={activeFont}
               onChange={setActiveFont}
             />

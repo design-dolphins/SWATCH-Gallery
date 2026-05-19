@@ -25,7 +25,8 @@ export default function AdminGalleryForm() {
   const [industry, setIndustry] = useState(industries[0]);
   const [color, setColor] = useState(colors[0]);
   const [taste, setTaste] = useState(tastes[0]);
-  const [font, setFont] = useState("");
+  const [fontJp, setFontJp] = useState("");
+  const [fontEn, setFontEn] = useState("");
   const [fontTypes_, setFontTypes_] = useState<string[]>([]);
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
@@ -58,7 +59,8 @@ export default function AdminGalleryForm() {
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
       setTaste(parsedInput.taste ?? tastes[0]);
-      setFont(parsedInput.font ?? "");
+      setFontJp(parsedInput.fontJp ?? "");
+      setFontEn(parsedInput.fontEn ?? "");
     } catch {
       window.localStorage.removeItem(lastGalleryInputKey);
     }
@@ -130,7 +132,7 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color, taste, font, fontTypes_: fontTypes_.join(",") })
+      JSON.stringify({ siteName, siteUrl, industry, color, taste, fontJp, fontEn, fontTypes_: fontTypes_.join(",") })
     );
     setStatus({
       type: "success",
@@ -197,15 +199,6 @@ export default function AdminGalleryForm() {
                 value={siteUrl}
                 onChange={setSiteUrl}
                 placeholder="https://example.com"
-                onBlur={async () => {
-                  const url = siteUrl.trim();
-                  if (!url || siteName) return;
-                  try {
-                    const res = await fetch(`/api/meta?url=${encodeURIComponent(url)}`);
-                    const data = await res.json();
-                    if (data.siteName) setSiteName(data.siteName);
-                  } catch {}
-                }}
               />
 
               <div className="grid gap-4 sm:grid-cols-2">
@@ -353,13 +346,11 @@ function TextInput({
   label,
   value,
   onChange,
-  onBlur,
   placeholder = ""
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  onBlur?: () => void;
   placeholder?: string;
 }) {
   return (
@@ -369,7 +360,6 @@ function TextInput({
         className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm outline-none focus:border-black/30"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        onBlur={onBlur}
         placeholder={placeholder}
       />
     </label>
