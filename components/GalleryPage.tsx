@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -27,6 +27,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [columns, setColumns] = useState<1 | 3>(3);
 
   // URLパラメータからstate取得
   const selectedSite = searchParams.get("site");
@@ -289,11 +290,28 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 サイト一覧に戻る
               </button>
             )}
+            {/* PC: 列数トグル */}
+            <div className="hidden overflow-hidden rounded-full border border-black/10 sm:flex">
+              <button
+                type="button"
+                onClick={() => setColumns(3)}
+                className={`flex items-center px-3 py-2 transition ${columns === 3 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
+              >
+                <LayoutGrid size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setColumns(1)}
+                className={`flex items-center px-3 py-2 transition ${columns === 1 ? "bg-ink text-bone" : "bg-white/60 text-black/40 hover:bg-white hover:text-ink"}`}
+              >
+                <LayoutList size={14} />
+              </button>
+            </div>
           </div>
           )}
 
           {displayItems.length > 0 ? (
-            <div className={`grid gap-x-4 gap-y-8 ${["モバイルファースト", "スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid gap-x-4 gap-y-8 ${["モバイルファースト", "スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
               {displayItems.map((item) => (
                 <div
                   key={
