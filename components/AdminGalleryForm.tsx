@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { ArrowLeft, CheckCircle2, ChevronDown, ImagePlus, Loader2, LogOut } from "lucide-react";
+import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -297,14 +297,14 @@ export default function AdminGalleryForm() {
                   value={fontJp}
                   onChange={setFontJp}
                   placeholder="Noto Sans JP"
-                  suggestions={registeredFonts.jp}
+                  suggestions={registeredFonts.jp.length ? registeredFonts.jp : japaneseFonts}
                 />
                 <FontInput
                   label="英語フォント名"
                   value={fontEn}
                   onChange={setFontEn}
                   placeholder="Poppins"
-                  suggestions={registeredFonts.en}
+                  suggestions={registeredFonts.en.length ? registeredFonts.en : englishFonts}
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
@@ -423,9 +423,7 @@ function FontInput({
           placeholder={placeholder}
           list={listId}
         />
-        <span className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40">
-          ›
-        </span>
+        <ChevronDown size={16} className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40" />
         {suggestions.length > 0 && (
           <datalist id={listId}>
             {suggestions.map((s) => <option key={s} value={s} />)}
@@ -486,17 +484,20 @@ function SelectInput({
   return (
     <label className="grid gap-2">
       <span className="text-sm font-bold">{label}</span>
-      <select
-        className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm font-semibold outline-none focus:border-black/30"
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        <select
+          className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <ChevronDown size={16} className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40" />
+      </div>
     </label>
   );
 }
