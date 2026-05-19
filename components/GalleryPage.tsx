@@ -212,7 +212,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1780px] grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[240px_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-[1780px] grid-cols-1 gap-3 px-4 py-3 sm:px-6 lg:gap-6 lg:py-6 lg:grid-cols-[240px_1fr] lg:px-8">
         <Sidebar
           categoryGroups={categoryGroups}
           activeCategory={activeCategory}
