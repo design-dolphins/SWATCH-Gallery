@@ -72,7 +72,7 @@ export default function ContactPage() {
               <span className="text-sm font-bold">お問い合わせ種別</span>
               <select
                 name="type"
-                className="h-12 rounded-[8px] border border-black/10 bg-white px-4 text-sm outline-none focus:border-black/30"
+                className="h-12 rounded-[8px] border border-black/10 bg-white px-4 pr-8 text-sm outline-none focus:border-black/30"
               >
                 <option>掲載内容の削除依頼</option>
                 <option>掲載内容の修正依頼</option>
