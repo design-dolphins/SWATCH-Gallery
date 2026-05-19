@@ -235,26 +235,40 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               )}
               {selectedSite && (
                 <>
-                  {/* SP: 矢印入り全幅バッジ */}
-                  <button
-                    type="button"
-                    onClick={() => router.back()}
-                    className="inline-flex w-full items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black lg:hidden"
+                  {/* SP: 矢印（戻る）＋サイト名（リンク） */}
+                  <div className="flex w-full items-center gap-0 overflow-hidden rounded-full bg-ink lg:hidden">
+                    <button
+                      type="button"
+                      onClick={() => router.back()}
+                      className="flex shrink-0 items-center px-3 py-1 text-bone transition hover:bg-white/10"
+                    >
+                      <ArrowLeft size={13} />
+                    </button>
+                    <a
+                      href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex min-w-0 flex-1 items-center gap-2 py-1 pr-3 text-xs font-bold uppercase text-bone"
+                    >
+                      <span className="truncate">{selectedSite}</span>
+                    </a>
+                  </div>
+                  {/* PC: コンパクトバッジ（リンク） */}
+                  <a
+                    href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black lg:inline-flex"
                   >
-                    <ArrowLeft size={13} className="shrink-0" />
-                    <span className="truncate">{selectedSite}</span>
-                  </button>
-                  {/* PC: コンパクトバッジ */}
-                  <div className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone lg:inline-flex">
                     <Sparkles size={13} />
                     <span className="truncate">{selectedSite}</span>
-                  </div>
+                  </a>
                 </>
               )}
             </div>
             {selectedSite && (
               <button
-                className="hidden items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30 lg:inline-flex"
+                className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30 lg:inline-flex"
                 type="button"
                 onClick={() => router.back()}
               >
