@@ -31,7 +31,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
           onClick={onClose}
         >
           <motion.div
-            className="grid max-h-[92vh] w-full max-w-6xl overflow-hidden bg-bone shadow-soft lg:grid-cols-[1fr_360px]"
+            className="grid max-h-[92vh] w-full max-w-6xl overflow-y-auto bg-bone shadow-soft lg:overflow-hidden lg:grid-cols-[1fr_360px]"
             initial={{ opacity: 0, scale: 0.96, y: 18 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 12 }}

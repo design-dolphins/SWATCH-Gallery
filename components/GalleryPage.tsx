@@ -233,33 +233,26 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   <ArrowLeft size={16} className="text-black/40" />
                 </button>
               )}
-              {selectedSite ? (
+              {selectedSite && (
                 <a
                   href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
+                  className="inline-flex max-w-[200px] items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black sm:max-w-none"
                 >
-                  <Sparkles size={13} />
-                  {selectedSite}
+                  <Sparkles size={13} className="shrink-0" />
+                  <span className="truncate">{selectedSite}</span>
                 </a>
-              ) : (
-                <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
-                  <Sparkles size={13} />
-                  {activeCategory === "All"
-                    ? `${displayItems.length} sites`
-                    : `${displayItems.length} references`}
-                </div>
               )}
             </div>
             {selectedSite && (
               <button
-                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"
+                className="flex items-center"
                 type="button"
                 onClick={() => router.back()}
+                aria-label="サイト一覧に戻る"
               >
-                <ArrowLeft size={15} />
-                サイト一覧に戻る
+                <ArrowLeft size={16} className="text-black/40" />
               </button>
             )}
           </div>
