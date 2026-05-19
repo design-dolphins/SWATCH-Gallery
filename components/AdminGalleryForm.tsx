@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, fontTypes, industries, tastes } from "@/lib/constants";
+import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -251,12 +251,14 @@ export default function AdminGalleryForm() {
                   value={fontJp}
                   onChange={setFontJp}
                   placeholder="Noto Sans JP, Zen Old Mincho"
+                  suggestions={japaneseFonts}
                 />
                 <TextInput
                   label="英語フォント名"
                   value={fontEn}
                   onChange={setFontEn}
                   placeholder="Poppins, Lato"
+                  suggestions={englishFonts}
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
@@ -354,13 +356,18 @@ function TextInput({
   label,
   value,
   onChange,
-  placeholder = ""
+  onBlur,
+  placeholder = "",
+  suggestions = []
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   placeholder?: string;
+  suggestions?: string[];
 }) {
+  const listId = suggestions.length ? `datalist-${label.replace(/\s/g, "")}` : undefined;
   return (
     <label className="grid gap-2">
       <span className="text-sm font-bold">{label}</span>
@@ -368,8 +375,15 @@ function TextInput({
         className="h-12 rounded-[6px] border border-black/10 bg-bone px-3 text-sm outline-none focus:border-black/30"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         placeholder={placeholder}
+        list={listId}
       />
+      {listId && (
+        <datalist id={listId}>
+          {suggestions.map((s) => <option key={s} value={s} />)}
+        </datalist>
+      )}
     </label>
   );
 }

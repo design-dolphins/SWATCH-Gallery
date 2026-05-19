@@ -139,7 +139,21 @@ export const fontTypes = [
   "手書き"
 ];
 
-export const japaneseFonts = [
+export const englishFonts = [
+  'Inter', 'Roboto', 'Open Sans', 'Lato', 'Poppins', 'Montserrat', 'Source Sans Pro',
+  'Raleway', 'Nunito', 'Ubuntu', 'Playfair Display', 'Merriweather', 'PT Serif',
+  'Lora', 'Crimson Text', 'EB Garamond', 'Cormorant Garamond', 'DM Serif Display',
+  'Bebas Neue', 'Oswald', 'Barlow', 'Barlow Condensed', 'Space Grotesk', 'Space Mono',
+  'DM Sans', 'DM Mono', 'Manrope', 'Outfit', 'Plus Jakarta Sans', 'Figtree',
+  'Geist', 'Geist Mono', 'IBM Plex Sans', 'IBM Plex Mono', 'IBM Plex Serif',
+  'Fira Code', 'JetBrains Mono', 'Source Code Pro',
+  'Archivo', 'Archivo Black', 'Cabin', 'Karla', 'Rubik', 'Work Sans',
+  'Mulish', 'Quicksand', 'Josefin Sans', 'Josefin Slab',
+  'Libre Baskerville', 'Libre Franklin', 'Spectral', 'Alegreya',
+  'Anton', 'Teko', 'Exo', 'Exo 2', 'Rajdhani', 'Oxanium',
+  'Montserrat Alternates', 'Albert Sans', 'Syne', 'Unbounded',
+  'sans-serif', 'serif', 'monospace',
+];
   'Noto Sans JP', 'Noto Serif JP', 'Zen Kaku Gothic Antique', 'Zen Old Mincho',
   'Zen Maru Gothic', 'Zen Kurenaido', 'M PLUS Rounded 1c', 'M PLUS 1p', 'M PLUS 1',
   'Sawarabi Gothic', 'Sawarabi Mincho', 'Kosugi Maru', 'Kosugi', 'Shippori Mincho',
