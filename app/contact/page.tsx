@@ -70,15 +70,18 @@ export default function ContactPage() {
             </label>
             <label className="grid gap-2">
               <span className="text-sm font-bold">お問い合わせ種別</span>
-              <select
-                name="type"
-                className="h-12 rounded-[8px] border border-black/10 bg-white px-4 pr-10 text-sm outline-none focus:border-black/30"
-              >
-                <option>掲載内容の削除依頼</option>
-                <option>掲載内容の修正依頼</option>
-                <option>仕事依頼</option>
-                <option>その他のお問い合わせ</option>
-              </select>
+              <div className="relative">
+                <select
+                  name="type"
+                  className="h-12 w-full appearance-none rounded-[8px] border border-black/10 bg-white px-4 pr-10 text-sm outline-none focus:border-black/30"
+                >
+                  <option>掲載内容の削除依頼</option>
+                  <option>掲載内容の修正依頼</option>
+                  <option>仕事依頼</option>
+                  <option>その他のお問い合わせ</option>
+                </select>
+                <svg className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
             </label>
             <label className="grid gap-2">
               <span className="text-sm font-bold">内容</span>
