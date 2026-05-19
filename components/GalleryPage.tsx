@@ -234,9 +234,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         />
 
         <section className="min-w-0">
-          {(selectedSite || activeCategory !== "All") && (
           <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
             <div className="flex w-full items-center gap-2">
+            {(selectedSite || activeCategory !== "All") && (
+              <>
               {activeCategory !== "All" && !selectedSite && (
                 <button
                   type="button"
@@ -279,7 +280,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   </a>
                 </>
               )}
+              </>
+            )}
             </div>
+            <div className="flex items-center gap-2">
             {selectedSite && (
               <button
                 className="hidden items-center gap-2 whitespace-nowrap rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30 lg:inline-flex"
@@ -307,8 +311,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 <LayoutList size={14} />
               </button>
             </div>
+            </div>
           </div>
-          )}
 
           {displayItems.length > 0 ? (
             <div className={`grid gap-x-4 gap-y-8 ${["モバイルファースト", "スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
