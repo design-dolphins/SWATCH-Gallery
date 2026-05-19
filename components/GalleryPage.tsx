@@ -222,7 +222,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
         <section className="min-w-0">
           <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
-            <div className="flex items-center gap-2">
+            <div className="flex w-full items-center gap-2">
               {activeCategory !== "All" && !selectedSite && (
                 <button
                   type="button"
@@ -234,15 +234,14 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </button>
               )}
               {selectedSite && (
-                <a
-                  href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex max-w-[200px] items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black sm:max-w-none"
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="inline-flex w-full items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
                 >
-                  <Sparkles size={13} className="shrink-0" />
+                  <ArrowLeft size={13} className="shrink-0" />
                   <span className="truncate">{selectedSite}</span>
-                </a>
+                </button>
               )}
             </div>
             {selectedSite && (
