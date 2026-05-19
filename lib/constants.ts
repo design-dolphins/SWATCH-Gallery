@@ -154,6 +154,8 @@ export const englishFonts = [
   'Montserrat Alternates', 'Albert Sans', 'Syne', 'Unbounded',
   'sans-serif', 'serif', 'monospace',
 ];
+
+export const japaneseFonts = [
   'Noto Sans JP', 'Noto Serif JP', 'Zen Kaku Gothic Antique', 'Zen Old Mincho',
   'Zen Maru Gothic', 'Zen Kurenaido', 'M PLUS Rounded 1c', 'M PLUS 1p', 'M PLUS 1',
   'Sawarabi Gothic', 'Sawarabi Mincho', 'Kosugi Maru', 'Kosugi', 'Shippori Mincho',
