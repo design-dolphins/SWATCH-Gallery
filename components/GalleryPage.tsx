@@ -156,10 +156,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               onClick={() => { clearFilters(); handleCategoryChange("All"); }}
             >
               <span>
-                <span className="block text-xl font-black uppercase">
+                <span className="block text-xl font-semibold uppercase">
                   SWATCH Gallery
                 </span>
-                <span className="block text-xs font-semibold uppercase text-black/45">
+                <span className="block text-xs font-medium uppercase text-black/45">
                   パーツで探すUIギャラリーサイト
                 </span>
               </span>
