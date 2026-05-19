@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ChevronDown, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -300,14 +300,14 @@ export default function AdminGalleryForm() {
                   value={fontJp}
                   onChange={setFontJp}
                   placeholder="Noto Sans JP"
-                  suggestions={registeredFonts.jp}
+                  suggestions={registeredFonts.jp.length ? registeredFonts.jp : japaneseFonts}
                 />
                 <FontInput
                   label="英語フォント名"
                   value={fontEn}
                   onChange={setFontEn}
                   placeholder="Poppins"
-                  suggestions={registeredFonts.en}
+                  suggestions={registeredFonts.en.length ? registeredFonts.en : englishFonts}
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
