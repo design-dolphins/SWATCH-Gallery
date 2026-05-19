@@ -53,6 +53,8 @@ export default function AdminGalleryForm() {
         color?: string;
         taste?: string;
         font?: string;
+        fontJp?: string;
+        fontEn?: string;
       };
       setSiteName(parsedInput.siteName ?? "");
       setSiteUrl(parsedInput.siteUrl ?? "");
