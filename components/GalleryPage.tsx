@@ -149,7 +149,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   SWATCH Gallery
                 </span>
                 <span className="block text-xs font-semibold uppercase text-black/45">
-                  Visual Reference Gallery
+                  パーツで探すUIギャラリーサイト
                 </span>
               </span>
             </button>
