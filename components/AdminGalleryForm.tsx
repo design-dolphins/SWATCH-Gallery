@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -28,6 +28,7 @@ export default function AdminGalleryForm() {
   const [fontJp, setFontJp] = useState("");
   const [fontEn, setFontEn] = useState("");
   const [fontTypes_, setFontTypes_] = useState<string[]>([]);
+  const [registeredFonts, setRegisteredFonts] = useState<{ jp: string[]; en: string[] }>({ jp: [], en: [] });
   const [memo, setMemo] = useState("");
   const [featured, setFeatured] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -41,6 +42,20 @@ export default function AdminGalleryForm() {
     if (!file) return "";
     return URL.createObjectURL(file);
   }, [file]);
+
+  // DB登録済みフォントを取得
+  useEffect(() => {
+    if (!supabase) return;
+    supabase.from("galleries").select("font").then(({ data }) => {
+      const all = new Set<string>();
+      data?.forEach(item => {
+        item.font?.split(",").map((f: string) => f.trim()).filter(Boolean).forEach((f: string) => all.add(f));
+      });
+      const jp = Array.from(all).filter(f => japaneseFonts.includes(f)).sort();
+      const en = Array.from(all).filter(f => !japaneseFonts.includes(f)).sort();
+      setRegisteredFonts({ jp, en });
+    });
+  }, []);
 
   useEffect(() => {
     const savedInput = window.localStorage.getItem(lastGalleryInputKey);
@@ -277,19 +292,19 @@ export default function AdminGalleryForm() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <TextInput
+                <FontInput
                   label="日本語フォント名"
                   value={fontJp}
                   onChange={setFontJp}
-                  placeholder="Noto Sans JP, Zen Old Mincho"
-                  suggestions={japaneseFonts}
+                  placeholder="Noto Sans JP"
+                  suggestions={registeredFonts.jp}
                 />
-                <TextInput
+                <FontInput
                   label="英語フォント名"
                   value={fontEn}
                   onChange={setFontEn}
-                  placeholder="Poppins, Lato"
-                  suggestions={englishFonts}
+                  placeholder="Poppins"
+                  suggestions={registeredFonts.en}
                 />
                 <div className="grid gap-2">
                   <span className="text-sm font-bold">フォント種別（複数選択可）</span>
@@ -380,6 +395,44 @@ export default function AdminGalleryForm() {
         </div>
       </div>
     </main>
+  );
+}
+
+function FontInput({
+  label,
+  value,
+  onChange,
+  placeholder = "",
+  suggestions = []
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  suggestions?: string[];
+}) {
+  const listId = `font-datalist-${label.replace(/\s/g, "")}`;
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-bold">{label}</span>
+      <div className="relative">
+        <input
+          className="h-12 w-full appearance-none rounded-[6px] border border-black/10 bg-bone px-3 pr-8 text-sm font-semibold outline-none focus:border-black/30"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          list={listId}
+        />
+        <span className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-black/40">
+          ›
+        </span>
+        {suggestions.length > 0 && (
+          <datalist id={listId}>
+            {suggestions.map((s) => <option key={s} value={s} />)}
+          </datalist>
+        )}
+      </div>
+    </label>
   );
 }
 
