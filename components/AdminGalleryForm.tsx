@@ -98,6 +98,8 @@ export default function AdminGalleryForm() {
       });
     }
   }, [fontJp, fontEn]);
+
+  const saveGallery = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!isSupabaseConfigured || !supabase) {
