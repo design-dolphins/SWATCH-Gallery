@@ -234,24 +234,32 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </button>
               )}
               {selectedSite && (
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="inline-flex w-full items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
-                >
-                  <ArrowLeft size={13} className="shrink-0" />
-                  <span className="truncate">{selectedSite}</span>
-                </button>
+                <>
+                  {/* SP: 矢印入り全幅バッジ */}
+                  <button
+                    type="button"
+                    onClick={() => router.back()}
+                    className="inline-flex w-full items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black lg:hidden"
+                  >
+                    <ArrowLeft size={13} className="shrink-0" />
+                    <span className="truncate">{selectedSite}</span>
+                  </button>
+                  {/* PC: コンパクトバッジ */}
+                  <div className="hidden items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone lg:inline-flex">
+                    <Sparkles size={13} />
+                    <span className="truncate">{selectedSite}</span>
+                  </div>
+                </>
               )}
             </div>
             {selectedSite && (
               <button
-                className="flex items-center"
+                className="hidden items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30 lg:inline-flex"
                 type="button"
                 onClick={() => router.back()}
-                aria-label="サイト一覧に戻る"
               >
-                <ArrowLeft size={16} className="text-black/40" />
+                <ArrowLeft size={15} />
+                サイト一覧に戻る
               </button>
             )}
           </div>
