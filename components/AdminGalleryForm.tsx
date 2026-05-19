@@ -116,7 +116,7 @@ export default function AdminGalleryForm() {
       industry,
       color,
       taste,
-      font,
+      font: [fontJp, fontEn].filter(Boolean).join(","),
       font_type: fontTypes_.join(","),
       memo,
       featured
