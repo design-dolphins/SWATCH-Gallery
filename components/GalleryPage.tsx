@@ -221,6 +221,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         />
 
         <section className="min-w-0">
+          {(selectedSite || activeCategory !== "All") && (
           <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
             <div className="flex w-full items-center gap-2">
               {activeCategory !== "All" && !selectedSite && (
@@ -277,6 +278,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               </button>
             )}
           </div>
+          )}
 
           {displayItems.length > 0 ? (
             <div className={`grid gap-x-4 gap-y-8 ${["モバイルファースト", "スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
