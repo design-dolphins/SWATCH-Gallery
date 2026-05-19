@@ -2,7 +2,6 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { ArrowLeft, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
@@ -19,7 +18,6 @@ type GalleryPageProps = {
 export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [activeIndustry, setActiveIndustry] = useState("All");
   const [activeColor, setActiveColor] = useState("All");
@@ -29,8 +27,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  // URLのsiteパラメータをselectedSiteとして使用
+  // URLパラメータからstate取得
   const selectedSite = searchParams.get("site");
+  const activeCategory = searchParams.get("category") ?? "All";
 
   const setSelectedSite = (site: string | null) => {
     if (site) {
@@ -110,19 +109,21 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   };
 
   const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
-    if (selectedSite) router.push("/");
+    if (cat === "All") {
+      router.push("/");
+    } else {
+      router.push(`?category=${encodeURIComponent(cat)}`);
+    }
   };
 
   const clearFilters = () => {
-    setActiveCategory("All");
     setActiveIndustry("All");
     setActiveColor("All");
     setActiveTaste("All");
     setActiveFont("All");
     setActiveFontType("All");
-    if (selectedSite) router.push("/");
     setQuery("");
+    router.push("/");
   };
 
   const hasActiveFilters =
@@ -137,7 +138,11 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center">
-            <Link className="group flex items-center gap-3" href="/">
+            <button
+              type="button"
+              className="group flex items-center gap-3 text-left"
+              onClick={() => { clearFilters(); handleCategoryChange("All"); }}
+            >
               <span>
                 <span className="block text-xl font-black uppercase">
                   SWATCH Gallery
@@ -146,7 +151,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                   Visual Reference Gallery
                 </span>
               </span>
-            </Link>
+            </button>
             {/* モバイル: ハンバーガーボタン */}
             <button
               type="button"
@@ -216,24 +221,36 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
         <section className="min-w-0">
           <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
-            {selectedSite ? (
-              <a
-                href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
-              >
-                <Sparkles size={13} />
-                {selectedSite}
-              </a>
-            ) : (
-              <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
-                <Sparkles size={13} />
-                {activeCategory === "All"
-                  ? `${displayItems.length} sites`
-                  : `${displayItems.length} references`}
-              </div>
-            )}
+            <div className="flex items-center gap-2">
+              {activeCategory !== "All" && !selectedSite && (
+                <button
+                  type="button"
+                  onClick={() => handleCategoryChange("All")}
+                  className="flex items-center lg:hidden"
+                  aria-label="Allに戻る"
+                >
+                  <ArrowLeft size={16} className="text-black/40" />
+                </button>
+              )}
+              {selectedSite ? (
+                <a
+                  href={initialItems.find(i => i.site_name === selectedSite)?.site_url ?? "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone transition hover:bg-black"
+                >
+                  <Sparkles size={13} />
+                  {selectedSite}
+                </a>
+              ) : (
+                <div className="inline-flex items-center gap-2 rounded-full bg-ink px-3 py-1 text-xs font-bold uppercase text-bone">
+                  <Sparkles size={13} />
+                  {activeCategory === "All"
+                    ? `${displayItems.length} sites`
+                    : `${displayItems.length} references`}
+                </div>
+              )}
+            </div>
             {selectedSite && (
               <button
                 className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-bold transition hover:border-black/30"

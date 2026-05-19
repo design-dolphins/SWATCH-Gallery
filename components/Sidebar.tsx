@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layers3, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
@@ -22,6 +22,15 @@ export default function Sidebar({
 }: SidebarProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const counts = new Map<string, number>();
+
+  useEffect(() => {
+    if (sheetOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [sheetOpen]);
 
   items.forEach((item) => {
     if (item.category) {
@@ -99,7 +108,6 @@ export default function Sidebar({
                 {group.items.map((category) => {
                   const isActive = category === activeCategory;
                   const count = counts.get(category) ?? 0;
-                  if (count === 0) return null;
                   return (
                     <button
                       key={category}
@@ -142,19 +150,15 @@ export default function Sidebar({
                 {group.label}
               </p>
               <div className="grid gap-1">
-                {group.items.map((category) => {
-                  const count = counts.get(category) ?? 0;
-                  if (count === 0) return null;
-                  return (
-                    <CategoryButton
-                      category={category}
-                      count={count}
-                      isActive={category === activeCategory}
-                      key={category}
-                      onChange={onChange}
-                    />
-                  );
-                })}
+                {group.items.map((category) => (
+                  <CategoryButton
+                    category={category}
+                    count={counts.get(category) ?? 0}
+                    isActive={category === activeCategory}
+                    key={category}
+                    onChange={onChange}
+                  />
+                ))}
               </div>
             </div>
           ))}
