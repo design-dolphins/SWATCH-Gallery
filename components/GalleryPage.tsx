@@ -156,7 +156,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               onClick={() => { clearFilters(); handleCategoryChange("All"); }}
             >
               <span>
-                <span className="block text-xl font-semibold uppercase lg:font-black">
+                <span className="block text-xl font-extrabold uppercase lg:font-black">
                   SWATCH Gallery
                 </span>
                 <span className="block text-xs font-medium uppercase text-black/45 lg:font-semibold">
