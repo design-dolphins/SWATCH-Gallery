@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Layers } from "lucide-react";
+import { ExternalLink, Heart, Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryCardProps = {
@@ -93,9 +93,10 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
             href={item.site_url}
             target="_blank"
             rel="noreferrer"
-            className="block truncate text-sm font-semibold"
+            className="flex items-center gap-1 truncate text-sm font-semibold hover:underline"
           >
-            {item.site_name ?? "Untitled"}
+            <span className="truncate">{item.site_name ?? "Untitled"}</span>
+            <ExternalLink size={12} className="shrink-0 text-black/40" />
           </a>
         ) : (
           <p className="truncate text-sm font-semibold">
