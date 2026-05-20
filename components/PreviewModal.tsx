@@ -74,7 +74,7 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase text-black/35">Taste</p>
                 <div className="flex flex-wrap gap-2">
-                {[item.color, item.taste].filter(Boolean).map((badge) => (
+                {[item.color, ...(item.taste ? item.taste.split(",").map(t => t.trim()).filter(Boolean) : [])].filter(Boolean).map((badge) => (
                   <span
                     className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
                     key={badge}
