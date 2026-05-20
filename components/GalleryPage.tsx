@@ -3,13 +3,14 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
 import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { useFavorites } from "@/lib/useFavorites";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryPageProps = {
@@ -26,6 +27,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFont, setActiveFont] = useState("All");
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const { favorites, toggle: toggleFavorite, isFavorite } = useFavorites();
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [categorySheetOpen, setCategorySheetOpen] = useState(false);
   const [columns, setColumns] = useState<1 | 3>(3);
@@ -143,15 +146,22 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   const displayItems = useMemo(() => {
     const q = query.trim().toLowerCase();
+    let items: GalleryItem[];
     if (activeCategory === "All") {
       if (selectedSite) {
-        return initialItems.filter((item) => item.site_name === selectedSite);
+        items = initialItems.filter((item) => item.site_name === selectedSite);
+      } else {
+        items = siteCards.cards.filter((item) => applyFilters(item, q));
       }
-      return siteCards.cards.filter((item) => applyFilters(item, q));
+    } else {
+      items = filteredItems;
     }
-    return filteredItems;
+    if (showFavoritesOnly) {
+      items = items.filter((item) => isFavorite(String(item.id)));
+    }
+    return items;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont, activeFontType]);
+  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont, activeFontType, showFavoritesOnly, favorites]);
 
   const handleCardOpen = (item: GalleryItem) => {
     if (activeCategory === "All" && !selectedSite) {
@@ -208,7 +218,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             </button>
             <button
               type="button"
-              className="ml-auto flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
+              className="ml-auto flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white touch-manipulation lg:hidden"
               onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
             >
               {mobileFilterOpen ? <X size={15} /> : <Menu size={15} />}
@@ -220,7 +230,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             <button
               type="button"
               onClick={() => setCategorySheetOpen(true)}
-              className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white"
+              className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white touch-manipulation"
             >
               <Layers3 size={14} />
               <span>{activeCategory === "All" ? "Categories" : activeCategory}</span>
@@ -260,6 +270,14 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               activeOption={activeFont}
               onChange={setActiveFont}
             />
+            <button
+              type="button"
+              onClick={() => setShowFavoritesOnly((v) => !v)}
+              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/50 hover:border-black/30 hover:bg-white hover:text-ink"}`}
+            >
+              <Heart size={13} className={showFavoritesOnly ? "fill-white" : ""} />
+              お気に入り{favorites.length > 0 && <span className="ml-0.5 text-xs opacity-70">({favorites.length})</span>}
+            </button>
             {hasActiveFilters && (
               <button
                 type="button"
@@ -387,6 +405,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                         : undefined
                     }
                     singleColumn={columns === 1}
+                    isFavorite={isFavorite(String(item.id))}
+                    onFavoriteToggle={toggleFavorite}
                   />
                 </div>
               ))}

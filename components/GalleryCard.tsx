@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Layers } from "lucide-react";
+import { Heart, Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryCardProps = {
@@ -9,9 +9,11 @@ type GalleryCardProps = {
   onOpen: (item: GalleryItem) => void;
   partsCount?: number;
   singleColumn?: boolean;
+  isFavorite?: boolean;
+  onFavoriteToggle?: (id: string) => void;
 };
 
-export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: GalleryCardProps) {
+export default function GalleryCard({ item, onOpen, partsCount, singleColumn, isFavorite, onFavoriteToggle }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
   const [isCut, setIsCut] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
@@ -56,6 +58,21 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: 
             {/* 切れてるときのグラデーション */}
             {isCut && (
               <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-bone to-transparent" />
+            )}
+
+            {/* ハートボタン */}
+            {onFavoriteToggle && (
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); onFavoriteToggle(String(item.id)); }}
+                className="absolute bottom-3 right-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/80 shadow backdrop-blur-sm transition hover:bg-white touch-manipulation"
+                aria-label="お気に入り"
+              >
+                <Heart
+                  size={15}
+                  className={isFavorite ? "fill-acid text-acid" : "text-black/30"}
+                />
+              </button>
             )}
 
             {/* サイトモードのホバーアイコン */}
