@@ -9,7 +9,7 @@ import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import { categoryGroups, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colorMap, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
 import { useFavorites } from "@/lib/useFavorites";
 import type { GalleryItem } from "@/lib/types";
 
@@ -250,6 +250,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               options={["All", ...colors]}
               activeOption={activeColor}
               onChange={setActiveColor}
+              colorMap={colorMap}
             />
             <FilterPill
               label="テイスト"

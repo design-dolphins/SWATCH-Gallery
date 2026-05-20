@@ -106,18 +106,18 @@ export const industries = [
 
 export const colorMap: Record<string, string> = {
   "黒": "#111111",
-  "青": "#2563EB",
-  "緑": "#16A34A",
-  "赤": "#DC2626",
-  "オレンジ": "#EA580C",
-  "ピンク": "#DB2777",
-  "黄色": "#EAB308",
+  "青": "#0055FF",
+  "緑": "#00AA00",
+  "赤": "#FF0000",
+  "オレンジ": "#FF6600",
+  "ピンク": "#FF0099",
+  "黄色": "#FFD700",
   "ベージュ": "#C4A882",
   "ブラウン": "#7C3B1E",
-  "パープル": "#7C3AED",
-  "グレー": "#6B7280",
+  "パープル": "#7700FF",
+  "グレー": "#888888",
   "白": "#F0F0F0",
-  "カラフル": "linear-gradient(135deg, #DC2626, #EA580C, #EAB308, #16A34A, #2563EB, #7C3AED)",
+  "カラフル": "linear-gradient(135deg, #FF0000, #FF6600, #FFD700, #00AA00, #0055FF, #7700FF)",
 };
 
 export const colors = [
