@@ -28,6 +28,25 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [columns, setColumns] = useState<1 | 3>(3);
+  const [showFilters, setShowFilters] = useState(true);
+
+  // スクロール方向でフィルターバーの表示を切り替え
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const handler = () => {
+      const currentY = window.scrollY;
+      if (currentY < 10) {
+        setShowFilters(true);
+      } else if (currentY > lastY) {
+        setShowFilters(false);
+      } else {
+        setShowFilters(true);
+      }
+      lastY = currentY;
+    };
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
 
   // URLパラメータからstate取得
   const selectedSite = searchParams.get("site");
@@ -176,7 +195,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
 
           {/* フィルターバー：PCは常時表示、SPはトグル */}
-          <div className={`flex flex-wrap items-center gap-2 ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
+          <div className={`flex flex-wrap items-center gap-2 overflow-hidden transition-all duration-300 ${showFilters ? "max-h-40 opacity-100" : "max-h-0 opacity-0 pointer-events-none"} ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
