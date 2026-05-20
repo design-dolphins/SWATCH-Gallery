@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Heart, Layers } from "lucide-react";
+import { ArrowUpRight, Heart, Layers } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryCardProps = {
@@ -32,7 +32,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
 
   return (
     <motion.article
-      className={`group ${showFrame ? "mx-auto w-full max-w-[260px]" : ""}`}
+      className={`group relative ${showFrame ? "mx-auto w-full max-w-[260px]" : ""}`}
       whileHover={singleColumn ? {} : { y: -4 }}
     >
       <button
@@ -60,21 +60,6 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
               <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-bone to-transparent" />
             )}
 
-            {/* ハートボタン */}
-            {onFavoriteToggle && (
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); onFavoriteToggle(String(item.id)); }}
-                className="absolute bottom-3 right-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/80 shadow backdrop-blur-sm transition hover:bg-white touch-manipulation"
-                aria-label="お気に入り"
-              >
-                <Heart
-                  size={15}
-                  className={isFavorite ? "fill-acid text-acid" : "text-black/30"}
-                />
-              </button>
-            )}
-
             {/* サイトモードのホバーアイコン */}
             {isSiteMode && (
               <div className="absolute inset-0 flex items-start justify-end p-4 opacity-0 transition duration-300 group-hover:opacity-100">
@@ -87,6 +72,21 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
         </div>
       </button>
 
+      {/* ハートボタン（buttonのネスト回避のため外に配置） */}
+      {onFavoriteToggle && (
+        <button
+          type="button"
+          onClick={() => onFavoriteToggle(String(item.id))}
+          className="absolute bottom-10 right-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/80 shadow backdrop-blur-sm transition hover:bg-white touch-manipulation"
+          aria-label="お気に入り"
+        >
+          <Heart
+            size={15}
+            className={isFavorite ? "fill-acid text-acid" : "text-black/30"}
+          />
+        </button>
+      )}
+
       <div className="px-0 py-2">
         {item.site_url ? (
           <a
@@ -96,7 +96,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
             className="flex items-center gap-1 truncate text-sm font-semibold hover:underline"
           >
             <span className="truncate">{item.site_name ?? "Untitled"}</span>
-            <ExternalLink size={12} className="shrink-0 text-black/40" />
+            <ArrowUpRight size={16} className="shrink-0 text-black/40" />
           </a>
         ) : (
           <p className="truncate text-sm font-semibold">
