@@ -117,7 +117,7 @@ export const colorMap: Record<string, string> = {
   "パープル": "#8833FF",
   "グレー": "#888888",
   "白": "#F0F0F0",
-  "カラフル": "linear-gradient(135deg, #FF2A2A, #FF7E21, #FFC700, #00A550, #1A6FFF, #8833FF)",
+  "カラフル": "linear-gradient(90deg, #FF2A2A 0%, #FF7E21 20%, #FFC700 40%, #00A550 60%, #1A6FFF 80%, #8833FF 100%)",
 };
 
 export const colors = [
