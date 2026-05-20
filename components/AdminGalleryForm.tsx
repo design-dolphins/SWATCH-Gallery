@@ -38,6 +38,19 @@ export default function AdminGalleryForm() {
     message: ""
   });
 
+  // URLからサイト名を自動取得
+  const fetchSiteName = async (url: string) => {
+    if (!url) return;
+    try {
+      const res = await fetch(`/api/meta?url=${encodeURIComponent(url)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.siteName) setSiteName(data.siteName);
+    } catch {
+      // 取得失敗時は何もしない
+    }
+  };
+
   const previewUrl = useMemo(() => {
     if (!file) return "";
     return URL.createObjectURL(file);
@@ -246,6 +259,7 @@ export default function AdminGalleryForm() {
                 label="サイトURL"
                 value={siteUrl}
                 onChange={setSiteUrl}
+                onBlur={() => fetchSiteName(siteUrl)}
                 placeholder="https://example.com"
               />
 
