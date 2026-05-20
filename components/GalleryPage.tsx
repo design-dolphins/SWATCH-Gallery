@@ -215,7 +215,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
 
           {/* フィルターバー：PCは常時表示、SPはトグル */}
-          <div className={`flex flex-wrap items-center gap-2 overflow-hidden transition-all duration-300 ${showFilters ? "max-h-40 opacity-100" : "max-h-0 opacity-0 pointer-events-none"} ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
+          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${showFilters ? "max-h-40 opacity-100 overflow-visible" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"} ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
