@@ -11,7 +11,7 @@ type GalleryCardProps = {
   singleColumn?: boolean;
 };
 
-export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardProps) {
+export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
   const [isCut, setIsCut] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
@@ -47,7 +47,7 @@ export default function GalleryCard({ item, onOpen, partsCount }: GalleryCardPro
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={`block w-full transition duration-500 group-hover:scale-[1.02] ${isCut ? "absolute inset-0 h-auto" : "h-auto"}`}
+              className={`block w-full transition duration-500 ${singleColumn ? "" : "group-hover:scale-[1.02]"} ${isCut ? "absolute inset-0 h-auto" : "h-auto"}`}
               src={item.image_url ?? "/mockups/northstar.svg"}
               alt={item.site_name ?? "Gallery image"}
               onLoad={handleImageLoad}

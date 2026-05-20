@@ -386,6 +386,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                         ? siteCards.counts.get(item.site_name ?? "") ?? 1
                         : undefined
                     }
+                    singleColumn={columns === 1}
                   />
                 </div>
               ))}
