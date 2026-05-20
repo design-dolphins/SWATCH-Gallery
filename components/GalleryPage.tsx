@@ -273,10 +273,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             <button
               type="button"
               onClick={() => setShowFavoritesOnly((v) => !v)}
-              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-acid/50 bg-acid/10 text-ink hover:border-acid hover:bg-acid/20"}`}
+              className={`flex items-center justify-center rounded-full border px-3 py-2 transition ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              aria-label="お気に入り"
             >
-              <Heart size={13} className={showFavoritesOnly ? "fill-white text-white" : "text-black/30"} />
-              お気に入り
+              <Heart size={15} className={showFavoritesOnly ? "fill-white" : ""} />
             </button>
             {hasActiveFilters && (
               <button
