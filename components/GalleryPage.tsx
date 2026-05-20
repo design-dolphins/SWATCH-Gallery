@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -27,6 +27,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [activeFontType, setActiveFontType] = useState("All");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [categorySheetOpen, setCategorySheetOpen] = useState(false);
   const [columns, setColumns] = useState<1 | 3>(3);
   const [showFilters, setShowFilters] = useState(true);
 
@@ -188,7 +189,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
-        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${(mobileFilterOpen || showFilters) ? "gap-3" : "gap-0"}`}>
+        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${(showFilters || mobileFilterOpen) ? "gap-3" : "gap-0"}`}>
           <div className="flex items-center">
             <button
               type="button"
@@ -204,7 +205,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </span>
               </span>
             </button>
-            {/* モバイル: ハンバーガーボタン */}
+            {/* モバイル: フィルタートグル */}
             <button
               type="button"
               className="ml-auto flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
@@ -214,8 +215,17 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             </button>
           </div>
 
-          {/* フィルターバー：PCは常時表示、SPはトグル */}
-          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${mobileFilterOpen ? "flex" : "hidden lg:flex"} ${(mobileFilterOpen || showFilters) ? "max-h-screen opacity-100 overflow-visible" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
+          {/* フィルターバー：スクロールで連動（PC・SP共通）、SPはハンバーガーでも開閉 */}
+          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${(showFilters || mobileFilterOpen) ? "flex max-h-screen opacity-100 overflow-visible" : "hidden max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
+            {/* SP: カテゴリボタン */}
+            <button
+              type="button"
+              onClick={() => setCategorySheetOpen(true)}
+              className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
+            >
+              <Layers3 size={14} />
+              <span>{activeCategory === "All" ? "Categories" : activeCategory}</span>
+            </button>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
@@ -270,6 +280,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           activeCategory={activeCategory}
           items={initialItems}
           onChange={handleCategoryChange}
+          sheetOpen={categorySheetOpen}
+          onSheetOpenChange={setCategorySheetOpen}
         />
 
         <section className="min-w-0">

@@ -12,15 +12,24 @@ type SidebarProps = {
   activeCategory: string;
   items: GalleryItem[];
   onChange: (category: string) => void;
+  sheetOpen?: boolean;
+  onSheetOpenChange?: (open: boolean) => void;
 };
 
 export default function Sidebar({
   categoryGroups,
   activeCategory,
   items,
-  onChange
+  onChange,
+  sheetOpen: sheetOpenProp,
+  onSheetOpenChange,
 }: SidebarProps) {
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetOpenInternal, setSheetOpenInternal] = useState(false);
+  const sheetOpen = sheetOpenProp !== undefined ? sheetOpenProp : sheetOpenInternal;
+  const setSheetOpen = (v: boolean) => {
+    setSheetOpenInternal(v);
+    onSheetOpenChange?.(v);
+  };
   const counts = new Map<string, number>();
 
   useEffect(() => {
