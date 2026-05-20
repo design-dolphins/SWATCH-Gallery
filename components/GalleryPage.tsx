@@ -440,7 +440,12 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         ＋
       </Link>
 
-      <PreviewModal item={selectedItem} onClose={() => setSelectedItem(null)} />
+      <PreviewModal
+        item={selectedItem}
+        onClose={() => setSelectedItem(null)}
+        isFavorite={selectedItem ? isFavorite(String(selectedItem.id)) : false}
+        onFavoriteToggle={toggleFavorite}
+      />
     </main>
   );
 }

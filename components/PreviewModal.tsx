@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink, X } from "lucide-react";
+import { ExternalLink, Heart, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type PreviewModalProps = {
   item: GalleryItem | null;
   onClose: () => void;
+  isFavorite?: boolean;
+  onFavoriteToggle?: (id: string) => void;
 };
 
-export default function PreviewModal({ item, onClose }: PreviewModalProps) {
+export default function PreviewModal({ item, onClose, isFavorite, onFavoriteToggle }: PreviewModalProps) {
   const [isPortrait, setIsPortrait] = useState(false);
   const isSmartphone = ["モバイルファースト", "スマホメニュー", "スマホKV"].includes(item?.category ?? "");
   const showFrame = isSmartphone && isPortrait;
@@ -101,10 +103,20 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                 </p>
               ) : null}
 
-              <div className="mt-6 grid gap-3">
+              <div className="mt-6 flex items-center gap-2">
+                {onFavoriteToggle && item && (
+                  <button
+                    type="button"
+                    onClick={() => onFavoriteToggle(String(item.id))}
+                    className={`grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 transition touch-manipulation ${isFavorite ? "border-acid bg-acid text-white" : "border-black/15 bg-white text-black/40 hover:border-acid hover:text-acid"}`}
+                    aria-label="お気に入り"
+                  >
+                    <Heart size={18} className={isFavorite ? "fill-white" : ""} />
+                  </button>
+                )}
                 {item.site_url ? (
                   <a
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-bold text-bone transition hover:bg-black"
+                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-bold text-bone transition hover:bg-black"
                     href={item.site_url}
                     target="_blank"
                     rel="noreferrer"
@@ -113,7 +125,6 @@ export default function PreviewModal({ item, onClose }: PreviewModalProps) {
                     <ExternalLink size={16} />
                   </a>
                 ) : null}
-
               </div>
             </aside>
           </motion.div>
