@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ChevronDown, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tasteLabels, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -24,7 +24,7 @@ export default function AdminGalleryForm() {
   const [category, setCategory] = useState("KV");
   const [industry, setIndustry] = useState(industries[0]);
   const [color, setColor] = useState(colors[0]);
-  const [taste, setTaste] = useState(tastes[0]);
+  const [selectedTastes, setSelectedTastes] = useState<string[]>([]);
   const [fontJp, setFontJp] = useState("");
   const [fontEn, setFontEn] = useState("");
   const [fontTypes_, setFontTypes_] = useState<string[]>([]);
@@ -88,7 +88,7 @@ export default function AdminGalleryForm() {
       setSiteUrl(parsedInput.siteUrl ?? "");
       setIndustry(parsedInput.industry ?? industries[0]);
       setColor(parsedInput.color ?? colors[0]);
-      setTaste(parsedInput.taste ?? tastes[0]);
+      setSelectedTastes(parsedInput.taste ? parsedInput.taste.split(",").map((t: string) => t.trim()).filter(Boolean) : []);
       setFontJp(parsedInput.fontJp ?? "");
       setFontEn(parsedInput.fontEn ?? "");
     } catch {
@@ -174,7 +174,7 @@ export default function AdminGalleryForm() {
       category,
       industry,
       color,
-      taste,
+      taste: selectedTastes.join(","),
       font: [fontJp, fontEn].filter(Boolean).join(","),
       font_type: fontTypes_.join(","),
       memo,
@@ -193,7 +193,7 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color, taste, fontJp, fontEn, fontTypes_: fontTypes_.join(",") })
+      JSON.stringify({ siteName, siteUrl, industry, color, taste: selectedTastes.join(","), fontJp, fontEn, fontTypes_: fontTypes_.join(",") })
     );
     setStatus({
       type: "success",
@@ -300,12 +300,30 @@ export default function AdminGalleryForm() {
                   onChange={setColor}
                   options={colors}
                 />
-                <SelectInput
-                  label="テイスト"
-                  value={taste}
-                  onChange={setTaste}
-                  options={tastes}
-                />
+              </div>
+
+              <div className="grid gap-2">
+                <span className="text-sm font-bold">テイスト（複数選択可）</span>
+                <div className="flex flex-wrap gap-2">
+                  {tastes.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() =>
+                        setSelectedTastes((prev) =>
+                          prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+                        )
+                      }
+                      className={`rounded-full border px-3 py-1 text-sm font-semibold transition ${
+                        selectedTastes.includes(t)
+                          ? "border-[#FF7E21] bg-[#FF7E21] text-white"
+                          : "border-black/15 bg-white text-black/60 hover:border-black/30"
+                      }`}
+                    >
+                      {tasteLabels[t]}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">

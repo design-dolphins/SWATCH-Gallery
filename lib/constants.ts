@@ -7,7 +7,7 @@ export const categoryGroups = [
     label: "会社情報",
     items: [
       "concept/About",
-      "特徴・強み",
+      "3つの特徴・強み",
       "ネガティブ訴求・課題",
       "代表メッセージ",
       "スタッフ紹介",
@@ -64,7 +64,7 @@ export const categoryGroups = [
   },
   {
     label: "スマホ",
-    items: ["スマホKV", "スマホメニュー", "モバイルファースト"]
+    items: ["スマホKV", "モバイルファースト", "スマホメニュー"]
   },
   {
     label: "ポートフォリオ",
@@ -128,8 +128,29 @@ export const tastes = [
   "stylish",
   "young",
   "rétro",
-  "future"
+  "future",
+  "luxury",
+  "natural",
+  "bold",
+  "elegant",
+  "traditional",
 ];
+
+export const tasteLabels: Record<string, string> = {
+  simple: "シンプル",
+  monotone: "モノトーン",
+  pop: "ポップ",
+  cute: "かわいい",
+  stylish: "スタイリッシュ",
+  young: "若い",
+  "rétro": "レトロ",
+  future: "未来的",
+  luxury: "高級感",
+  natural: "ナチュラル",
+  bold: "力強い",
+  elegant: "上品",
+  traditional: "和・伝統",
+};
 
 export const fontTypes = [
   "日本語ゴシック",
