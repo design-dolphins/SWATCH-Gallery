@@ -288,7 +288,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         />
 
         <section className="min-w-0">
-          <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-5">
+          <div className="mb-5 flex items-center justify-between lg:border-b lg:border-black/10 lg:pb-5">
             <div className="flex w-full items-center gap-2">
             {(selectedSite || activeCategory !== "All") && (
               <>
