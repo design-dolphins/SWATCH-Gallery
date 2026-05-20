@@ -33,19 +33,30 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   // スクロール方向でフィルターバーの表示を切り替え
   useEffect(() => {
     let lastY = window.scrollY;
+    let rafId: number | null = null;
+
     const handler = () => {
-      const currentY = window.scrollY;
-      if (currentY < 10) {
-        setShowFilters(true);
-      } else if (currentY > lastY) {
-        setShowFilters(false);
-      } else {
-        setShowFilters(true);
-      }
-      lastY = currentY;
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        const currentY = window.scrollY;
+        const delta = currentY - lastY;
+        if (currentY < 10) {
+          setShowFilters(true);
+        } else if (delta > 4) {
+          setShowFilters(false);
+        } else if (delta < -4) {
+          setShowFilters(true);
+        }
+        lastY = currentY;
+      });
     };
+
     window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
+    return () => {
+      window.removeEventListener("scroll", handler);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // URLパラメータからstate取得
