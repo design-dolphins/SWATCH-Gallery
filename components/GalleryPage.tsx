@@ -188,7 +188,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
-        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${showFilters ? "gap-3" : "gap-0"}`}>
+        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${(mobileFilterOpen || showFilters) ? "gap-3" : "gap-0"}`}>
           <div className="flex items-center">
             <button
               type="button"
@@ -215,7 +215,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
 
           {/* フィルターバー：PCは常時表示、SPはトグル */}
-          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${showFilters ? "max-h-40 opacity-100 overflow-visible" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"} ${mobileFilterOpen ? "flex" : "hidden lg:flex"}`}>
+          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${mobileFilterOpen ? "flex" : "hidden lg:flex"} ${(mobileFilterOpen || showFilters) ? "max-h-screen opacity-100 overflow-visible" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
