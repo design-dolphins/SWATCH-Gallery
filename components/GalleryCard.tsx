@@ -31,7 +31,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: 
   return (
     <motion.article
       className={`group ${showFrame ? "mx-auto w-full max-w-[260px]" : ""}`}
-      whileHover={{ y: -4 }}
+      whileHover={singleColumn ? {} : { y: -4 }}
     >
       <button
         className="relative block w-full text-left"
