@@ -30,11 +30,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         {children}
         <footer className="border-t border-black/08 px-6 py-5 text-center text-xs text-black/35">
-          <p>本サイトは参考目的のUIギャラリーです。掲載している画像・デザインの著作権は各サイトの運営者に帰属します。</p>
-          <div className="mt-2 flex items-center justify-center gap-4">
-            <a href="/contact" className="underline underline-offset-2 hover:text-ink transition">お問い合わせ</a>
-            <a href="/privacy" className="underline underline-offset-2 hover:text-ink transition">Privacy Policy</a>
-          </div>
+          本サイトは参考目的のUIギャラリーです。掲載している画像・デザインの著作権は各サイトの運営者に帰属します。
+          <a href="/contact" className="ml-4 underline underline-offset-2 hover:text-ink transition">お問い合わせ</a>
+          <a href="/privacy" className="ml-4 underline underline-offset-2 hover:text-ink transition">Privacy Policy</a>
         </footer>
       </body>
     </html>
