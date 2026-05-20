@@ -76,12 +76,12 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn }: 
             href={item.site_url}
             target="_blank"
             rel="noreferrer"
-            className="block truncate text-sm font-medium lg:font-black"
+            className="block truncate text-sm font-semibold"
           >
             {item.site_name ?? "Untitled"}
           </a>
         ) : (
-          <p className="truncate text-sm font-medium lg:font-black">
+          <p className="truncate text-sm font-semibold">
             {item.site_name ?? "Untitled"}
           </p>
         )}
