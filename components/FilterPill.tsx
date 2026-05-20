@@ -12,6 +12,7 @@ type FilterPillProps = {
   activeOption: string;
   onChange: (option: string) => void;
   colorMap?: Record<string, string>;
+  onOpenChange?: (open: boolean) => void;
 };
 
 function ColorSwatch({ color, colorMap }: { color: string; colorMap: Record<string, string> }) {
@@ -32,14 +33,20 @@ export default function FilterPill({
   activeOption,
   onChange,
   colorMap,
+  onOpenChange,
 }: FilterPillProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const handleSetOpen = (v: boolean) => {
+    setOpen(v);
+    onOpenChange?.(v);
+  };
+
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+        handleSetOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClick);
@@ -52,7 +59,7 @@ export default function FilterPill({
     <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={() => handleSetOpen(!open)}
         className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition whitespace-nowrap ${
           isActive
             ? "border-acid bg-acid text-white"
@@ -73,7 +80,7 @@ export default function FilterPill({
         <div className="absolute left-0 top-full z-50 mt-1 max-h-96 w-52 overflow-y-auto border border-black/10 bg-white shadow-sm">
           <button
             type="button"
-            onClick={() => { onChange("All"); setOpen(false); }}
+            onClick={() => { onChange("All"); handleSetOpen(false); }}
             className={`block w-full px-4 py-2.5 text-left text-sm font-bold transition ${
               activeOption === "All"
                 ? "bg-ink text-bone"
@@ -93,7 +100,7 @@ export default function FilterPill({
                   <button
                     key={option}
                     type="button"
-                    onClick={() => { onChange(option); setOpen(false); }}
+                    onClick={() => { onChange(option); handleSetOpen(false); }}
                     className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm font-bold transition ${
                       activeOption === option
                         ? "bg-ink text-bone"
@@ -110,7 +117,7 @@ export default function FilterPill({
               <button
                 key={option}
                 type="button"
-                onClick={() => { onChange(option); setOpen(false); }}
+                onClick={() => { onChange(option); handleSetOpen(false); }}
                 className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm font-bold transition ${
                   activeOption === option
                     ? "bg-ink text-bone"

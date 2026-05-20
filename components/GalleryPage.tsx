@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
@@ -29,6 +29,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const { favorites, toggle: toggleFavorite, isFavorite } = useFavorites();
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const filterOpenRef = useRef(false);
+  const openFilterCount = useRef(0);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [categorySheetOpen, setCategorySheetOpen] = useState(false);
   const [columns, setColumns] = useState<1 | 3>(3);
@@ -44,7 +46,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       if (rafId !== null) return;
       rafId = window.requestAnimationFrame(() => {
         rafId = null;
-        if (cooldown) {
+        if (cooldown || filterOpenRef.current) {
           lastY = window.scrollY;
           return;
         }
@@ -171,6 +173,15 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     }
   };
 
+  const handleFilterOpenChange = (open: boolean) => {
+    if (open) {
+      openFilterCount.current += 1;
+    } else {
+      openFilterCount.current = Math.max(0, openFilterCount.current - 1);
+    }
+    filterOpenRef.current = openFilterCount.current > 0;
+  };
+
   const handleCategoryChange = (cat: string) => {
     if (cat === "All") {
       router.push("/");
@@ -244,6 +255,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               options={["All", ...industries]}
               activeOption={activeIndustry}
               onChange={setActiveIndustry}
+              onOpenChange={handleFilterOpenChange}
             />
             <FilterPill
               label="カラー"
@@ -251,18 +263,21 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               activeOption={activeColor}
               onChange={setActiveColor}
               colorMap={colorMap}
+              onOpenChange={handleFilterOpenChange}
             />
             <FilterPill
               label="テイスト"
               options={["All", ...tastes]}
               activeOption={activeTaste}
               onChange={setActiveTaste}
+              onOpenChange={handleFilterOpenChange}
             />
             <FilterPill
               label="フォント種別"
               options={["All", ...fontTypes]}
               activeOption={activeFontType}
               onChange={setActiveFontType}
+              onOpenChange={handleFilterOpenChange}
             />
             <FilterPill
               label="フォント名"
@@ -270,6 +285,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               optionGroups={fontOptionGroups.length ? fontOptionGroups : undefined}
               activeOption={activeFont}
               onChange={setActiveFont}
+              onOpenChange={handleFilterOpenChange}
             />
             <button
               type="button"
