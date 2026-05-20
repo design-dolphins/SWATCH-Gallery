@@ -236,8 +236,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             </button>
           </div>
 
-          {/* SP: Categoriesボタン（スクロール連動） */}
-          <div className={`lg:hidden transition-all duration-300 ${showFilters ? "max-h-20 opacity-100" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
+          {/* SP: Categoriesボタン（スクロール連動・ハンバーガー非表示時のみ） */}
+          <div className={`lg:hidden transition-all duration-300 ${showFilters && !mobileFilterOpen ? "max-h-20 opacity-100" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
             <button
               type="button"
               onClick={() => setCategorySheetOpen(true)}
