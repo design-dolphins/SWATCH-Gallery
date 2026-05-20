@@ -189,7 +189,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
-        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${(showFilters || mobileFilterOpen) ? "gap-3" : "gap-0"}`}>
+        <div className={`mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8`}>
+          {/* ロゴ＋ハンバーガー：常に表示 */}
           <div className="flex items-center">
             <button
               type="button"
@@ -205,7 +206,6 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 </span>
               </span>
             </button>
-            {/* モバイル: フィルタートグル */}
             <button
               type="button"
               className="ml-auto flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
@@ -215,17 +215,20 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             </button>
           </div>
 
-          {/* フィルターバー：スクロールで連動（PC・SP共通）、SPはハンバーガーでも開閉 */}
-          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${(showFilters || mobileFilterOpen) ? "flex max-h-screen opacity-100 overflow-visible" : "hidden max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
-            {/* SP: カテゴリボタン */}
+          {/* SP: Categoriesボタン（スクロール連動） */}
+          <div className={`lg:hidden transition-all duration-300 ${showFilters ? "max-h-20 opacity-100" : "max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
             <button
               type="button"
               onClick={() => setCategorySheetOpen(true)}
-              className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white lg:hidden"
+              className="flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-3 py-2 text-sm font-bold transition hover:bg-white"
             >
               <Layers3 size={14} />
               <span>{activeCategory === "All" ? "Categories" : activeCategory}</span>
             </button>
+          </div>
+
+          {/* フィルターバー：PC=スクロール連動、SP=ハンバーガー */}
+          <div className={`flex flex-wrap items-center gap-2 transition-all duration-300 ${mobileFilterOpen ? "flex max-h-screen opacity-100 overflow-visible" : showFilters ? "hidden lg:flex max-h-screen opacity-100 overflow-visible" : "hidden lg:hidden max-h-0 opacity-0 pointer-events-none overflow-hidden"}`}>
             <FilterPill
               label="業界"
               options={["All", ...industries]}
