@@ -54,8 +54,8 @@ export default function Sidebar({
 
   return (
     <>
-      {/* SP: ボトムシートトリガー */}
-      <div className="lg:hidden">
+      {/* SP: ボトムシートトリガー（ヘッダー側のボタンで制御するため非表示） */}
+      <div className="hidden">
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
