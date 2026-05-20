@@ -81,7 +81,7 @@ export default function PreviewModal({ item, onClose, isFavorite, onFavoriteTogg
                   <span className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink" key={item.color}>
                     {colorMap[item.color] && (
                       <span
-                        className="inline-block h-3 w-3 shrink-0 rounded-full border border-black/10"
+                        className="inline-block h-3 w-3 shrink-0 rounded-full"
                         style={item.color === "カラフル"
                           ? { background: colorMap[item.color] }
                           : { backgroundColor: colorMap[item.color] }
