@@ -188,7 +188,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   return (
     <main className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-black/10 bg-bone/86 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1780px] flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
+        <div className={`mx-auto flex max-w-[1780px] flex-col px-4 py-4 transition-all duration-300 sm:px-6 lg:px-8 ${showFilters ? "gap-3" : "gap-0"}`}>
           <div className="flex items-center">
             <button
               type="button"
