@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Heart, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
+import { colorMap } from "@/lib/constants";
 
 type PreviewModalProps = {
   item: GalleryItem | null;
@@ -76,12 +77,26 @@ export default function PreviewModal({ item, onClose, isFavorite, onFavoriteTogg
               <div>
                 <p className="mb-2 text-[10px] font-black uppercase text-black/35">Taste</p>
                 <div className="flex flex-wrap gap-2">
-                {[item.color, ...(item.taste ? item.taste.split(",").map(t => t.trim()).filter(Boolean) : [])].filter(Boolean).map((badge) => (
+                {item.color && (
+                  <span className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink" key={item.color}>
+                    {colorMap[item.color] && (
+                      <span
+                        className="inline-block h-3 w-3 shrink-0 rounded-full border border-black/10"
+                        style={item.color === "カラフル"
+                          ? { background: colorMap[item.color] }
+                          : { backgroundColor: colorMap[item.color] }
+                        }
+                      />
+                    )}
+                    {item.color}
+                  </span>
+                )}
+                {(item.taste ? item.taste.split(",").map(t => t.trim()).filter(Boolean) : []).map((badge) => (
                   <span
                     className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink"
                     key={badge}
                   >
-                    {badge as string}
+                    {badge}
                   </span>
                 ))}
               </div>

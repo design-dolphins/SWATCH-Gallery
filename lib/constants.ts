@@ -104,6 +104,22 @@ export const industries = [
   "その他"
 ];
 
+export const colorMap: Record<string, string> = {
+  "黒": "#1a1a1a",
+  "青": "#3b82f6",
+  "緑": "#22c55e",
+  "赤": "#ef4444",
+  "オレンジ": "#f97316",
+  "ピンク": "#ec4899",
+  "黄色": "#eab308",
+  "ベージュ": "#d4b896",
+  "ブラウン": "#92400e",
+  "パープル": "#a855f7",
+  "グレー": "#9ca3af",
+  "白": "#f5f5f5",
+  "カラフル": "linear-gradient(135deg, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #a855f7)",
+};
+
 export const colors = [
   "黒",
   "青",
