@@ -34,21 +34,30 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   useEffect(() => {
     let lastY = window.scrollY;
     let rafId: number | null = null;
+    let cooldown = false;
 
     const handler = () => {
       if (rafId !== null) return;
       rafId = window.requestAnimationFrame(() => {
         rafId = null;
+        if (cooldown) {
+          lastY = window.scrollY;
+          return;
+        }
         const currentY = window.scrollY;
         const delta = currentY - lastY;
+        lastY = currentY;
         if (currentY < 10) {
           setShowFilters(true);
         } else if (delta > 4) {
           setShowFilters(false);
+          cooldown = true;
+          setTimeout(() => { cooldown = false; lastY = window.scrollY; }, 350);
         } else if (delta < -4) {
           setShowFilters(true);
+          cooldown = true;
+          setTimeout(() => { cooldown = false; lastY = window.scrollY; }, 350);
         }
-        lastY = currentY;
       });
     };
 
