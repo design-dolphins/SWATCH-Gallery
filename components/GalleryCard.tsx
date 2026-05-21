@@ -35,7 +35,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
 
   return (
     <motion.article
-      className={`group relative ${showFrame ? "mx-auto w-full max-w-[260px]" : ""} ${isCompareSelected ? "ring-2 ring-acid rounded-lg" : ""}`}
+      className={`group relative ${showFrame ? "mx-auto w-full max-w-[260px]" : ""} ${isCompareSelected ? "ring-2 ring-acid" : ""}`}
       whileHover={singleColumn ? {} : { y: -4 }}
     >
       <button

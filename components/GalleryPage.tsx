@@ -546,7 +546,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               <X size={16} />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-4 px-4 py-6 lg:flex lg:grid-cols-none lg:gap-6 lg:overflow-x-auto lg:h-full lg:items-start lg:px-6">
+          <div className="grid grid-cols-2 gap-4 p-4 lg:flex lg:grid-cols-none lg:gap-6 lg:overflow-x-auto lg:h-full lg:items-start lg:px-6">
             {compareItems.map((item) => {
               const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
               return (
