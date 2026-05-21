@@ -16,6 +16,7 @@ type PreviewModalProps = {
 export default function PreviewModal({ item, onClose, isFavorite, onFavoriteToggle }: PreviewModalProps) {
   const [isPortrait, setIsPortrait] = useState(false);
   const isSmartphone = ["モバイルファースト", "スマホメニュー", "スマホKV"].includes(item?.category ?? "");
+  const isAnimation = ["Button", "Big Button", "Title", "Hover", "Scroll UI"].includes(item?.category ?? "");
   const showFrame = isSmartphone && isPortrait;
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -44,7 +45,7 @@ export default function PreviewModal({ item, onClose, isFavorite, onFavoriteTogg
             <div className={`overflow-y-auto bg-bone ${showFrame ? "flex items-center justify-center py-10" : ""}`} style={{ maxHeight: "92vh" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                className={showFrame ? "h-full w-auto max-h-[calc(92vh-80px)] rounded-[32px] border-4 border-ink" : "block h-auto w-full"}
+                className={showFrame ? "h-full w-auto max-h-[calc(92vh-80px)] rounded-[32px] border-4 border-ink" : isAnimation ? "block h-auto max-w-full mx-auto" : "block h-auto w-full"}
                 src={item.image_url ?? "/mockups/northstar.svg"}
                 alt={item.site_name ?? "Preview image"}
                 onLoad={handleImageLoad}
