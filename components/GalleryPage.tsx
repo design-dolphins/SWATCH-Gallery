@@ -501,7 +501,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       {/* 比較バー */}
       {compareMode && compareItems.length > 0 && !showCompareView && (
         <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-black/10 bg-bone/95 backdrop-blur-xl px-4 py-3 flex items-center gap-3">
-          <div className="flex gap-2 flex-1 overflow-x-auto">
+          <div className="flex gap-2 flex-1 overflow-x-auto overflow-y-visible py-2">
             {compareItems.map((item) => (
               <div key={item.id} className="relative shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -551,7 +551,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
               return (
                 <div key={item.id} className={`flex flex-col gap-3 shrink-0 ${isSpPhone ? "w-[min(50vw,240px)]" : "w-[calc(50vw-2.5rem)]"}`}>
-                  <div className={isSpPhone ? "rounded-[32px] border-4 border-ink overflow-hidden" : "rounded-xl border border-black/10 overflow-hidden"}>
+                  <div className={isSpPhone ? "rounded-[32px] border-4 border-ink overflow-hidden" : "border border-black/10 overflow-hidden"}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image_url ?? ""}
