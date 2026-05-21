@@ -535,7 +535,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
       {/* 比較ビュー */}
       {showCompareView && (
-        <div className="fixed inset-0 z-50 bg-bone overflow-hidden flex flex-col">
+        <div className="fixed inset-0 z-50 bg-bone overflow-y-auto lg:overflow-hidden flex flex-col">
           <div className="flex items-center justify-between border-b border-black/10 px-6 py-4 shrink-0">
             <span className="text-sm font-bold">並べて比較</span>
             <button
@@ -546,7 +546,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               <X size={16} />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-4 p-4 lg:flex lg:grid-cols-none lg:gap-6 lg:overflow-x-auto lg:h-full lg:items-start lg:px-6">
+          <div className="grid grid-cols-2 gap-4 p-4 lg:flex lg:gap-6 lg:overflow-x-auto lg:px-6">
             {compareItems.map((item) => {
               const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
               return (
