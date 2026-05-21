@@ -18,7 +18,8 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
   const [isCut, setIsCut] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
 
-  const isSmartphone = ["モバイルファースト", "スマホメニュー", "スマホKV"].includes(item.category ?? "");
+  const isSmartphone = ["スマホメニュー", "スマホKV"].includes(item.category ?? "");
+  const alwaysFrame = ["スマホメニュー", "スマホKV"].includes(item.category ?? "");
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
@@ -28,7 +29,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
     setIsCut(!isSmartphone && ratio > 0.65);
   };
 
-  const showFrame = isSmartphone && isPortrait;
+  const showFrame = isSmartphone && (alwaysFrame || isPortrait);
 
   return (
     <motion.article

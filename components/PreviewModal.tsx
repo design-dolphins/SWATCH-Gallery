@@ -15,7 +15,7 @@ type PreviewModalProps = {
 
 export default function PreviewModal({ item, onClose, isFavorite, onFavoriteToggle }: PreviewModalProps) {
   const [isPortrait, setIsPortrait] = useState(false);
-  const isSmartphone = ["モバイルファースト", "スマホメニュー", "スマホKV"].includes(item?.category ?? "");
+  const isSmartphone = ["スマホメニュー", "スマホKV"].includes(item?.category ?? "");
   const isAnimation = ["Button", "Big Button", "Title", "Hover", "Scroll UI"].includes(item?.category ?? "");
   const showFrame = isSmartphone && isPortrait;
 

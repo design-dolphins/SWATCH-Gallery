@@ -1,7 +1,7 @@
 export const categoryGroups = [
   {
     label: "メイン",
-    items: ["KV", "第二階層KV", "フッター"]
+    items: ["KV", "第二階層KV", "フッター", "モバイルファースト"]
   },
   {
     label: "会社情報",
@@ -65,7 +65,7 @@ export const categoryGroups = [
   },
   {
     label: "スマホ",
-    items: ["スマホKV", "スマホメニュー", "モバイルファースト"]
+    items: ["スマホKV", "スマホメニュー"]
   },
   {
     label: "UI",
