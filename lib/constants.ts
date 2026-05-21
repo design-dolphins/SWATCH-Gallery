@@ -81,6 +81,10 @@ export const categoryGroups = [
       "メッセージ/お知らせ",
       "お気に入り/ブックマーク"
     ]
+  },
+  {
+    label: "Animation",
+    items: ["Button", "Big Button", "Title", "Hover", "Scroll UI"]
   }
 ];
 
