@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Heart, Layers } from "lucide-react";
+import { ArrowUpRight, Heart, Layers, X } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 
 type GalleryCardProps = {
