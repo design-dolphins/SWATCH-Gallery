@@ -34,6 +34,7 @@ export default function RootLayout({
           <br className="sm:hidden" />
           <a href="/contact" className="ml-4 underline underline-offset-2 hover:text-ink transition">お問い合わせ</a>
           <a href="/privacy" className="ml-4 underline underline-offset-2 hover:text-ink transition">Privacy Policy</a>
+          <a href="/terms" className="ml-4 underline underline-offset-2 hover:text-ink transition">利用規約</a>
         </footer>
       </body>
     </html>
