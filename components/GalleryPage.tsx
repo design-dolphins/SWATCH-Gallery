@@ -395,7 +395,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               </button>
             )}
             {/* PC: 列数トグル（Animationカテゴリ時は非表示） */}
-            {!["Button", "Big Button", "Title", "Hover", "Scroll UI"].includes(activeCategory) && (
+            {!["Button", "Big Button", "Text", "Hover", "Scroll UI"].includes(activeCategory) && (
             <div className="hidden overflow-hidden rounded-full border border-black/10 sm:flex">
               <button
                 type="button"
@@ -417,7 +417,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
 
           {displayItems.length > 0 ? (
-            <div className={`grid gap-x-4 gap-y-8 ${["Button", "Big Button", "Title", "Hover", "Scroll UI"].includes(activeCategory) ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : ["スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid gap-x-4 gap-y-8 ${["Button", "Big Button", "Text", "Hover", "Scroll UI"].includes(activeCategory) ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : ["スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
               {displayItems.map((item) => (
                 <div
                   key={

@@ -81,7 +81,7 @@ export const categoryGroups = [
   },
   {
     label: "Animation",
-    items: ["Button", "Big Button", "Title", "Hover", "Scroll UI"]
+    items: ["Button", "Big Button", "Text", "Hover", "Scroll UI"]
   }
 ];
 
