@@ -11,9 +11,11 @@ type GalleryCardProps = {
   singleColumn?: boolean;
   isFavorite?: boolean;
   onFavoriteToggle?: (id: string) => void;
+  compareMode?: boolean;
+  isCompareSelected?: boolean;
 };
 
-export default function GalleryCard({ item, onOpen, partsCount, singleColumn, isFavorite, onFavoriteToggle }: GalleryCardProps) {
+export default function GalleryCard({ item, onOpen, partsCount, singleColumn, isFavorite, onFavoriteToggle, compareMode, isCompareSelected }: GalleryCardProps) {
   const isSiteMode = partsCount !== undefined;
   const [isCut, setIsCut] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
@@ -33,7 +35,7 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
 
   return (
     <motion.article
-      className={`group relative ${showFrame ? "mx-auto w-full max-w-[260px]" : ""}`}
+      className={`group relative ${showFrame ? "mx-auto w-full max-w-[260px]" : ""} ${isCompareSelected ? "ring-2 ring-acid rounded-lg" : ""}`}
       whileHover={singleColumn ? {} : { y: -4 }}
     >
       <button
@@ -73,8 +75,15 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
         </div>
       </button>
 
-      {/* ハートボタン（buttonのネスト回避のため外に配置） */}
-      {onFavoriteToggle && (
+      {/* 比較モード: チェックアイコン */}
+      {compareMode && (
+        <div className={`absolute top-2 right-2 z-10 h-6 w-6 rounded-full flex items-center justify-center transition ${isCompareSelected ? "bg-acid" : "bg-white/80 border border-black/10"}`}>
+          {isCompareSelected && <X size={12} className="text-white" />}
+        </div>
+      )}
+
+      {/* ハートボタン（比較モード時は非表示） */}
+      {!compareMode && onFavoriteToggle && (
         <button
           type="button"
           onClick={() => onFavoriteToggle(String(item.id))}

@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, GitCompare, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -30,6 +30,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const { favorites, toggle: toggleFavorite, isFavorite } = useFavorites();
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareItems, setCompareItems] = useState<GalleryItem[]>([]);
+  const [showCompareView, setShowCompareView] = useState(false);
   const filterOpenRef = useRef(false);
   const openFilterCount = useRef(0);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -175,6 +178,15 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     }
   };
 
+  const handleCompareToggle = (item: GalleryItem) => {
+    setCompareItems((prev) => {
+      const exists = prev.find((i) => i.id === item.id);
+      if (exists) return prev.filter((i) => i.id !== item.id);
+      if (prev.length >= 4) return prev;
+      return [...prev, item];
+    });
+  };
+
   const handleFilterOpenChange = (open: boolean) => {
     if (open) {
       openFilterCount.current += 1;
@@ -300,6 +312,17 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             />
             <button
               type="button"
+              onClick={() => {
+                setCompareMode((v) => !v);
+                if (compareMode) { setCompareItems([]); setShowCompareView(false); }
+              }}
+              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              aria-label="比較モード"
+            >
+              <GitCompare size={15} className={compareMode ? "text-white" : ""} />
+            </button>
+            <button
+              type="button"
               onClick={() => setShowFavoritesOnly((v) => !v)}
               className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="お気に入り"
@@ -417,7 +440,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
 
           {displayItems.length > 0 ? (
-            <div className={`grid gap-x-4 gap-y-8 ${["Button", "Big Button", "Text", "Hover", "Scroll UI"].includes(activeCategory) ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" : ["スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
+            <div className={`grid gap-x-4 gap-y-8 ${["Button", "Big Button", "Text", "Hover", "Scroll UI"].includes(activeCategory) ? "grid-cols-1 sm:grid-cols-3 lg:grid-cols-4" : ["スマホKV", "スマホメニュー"].includes(activeCategory) ? "grid-cols-2 px-8 sm:grid-cols-3 lg:grid-cols-4 lg:px-16" : columns === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"}`}>
               {displayItems.map((item) => (
                 <div
                   key={
@@ -428,7 +451,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 >
                   <GalleryCard
                     item={item}
-                    onOpen={handleCardOpen}
+                    onOpen={compareMode ? () => handleCompareToggle(item) : handleCardOpen}
                     partsCount={
                       activeCategory === "All" && !selectedSite
                         ? siteCards.counts.get(item.site_name ?? "") ?? 1
@@ -437,6 +460,8 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                     singleColumn={columns === 1}
                     isFavorite={isFavorite(String(item.id))}
                     onFavoriteToggle={toggleFavorite}
+                    compareMode={compareMode}
+                    isCompareSelected={compareItems.some((i) => i.id === item.id)}
                   />
                 </div>
               ))}
@@ -473,6 +498,56 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
         isFavorite={selectedItem ? isFavorite(String(selectedItem.id)) : false}
         onFavoriteToggle={toggleFavorite}
       />
+
+      {/* 比較バー */}
+      {compareMode && compareItems.length > 0 && !showCompareView && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-black/10 bg-bone/95 backdrop-blur-xl px-4 py-3 flex items-center gap-3">
+          <div className="flex gap-2 flex-1 overflow-x-auto">
+            {compareItems.map((item) => (
+              <div key={item.id} className="relative shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.image_url ?? ""} alt={item.site_name ?? ""} className="h-12 w-12 rounded-lg object-cover border border-black/10" />
+                <button
+                  type="button"
+                  onClick={() => handleCompareToggle(item)}
+                  className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-ink text-bone flex items-center justify-center"
+                >
+                  <X size={8} />
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowCompareView(true)}
+            className="shrink-0 rounded-full bg-ink px-4 py-2 text-sm font-bold text-bone hover:bg-black transition"
+          >
+            比較する（{compareItems.length}）
+          </button>
+        </div>
+      )}
+
+      {/* 比較ビュー */}
+      {showCompareView && (
+        <div className="fixed inset-0 z-50 bg-bone overflow-y-auto">
+          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-black/10 bg-bone/95 backdrop-blur-xl px-6 py-4">
+            <span className="text-sm font-bold">比較</span>
+            <button type="button" onClick={() => setShowCompareView(false)} className="rounded-full border border-black/10 p-2 hover:bg-black/5 transition">
+              <X size={16} />
+            </button>
+          </div>
+          <div className={`grid gap-4 p-6 ${compareItems.length === 2 ? "grid-cols-2" : compareItems.length === 3 ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-4"}`}>
+            {compareItems.map((item) => (
+              <div key={item.id} className="flex flex-col gap-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.image_url ?? ""} alt={item.site_name ?? ""} className="w-full rounded-lg border border-black/10 object-cover" />
+                <p className="text-xs font-bold truncate">{item.site_name}</p>
+                <p className="text-xs text-black/45 truncate">{item.category}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
