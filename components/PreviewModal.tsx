@@ -42,7 +42,7 @@ export default function PreviewModal({ item, onClose, isFavorite, onFavoriteTogg
             transition={{ duration: 0.22 }}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className={`overflow-y-auto bg-bone ${showFrame ? "flex items-center justify-center py-10" : ""}`} style={{ maxHeight: "92vh" }}>
+            <div className={`overflow-y-auto bg-bone ${showFrame || isAnimation ? "flex items-center justify-center py-10" : ""}`} style={{ maxHeight: "92vh" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className={showFrame ? "h-full w-auto max-h-[calc(92vh-80px)] rounded-[32px] border-4 border-ink" : isAnimation ? "block h-auto max-w-full mx-auto" : "block h-auto w-full"}
