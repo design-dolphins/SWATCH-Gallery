@@ -550,7 +550,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             {compareItems.map((item) => {
               const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
               return (
-                <div key={item.id} className={`flex flex-col gap-3 shrink-0 ${isSpPhone ? "w-[min(50vw,240px)]" : "w-[min(80vw,480px)]"}`}>
+                <div key={item.id} className={`flex flex-col gap-3 shrink-0 ${isSpPhone ? "w-[min(50vw,240px)]" : "w-[min(90vw,700px)]"}`}>
                   <div className={isSpPhone ? "rounded-[32px] border-4 border-ink overflow-hidden" : "rounded-xl border border-black/10 overflow-hidden"}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
