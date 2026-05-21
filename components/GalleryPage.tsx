@@ -9,7 +9,7 @@ import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
 import SearchBar from "@/components/SearchBar";
 import Sidebar from "@/components/Sidebar";
-import { categoryGroups, colorMap, colors, fontTypes, industries, japaneseFonts, tastes } from "@/lib/constants";
+import { categoryGroups, colorMap, colors, fontTypes, industries, japaneseFonts, siteTypes, tastes } from "@/lib/constants";
 import { useFavorites } from "@/lib/useFavorites";
 import type { GalleryItem } from "@/lib/types";
 
@@ -22,6 +22,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [activeIndustry, setActiveIndustry] = useState("All");
+  const [activeSiteType, setActiveSiteType] = useState("All");
   const [activeColor, setActiveColor] = useState("All");
   const [activeTaste, setActiveTaste] = useState("All");
   const [activeFont, setActiveFont] = useState("All");
@@ -127,6 +128,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
   // フィルター関数（共通）
   const applyFilters = (item: GalleryItem, normalizedQuery: string) => {
     const industryMatch = activeIndustry === "All" || item.industry === activeIndustry;
+    const siteTypeMatch = activeSiteType === "All" || item.site_type === activeSiteType;
     const colorMatch = activeColor === "All" || item.color === activeColor;
     const tasteMatch = activeTaste === "All" || item.taste === activeTaste;
     const fontMatch = activeFont === "All" || (item.font?.split(",").map(f => f.trim()).includes(activeFont) ?? false);
@@ -134,7 +136,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     const searchable = [item.title, item.site_name, item.category, item.industry, item.color, item.taste, item.font, item.memo]
       .filter(Boolean).join(" ").toLowerCase();
     const queryMatch = normalizedQuery.length === 0 || searchable.includes(normalizedQuery);
-    return industryMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
+    return industryMatch && siteTypeMatch && colorMatch && tasteMatch && fontMatch && fontTypeMatch && queryMatch;
   };
 
   const filteredItems = useMemo(() => {
@@ -144,7 +146,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
       return categoryMatch && applyFilters(item, q);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, activeColor, activeIndustry, activeTaste, activeFont, activeFontType, initialItems, query]);
+  }, [activeCategory, activeColor, activeIndustry, activeSiteType, activeTaste, activeFont, activeFontType, initialItems, query]);
 
   const displayItems = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -163,7 +165,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     }
     return items;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeColor, activeTaste, activeFont, activeFontType, showFavoritesOnly, favorites]);
+  }, [activeCategory, selectedSite, siteCards, filteredItems, initialItems, query, activeIndustry, activeSiteType, activeColor, activeTaste, activeFont, activeFontType, showFavoritesOnly, favorites]);
 
   const handleCardOpen = (item: GalleryItem) => {
     if (activeCategory === "All" && !selectedSite) {
@@ -192,6 +194,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   const clearFilters = () => {
     setActiveIndustry("All");
+    setActiveSiteType("All");
     setActiveColor("All");
     setActiveTaste("All");
     setActiveFont("All");
@@ -202,6 +205,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
 
   const hasActiveFilters =
     activeIndustry !== "All" ||
+    activeSiteType !== "All" ||
     activeColor !== "All" ||
     activeTaste !== "All" ||
     activeFont !== "All" ||
@@ -255,6 +259,13 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               options={["All", ...industries]}
               activeOption={activeIndustry}
               onChange={setActiveIndustry}
+              onOpenChange={handleFilterOpenChange}
+            />
+            <FilterPill
+              label="サイトタイプ"
+              options={["All", ...siteTypes]}
+              activeOption={activeSiteType}
+              onChange={setActiveSiteType}
               onOpenChange={handleFilterOpenChange}
             />
             <FilterPill

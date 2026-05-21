@@ -68,10 +68,6 @@ export const categoryGroups = [
     items: ["スマホKV", "スマホメニュー", "モバイルファースト"]
   },
   {
-    label: "ポートフォリオ",
-    items: ["About", "Footer", "Work", "FV", "Contact"]
-  },
-  {
     label: "UI",
     items: [
       "新規登録",
@@ -94,19 +90,28 @@ export const categories = [
   ...categoryGroups.flatMap((group) => group.items)
 ];
 
+export const siteTypes = [
+  "コーポレート・企業サイト",
+  "ブランディング・コンセプト",
+  "ECサイト",
+  "サービスサイト",
+  "ポートフォリオ",
+  "採用サイト",
+  "ランディングページ",
+  "特設サイト",
+];
+
 export const industries = [
   "飲食・フード",
   "ファッション・コスメ・雑貨",
   "宿泊・観光・レジャー",
-  "美容室・フィットネス",
+  "美容・フィットネス",
   "医療・ヘルスケア",
-  "企業・ブランド（コーポレート）",
-  "採用・インナーブランディング",
   "IT・テクノロジー",
   "人材・教育・金融",
   "クリエイティブ・制作",
   "建築・不動産・ものづくり",
-  "その他"
+  "その他",
 ];
 
 export const colorMap: Record<string, string> = {

@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ChevronDown, ImagePlus, Loader2, LogOut } from "lucide-react";
-import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, tasteLabels, tastes } from "@/lib/constants";
+import { categoryGroups, colors, englishFonts, fontTypes, industries, japaneseFonts, siteTypes, tasteLabels, tastes } from "@/lib/constants";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 async function handleLogout() {
@@ -23,6 +23,7 @@ export default function AdminGalleryForm() {
   const [siteUrl, setSiteUrl] = useState("");
   const [category, setCategory] = useState("KV");
   const [industry, setIndustry] = useState(industries[0]);
+  const [siteType, setSiteType] = useState(siteTypes[0]);
   const [color, setColor] = useState(colors[0]);
   const [selectedTastes, setSelectedTastes] = useState<string[]>([]);
   const [fontJp, setFontJp] = useState("");
@@ -87,6 +88,7 @@ export default function AdminGalleryForm() {
       setSiteName(parsedInput.siteName ?? "");
       setSiteUrl(parsedInput.siteUrl ?? "");
       setIndustry(parsedInput.industry ?? industries[0]);
+      setSiteType(parsedInput.siteType ?? siteTypes[0]);
       setColor(parsedInput.color ?? colors[0]);
       setSelectedTastes(parsedInput.taste ? parsedInput.taste.split(",").map((t: string) => t.trim()).filter(Boolean) : []);
       setFontJp(parsedInput.fontJp ?? "");
@@ -173,6 +175,7 @@ export default function AdminGalleryForm() {
       image_url: publicUrlData.publicUrl,
       category,
       industry,
+      site_type: siteType,
       color,
       taste: selectedTastes.join(","),
       font: [fontJp, fontEn].filter(Boolean).join(","),
@@ -193,7 +196,7 @@ export default function AdminGalleryForm() {
 
     window.localStorage.setItem(
       lastGalleryInputKey,
-      JSON.stringify({ siteName, siteUrl, industry, color, taste: selectedTastes.join(","), fontJp, fontEn, fontTypes_: fontTypes_.join(",") })
+      JSON.stringify({ siteName, siteUrl, industry, siteType, color, taste: selectedTastes.join(","), fontJp, fontEn, fontTypes_: fontTypes_.join(",") })
     );
     setStatus({
       type: "success",
@@ -290,6 +293,12 @@ export default function AdminGalleryForm() {
                   value={industry}
                   onChange={setIndustry}
                   options={industries}
+                />
+                <SelectInput
+                  label="サイトタイプ"
+                  value={siteType}
+                  onChange={setSiteType}
+                  options={siteTypes}
                 />
               </div>
 

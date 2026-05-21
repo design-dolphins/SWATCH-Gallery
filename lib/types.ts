@@ -6,6 +6,7 @@ export type GalleryItem = {
   image_url: string | null;
   category: string | null;
   industry: string | null;
+  site_type: string | null;
   color: string | null;
   taste: string | null;
   font: string | null;
