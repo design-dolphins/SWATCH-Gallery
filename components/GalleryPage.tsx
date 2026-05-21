@@ -182,7 +182,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
     setCompareItems((prev) => {
       const exists = prev.find((i) => i.id === item.id);
       if (exists) return prev.filter((i) => i.id !== item.id);
-      if (prev.length >= 4) return prev;
+      if (prev.length >= 2) return prev;
       return [...prev, item];
     });
   };
