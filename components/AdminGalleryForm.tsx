@@ -79,6 +79,7 @@ export default function AdminGalleryForm() {
         siteName?: string;
         siteUrl?: string;
         industry?: string;
+        siteType?: string;
         color?: string;
         taste?: string;
         font?: string;
