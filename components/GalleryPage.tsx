@@ -316,10 +316,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 setCompareMode((v) => !v);
                 if (compareMode) { setCompareItems([]); setShowCompareView(false); }
               }}
-              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
-              aria-label="比較モード"
+              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-ink hover:border-acid/40 hover:bg-acid/10 hover:text-ink"}`}
             >
-              <GitCompare size={15} className={compareMode ? "text-white" : ""} />
+              並べる
             </button>
             <button
               type="button"
@@ -519,32 +518,54 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
           </div>
           <button
             type="button"
+            onClick={() => { setCompareMode(false); setCompareItems([]); setShowCompareView(false); }}
+            className="shrink-0 rounded-full border border-black/10 bg-white/60 px-4 py-2 text-sm font-bold text-ink hover:bg-white transition"
+          >
+            キャンセル
+          </button>
+          <button
+            type="button"
             onClick={() => setShowCompareView(true)}
             className="shrink-0 rounded-full bg-ink px-4 py-2 text-sm font-bold text-bone hover:bg-black transition"
           >
-            比較する（{compareItems.length}）
+            並べる（{compareItems.length}）
           </button>
         </div>
       )}
 
       {/* 比較ビュー */}
       {showCompareView && (
-        <div className="fixed inset-0 z-50 bg-bone overflow-y-auto">
-          <div className="sticky top-0 z-10 flex items-center justify-between border-b border-black/10 bg-bone/95 backdrop-blur-xl px-6 py-4">
-            <span className="text-sm font-bold">比較</span>
-            <button type="button" onClick={() => setShowCompareView(false)} className="rounded-full border border-black/10 p-2 hover:bg-black/5 transition">
+        <div className="fixed inset-0 z-50 bg-bone overflow-hidden flex flex-col">
+          <div className="flex items-center justify-between border-b border-black/10 px-6 py-4 shrink-0">
+            <span className="text-sm font-bold">並べて比較</span>
+            <button
+              type="button"
+              onClick={() => setShowCompareView(false)}
+              className="rounded-full border border-black/10 p-2 hover:bg-black/5 transition"
+            >
               <X size={16} />
             </button>
           </div>
-          <div className={`grid gap-4 p-6 ${compareItems.length === 2 ? "grid-cols-2" : compareItems.length === 3 ? "grid-cols-3" : "grid-cols-2 sm:grid-cols-4"}`}>
-            {compareItems.map((item) => (
-              <div key={item.id} className="flex flex-col gap-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.image_url ?? ""} alt={item.site_name ?? ""} className="w-full rounded-lg border border-black/10 object-cover" />
-                <p className="text-xs font-bold truncate">{item.site_name}</p>
-                <p className="text-xs text-black/45 truncate">{item.category}</p>
-              </div>
-            ))}
+          <div className="flex gap-6 overflow-x-auto px-6 py-6 h-full items-start">
+            {compareItems.map((item) => {
+              const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
+              return (
+                <div key={item.id} className={`flex flex-col gap-3 shrink-0 ${isSpPhone ? "w-[min(50vw,240px)]" : "w-[min(80vw,480px)]"}`}>
+                  <div className={isSpPhone ? "rounded-[32px] border-4 border-ink overflow-hidden" : "rounded-xl border border-black/10 overflow-hidden"}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.image_url ?? ""}
+                      alt={item.site_name ?? ""}
+                      className="w-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold truncate">{item.site_name}</p>
+                    <p className="text-xs text-black/45 truncate">{item.category}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
