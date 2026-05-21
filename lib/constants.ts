@@ -7,7 +7,7 @@ export const categoryGroups = [
     label: "会社情報",
     items: [
       "concept/About",
-      "3つの特徴・強み",
+      "特徴・強み",
       "ネガティブ訴求・課題",
       "代表メッセージ",
       "スタッフ紹介",
@@ -47,7 +47,8 @@ export const categoryGroups = [
       "インフォグラフィック/図解",
       "CTA",
       "数字で見る",
-      "資料・PDF"
+      "資料・PDF",
+      "SNS"
     ]
   },
   {
@@ -64,7 +65,7 @@ export const categoryGroups = [
   },
   {
     label: "スマホ",
-    items: ["スマホKV", "モバイルファースト", "スマホメニュー"]
+    items: ["スマホKV", "スマホメニュー", "モバイルファースト"]
   },
   {
     label: "ポートフォリオ",
