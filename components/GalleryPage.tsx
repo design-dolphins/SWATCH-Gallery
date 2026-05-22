@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, SplitSquareHorizontal, X } from "lucide-react";
+import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -319,7 +319,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="並べて比較"
             >
-              <SplitSquareHorizontal size={15} />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="2" width="6" height="12" rx="1" fill="currentColor"/>
+                <rect x="9" y="2" width="6" height="12" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              </svg>
             </button>
             <button
               type="button"
