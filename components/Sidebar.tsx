@@ -205,7 +205,7 @@ function CategoryButton({
     >
       <span className="max-w-[180px] truncate">{category}</span>
       <span className={`text-xs ${isActive ? "text-bone/62" : "text-black/32"}`}>
-        {count}
+        {category !== "All" && count}
       </span>
     </button>
   );
