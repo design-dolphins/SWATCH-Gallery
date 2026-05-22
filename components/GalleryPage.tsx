@@ -316,7 +316,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 setCompareMode((v) => !v);
                 if (compareMode) { setCompareItems([]); setShowCompareView(false); }
               }}
-              className={`group flex h-[38px] shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-[11px] transition-all duration-200 ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              className={`group flex h-[38px] min-w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full border transition-all duration-200 hover:gap-1.5 hover:px-3 ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="並べて比較"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="shrink-0">
@@ -330,7 +330,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             <button
               type="button"
               onClick={() => setShowFavoritesOnly((v) => !v)}
-              className={`group flex h-[38px] shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-[11px] transition-all duration-200 ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              className={`group flex h-[38px] min-w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-full border transition-all duration-200 hover:gap-1.5 hover:px-3 ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="お気に入り"
             >
               <Heart size={15} className={showFavoritesOnly ? "fill-white shrink-0" : "shrink-0"} />
