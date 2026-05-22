@@ -321,7 +321,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="1" y="2" width="6" height="12" rx="1" fill="currentColor"/>
-                <rect x="9" y="2" width="6" height="12" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+                <rect x="9.75" y="2.75" width="4.5" height="10.5" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
               </svg>
             </button>
             <button
