@@ -319,9 +319,9 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="並べて比較"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="2" width="6" height="12" rx="1" fill="currentColor"/>
-                <rect x="9.75" y="2.75" width="4.5" height="10.5" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <rect x="1.2" y="1.3" width="6.5" height="13" rx=".5" ry=".5"/>
+                <path d="M14.4,1.3h-5.5c-.3,0-.5.2-.5.5v12.1c0,.3.2.5.5.5h5.5c.3,0,.5-.2.5-.5V1.7c0-.3-.2-.5-.5-.5ZM13.8,12.9c0,.2-.1.3-.3.3h-3.7c-.2,0-.3-.1-.3-.3V2.7c0-.2.1-.3.3-.3h3.7c.2,0,.3.1.3.3v10.2Z"/>
               </svg>
             </button>
             <button
