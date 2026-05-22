@@ -316,21 +316,27 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 setCompareMode((v) => !v);
                 if (compareMode) { setCompareItems([]); setShowCompareView(false); }
               }}
-              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              className={`group flex h-[38px] shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-2.5 transition-all duration-200 ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="並べて比較"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="shrink-0">
                 <rect x="1.2" y="1.3" width="6.5" height="13" rx=".5" ry=".5"/>
                 <path d="M14.4,1.3h-5.5c-.3,0-.5.2-.5.5v12.1c0,.3.2.5.5.5h5.5c.3,0,.5-.2.5-.5V1.7c0-.3-.2-.5-.5-.5ZM13.8,12.9c0,.2-.1.3-.3.3h-3.7c-.2,0-.3-.1-.3-.3V2.7c0-.2.1-.3.3-.3h3.7c.2,0,.3.1.3.3v10.2Z"/>
               </svg>
+              <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-bold opacity-0 transition-all duration-200 group-hover:max-w-[80px] group-hover:opacity-100">
+                並べて比較
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setShowFavoritesOnly((v) => !v)}
-              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              className={`group flex h-[38px] shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full border px-2.5 transition-all duration-200 ${showFavoritesOnly ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
               aria-label="お気に入り"
             >
-              <Heart size={15} className={showFavoritesOnly ? "fill-white" : ""} />
+              <Heart size={15} className={showFavoritesOnly ? "fill-white shrink-0" : "shrink-0"} />
+              <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-bold opacity-0 transition-all duration-200 group-hover:max-w-[60px] group-hover:opacity-100">
+                お気に入り
+              </span>
             </button>
             {hasActiveFilters && (
               <button
