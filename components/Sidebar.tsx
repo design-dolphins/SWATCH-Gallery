@@ -104,7 +104,6 @@ export default function Sidebar({
             }`}
           >
             <span>All</span>
-            <span className={`text-xs ${activeCategory === "All" ? "text-bone/60" : "text-black/30"}`}>{items.length}</span>
           </button>
 
           {categoryGroups.map((group) => (

@@ -3,7 +3,7 @@
 import { useMemo, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, GitCompare, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, X } from "lucide-react";
+import { ArrowLeft, Heart, Layers3, LayoutGrid, LayoutList, Menu, SlidersHorizontal, Sparkles, SplitSquareHorizontal, X } from "lucide-react";
 import FilterPill from "@/components/FilterPill";
 import GalleryCard from "@/components/GalleryCard";
 import PreviewModal from "@/components/PreviewModal";
@@ -316,9 +316,10 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 setCompareMode((v) => !v);
                 if (compareMode) { setCompareItems([]); setShowCompareView(false); }
               }}
-              className={`flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-bold transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-ink hover:border-acid/40 hover:bg-acid/10 hover:text-ink"}`}
+              className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full border transition ${compareMode ? "border-acid bg-acid text-white" : "border-black/10 bg-white/60 text-black/40 hover:border-acid/40 hover:bg-acid/10 hover:text-acid"}`}
+              aria-label="並べて比較"
             >
-              並べる
+              <SplitSquareHorizontal size={15} />
             </button>
             <button
               type="button"
@@ -546,7 +547,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               <X size={16} />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-4 p-4 lg:flex lg:gap-6 lg:overflow-x-auto lg:px-6">
+          <div className="grid grid-cols-1 gap-6 p-4 lg:flex lg:gap-6 lg:overflow-x-auto lg:px-6">
             {compareItems.map((item) => {
               const isSpPhone = ["スマホKV", "スマホメニュー"].includes(item.category ?? "");
               return (
