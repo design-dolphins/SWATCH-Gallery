@@ -323,7 +323,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
                 <rect x="1.2" y="1.3" width="6.5" height="13" rx=".5" ry=".5"/>
                 <path d="M14.4,1.3h-5.5c-.3,0-.5.2-.5.5v12.1c0,.3.2.5.5.5h5.5c.3,0,.5-.2.5-.5V1.7c0-.3-.2-.5-.5-.5ZM13.8,12.9c0,.2-.1.3-.3.3h-3.7c-.2,0-.3-.1-.3-.3V2.7c0-.2.1-.3.3-.3h3.7c.2,0,.3.1.3.3v10.2Z"/>
               </svg>
-              <span className={`overflow-hidden whitespace-nowrap text-sm font-bold transition-all duration-200 group-hover:ml-1.5 group-hover:max-w-[80px] group-hover:opacity-100 ${compareMode ? "ml-1.5 max-w-[80px] opacity-100" : "ml-0 max-w-0 opacity-0"}`}>
+              <span className={`overflow-hidden whitespace-nowrap text-sm font-bold transition-all duration-200 ${compareMode ? "ml-1.5 max-w-[80px] opacity-100" : "ml-0 max-w-0 opacity-0 group-hover:ml-1.5 group-hover:max-w-[80px] group-hover:opacity-100"}`}>
                 並べて比較
               </span>
             </button>
@@ -334,7 +334,7 @@ export default function GalleryPage({ initialItems }: GalleryPageProps) {
               aria-label="お気に入り"
             >
               <Heart size={15} className={showFavoritesOnly ? "fill-white shrink-0" : "shrink-0"} />
-              <span className={`overflow-hidden whitespace-nowrap text-sm font-bold transition-all duration-200 group-hover:ml-1.5 group-hover:max-w-[72px] group-hover:opacity-100 ${showFavoritesOnly ? "ml-1.5 max-w-[72px] opacity-100" : "ml-0 max-w-0 opacity-0"}`}>
+              <span className={`overflow-hidden whitespace-nowrap text-sm font-bold transition-all duration-200 ${showFavoritesOnly ? "ml-1.5 max-w-[72px] opacity-100" : "ml-0 max-w-0 opacity-0 group-hover:ml-1.5 group-hover:max-w-[72px] group-hover:opacity-100"}`}>
                 お気に入り
               </span>
             </button>
