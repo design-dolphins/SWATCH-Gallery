@@ -22,13 +22,14 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
 
   const isSmartphone = ["スマホメニュー", "スマホKV"].includes(item.category ?? "");
   const alwaysFrame = ["スマホメニュー", "スマホKV"].includes(item.category ?? "");
+  const isAnimation = ["Button", "Big Button", "Text", "Hover", "Scroll UI"].includes(item.category ?? "");
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
     const ratio = img.naturalHeight / img.naturalWidth;
     setIsPortrait(ratio > 1);
     // スマホカテゴリはカットしない・それ以外は65%超えたらカット
-    setIsCut(!isSmartphone && ratio > 0.65);
+    setIsCut(!isSmartphone && !isAnimation && ratio > 0.65);
   };
 
   const showFrame = isSmartphone && (alwaysFrame || isPortrait);
@@ -47,12 +48,12 @@ export default function GalleryCard({ item, onOpen, partsCount, singleColumn, is
         {/* スマホモック用の外枠 */}
         <div className={showFrame ? "p-2 bg-transparent" : ""}>
           <div
-            className={`relative w-full overflow-hidden bg-transparent ${showFrame ? "rounded-[32px] border-4 border-ink" : ""}`}
-            style={isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
+            className={`relative w-full overflow-hidden bg-transparent ${showFrame ? "rounded-[32px] border-4 border-ink" : ""} ${isAnimation ? "flex items-center justify-center" : ""}`}
+            style={isAnimation ? { aspectRatio: "4 / 3" } : isCut ? { aspectRatio: "1 / 0.65", overflow: "hidden" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              className={`block w-full transition duration-500 ${singleColumn ? "" : "group-hover:scale-[1.02]"} ${isCut ? "absolute inset-0 h-auto" : "h-auto"}`}
+              className={`transition duration-500 ${isAnimation ? "max-w-full max-h-full w-auto h-auto object-contain" : `block w-full ${singleColumn ? "" : "group-hover:scale-[1.02]"} ${isCut ? "absolute inset-0 h-auto" : "h-auto"}`}`}
               src={item.image_url ?? "/mockups/northstar.svg"}
               alt={item.site_name ?? "Gallery image"}
               onLoad={handleImageLoad}
